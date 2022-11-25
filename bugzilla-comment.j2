@@ -1,0 +1,13 @@
+Copr build:
+{{ build_url }}
+({{ build_status}})
+
+Review template:
+{{ review_template_url }}
+
+{% if issues -%}
+Found issues:
+{% for issue in issues -%}
+- {{ issue }}
+{% endfor %}
+{%- endif %}
