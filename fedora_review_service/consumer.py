@@ -3,7 +3,7 @@
 import jinja2
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
-from fedora_messaging.helpers import find_srpm_url, submit_to_copr
+from fedora_review_service.helpers import find_srpm_url, submit_to_copr
 
 
 conf.setup_logging()
