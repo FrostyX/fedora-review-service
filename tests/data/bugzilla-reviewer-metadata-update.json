@@ -1,0 +1,130 @@
+{
+  "body": {
+    "bug": {
+      "severity": "medium",
+      "cf_category": "",
+      "reporter": {
+        "login": "ales.astone@gmail.com",
+        "real_name": "Alessandro Astone",
+        "id": 458821
+      },
+      "cf_mount_type": "",
+      "resolution": "",
+      "creation_time": 1661119189.0,
+      "platform": "All",
+      "version": {
+        "id": 495,
+        "name": "rawhide"
+      },
+      "cf_story_points": "",
+      "target_milestone": null,
+      "flags": [
+        {
+          "value": "?",
+          "id": 5708734,
+          "name": "fedora-review"
+        }
+      ],
+      "last_change_time": 1669468351.0,
+      "classification": "Fedora",
+      "qa_contact": {
+        "id": 171387,
+        "login": "extras-qa@fedoraproject.org",
+        "real_name": "Fedora Extras Quality Assurance"
+      },
+      "status": {
+        "id": 3,
+        "name": "ASSIGNED"
+      },
+      "assigned_to": "jkadlcik@redhat.com",
+      "cf_doc_type": "If docs needed, set a value",
+      "operating_system": "Linux",
+      "keywords": [],
+      "whiteboard": "",
+      "id": 2120131,
+      "cf_regression_status": "",
+      "cf_target_upstream_version": "",
+      "cf_atomic": "",
+      "cf_fixed_in": "",
+      "cf_documentation_action": "",
+      "is_private": false,
+      "summary": "Review Request: libgbinder - C interfaces for Android binder",
+      "alias": [],
+      "component": "Package Review",
+      "cf_environment": "",
+      "cf_crm": "",
+      "cf_ovirt_team": "",
+      "cf_last_closed": null,
+      "product": "Fedora",
+      "cf_type": "",
+      "priority": "unspecified",
+      "cf_release_notes": "",
+      "cf_clone_of": "",
+      "cf_cloudforms_team": "",
+      "url": "",
+      "cc": [],
+      "creator": "ales.astone@gmail.com",
+      "op_sys": "Linux",
+      "weburl": "https://bugzilla.redhat.com/show_bug.cgi?id=2120131"
+    },
+    "event": {
+      "bug_id": 2120131,
+      "user": {
+        "real_name": "Jakub Kadlčík",
+        "login": "jkadlcik@redhat.com",
+        "id": 363761
+      },
+      "routing_key": "bug.modify",
+      "time": 1669468373.0,
+      "changes": [
+        {
+          "added": "jkadlcik@redhat.com",
+          "removed": "nobody@fedoraproject.org",
+          "field": "assigned_to",
+          "field_name": "assigned_to"
+        },
+        {
+          "field": "bug_status",
+          "added": "ASSIGNED",
+          "removed": "NEW",
+          "field_name": "bug_status"
+        },
+        {
+          "field": "flag.fedora-review",
+          "added": "?",
+          "removed": "",
+          "field_name": "flag.fedora-review"
+        }
+      ],
+      "target": "bug",
+      "change_set": "539702.1669468373.45865",
+      "action": "modify",
+      "who": "jkadlcik@redhat.com"
+    },
+    "headers": {
+      "timestamp": "1669468381090",
+      "message-id": "ID:umb-prod-3.umb-001.prod.us-east-1.aws.redhat.com-38289-1669032665303-10:81440:-1:1:33",
+      "original-destination": "/topic/VirtualTopic.eng.bugzilla.bug.modify",
+      "esbMessageType": "bugzillaNotification",
+      "esbSourceSystem": "bugzilla",
+      "priority": "4",
+      "subscription": "0",
+      "amq6100_destination": "queue://Consumer.fedorainfra.DO-NOT-COPY.VirtualTopic.eng.bugzilla.>",
+      "ack": "ID:umb-prod-2.umb-001.prod.us-east-1.aws.redhat.com-36807-1669248409155-71569:1791",
+      "JMSXUserID": "msg-client-bugzilla",
+      "destination": "/topic/VirtualTopic.eng.bugzilla.bug.modify",
+      "amq6100_originalDestination": "topic://VirtualTopic.eng.bugzilla.bug.modify",
+      "correlation-id": "2d4ee3b8-fa3d-4163-9bfc-f7a94619db33",
+      "expires": "1669471981090",
+      "content-length": "1743"
+    }
+  },
+  "headers": {
+    "sent-at": "2022-11-26T13:13:01+00:00",
+    "fedora_messaging_schema": "bugzilla2fedmsg.messageV1bz4",
+    "fedora_messaging_severity": 20
+  },
+  "id": "658194ef-2285-48ad-b43f-55103a45040c",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.bugzilla.bug.update"
+}

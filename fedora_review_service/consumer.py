@@ -3,6 +3,7 @@
 import jinja2
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
+from fedora_messaging.helpers import find_srpm_url, submit_to_copr
 
 
 conf.setup_logging()
@@ -19,8 +20,8 @@ def dispatch(message):
     if message.topic == "org.fedoraproject.prod.copr.build.end":
         return handle_copr_message(message)
 
-    if False:
-        return handle_bugzilla_messag(message)
+    if message.topic.startswith("org.fedoraproject.prod.bugzilla"):
+        return handle_bugzilla_message(message)
 
 
 def handle_copr_message(message):
@@ -65,7 +66,33 @@ def handle_copr_message(message):
 
 
 def handle_bugzilla_message(message):
-    pass
+    bug = message.body["bug"]
+    comment = message.body.get("comment")
+
+    if not bug["component"] == "Package Review":
+        return
+
+    # Assignee update, CC update, flags update, etc
+    if not comment:
+        return
+
+    if bug["reporter"]["login"] != comment["author"]:
+        return
+
+    # TODO If not already closed
+    # {'id': 1, 'name': 'NEW'}
+    bug["status"]
+
+    # TODO If not already fedora-review+
+    bug["flags"]
+
+    srpm_url = find_srpm_url(comment["body"])
+    if not srpm_url:
+        return
+
+    # Until we farm all the test files we need
+    save_message(message)
+    submit_to_copr(bug["id"], bug["summary"], srpm_url)
 
 
 def get_build_url(build_id):
@@ -110,13 +137,19 @@ def render_bugzilla_comment(build_url, build_status,
 
 
 def submit_bugzilla_comment(text):
+    text += "\n-------------------------------\n"
     print(text)
-    print("\n-------------------------------\n")
+    save_comment(text)
 
 
 def save_message(message):
     with open("/home/jkadlcik/messages.log", "a") as f:
         f.write(str(message))
+
+
+def save_comment(comment):
+    with open("/home/jkadlcik/comments.log", "a") as f:
+        f.write(str(comment))
 
 
 if __name__ == "__main__":
