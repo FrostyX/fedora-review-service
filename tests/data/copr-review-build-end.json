@@ -1,0 +1,24 @@
+{
+  "body": {
+    "user": "frostyx",
+    "copr": "fedora-review-2120131-libgbinder",
+    "owner": "frostyx",
+    "pkg": "libgbinder",
+    "build": 5069760,
+    "chroot": "fedora-rawhide-x86_64",
+    "version": "1.1.29-1.fc38",
+    "status": 1,
+    "ip": "2620:52:3:1:dead:beef:cafe:c108",
+    "who": "backend.worker-rpm_build_worker:5069760-fedora-rawhide-x86_64",
+    "pid": 3665497,
+    "what": "build end: user:frostyx copr:fedora-review-2120131-libgbinder build:5069760 pkg:libgbinder version:1.1.29-1.fc38 ip:2620:52:3:1:dead:beef:cafe:c108 pid:3665497 status:1"
+  },
+  "headers": {
+    "sent-at": "2022-11-27T20:17:46+00:00",
+    "fedora_messaging_schema": "copr.build.end",
+    "fedora_messaging_severity": 20
+  },
+  "id": "4fbcf413-85d4-4e87-948e-2f4ffd18c992",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.copr.build.end"
+}
