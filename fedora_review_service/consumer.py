@@ -1,14 +1,10 @@
 #!/usr/bin/python3
 
-import jinja2
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
-from fedora_review_service.helpers import (
-    find_srpm_url,
-    submit_to_copr,
-    review_package_name,
-)
+from fedora_review_service.helpers import submit_to_copr
 from fedora_review_service.copr import Copr
+from fedora_review_service.bugzilla import Bugzilla
 
 
 conf.setup_logging()
@@ -38,34 +34,13 @@ def handle_copr_message(message):
 
 
 def handle_bugzilla_message(message):
-    bug = message.body["bug"]
-    comment = message.body.get("comment")
-
-    if not bug["component"] == "Package Review":
-        return
-
-    # Assignee update, CC update, flags update, etc
-    if not comment:
-        return
-
-    if bug["reporter"]["login"] != comment["author"]:
-        return
-
-    # TODO If not already closed
-    # {'id': 1, 'name': 'NEW'}
-    bug["status"]
-
-    # TODO If not already fedora-review+
-    bug["flags"]
-
-    packagename = review_package_name(bug["summary"])
-    srpm_url = find_srpm_url(packagename, comment["body"])
-    if not srpm_url:
+    bz = Bugzilla(message)
+    if bz.ignore:
         return
 
     # Until we farm all the test files we need
     save_message(message)
-    submit_to_copr(bug["id"], packagename, srpm_url)
+    submit_to_copr(bz.id, bz.packagename, bz.srpm_url)
 
 
 def submit_bugzilla_comment(text):

@@ -4,6 +4,7 @@ import unittest
 from fedora_messaging.api import Message
 from fedora_review_service.helpers import find_srpm_url, review_package_name
 from fedora_review_service.copr import Copr
+from fedora_review_service.bugzilla import Bugzilla
 
 
 class MessageTestCase(unittest.TestCase):
@@ -75,3 +76,16 @@ class TestCopr(MessageTestCase):
         message = self.get_message(name)
         message.body["copr"] = "coprname-not-related-to-review"
         assert Copr(message).ignore is True
+
+
+class TestBugzilla(MessageTestCase):
+
+    def test_ignore(self):
+        message = self.get_message("bugzilla-contributor-srpm-update.json")
+        assert Bugzilla(message).ignore is False
+
+        message = self.get_message("bugzilla-reviewer-comment.json")
+        assert Bugzilla(message).ignore is True
+
+        message = self.get_message("bugzilla-reviewer-metadata-update.json")
+        assert Bugzilla(message).ignore is True
