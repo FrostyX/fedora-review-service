@@ -1,5 +1,5 @@
 import re
-from copr.v3 import CoprRequestException
+from copr.v3 import Client, CoprRequestException
 
 
 def review_package_name(summary):
@@ -24,11 +24,10 @@ def create_copr_project_safe(client, owner, project, chroots,
         raise CoprRequestException from ex
 
 
-def submit_to_copr(rhbz, summary, srpm_url):
+def submit_to_copr(rhbz, packagename, srpm_url):
     client = Client.create_from_config_file()
-    name = review_package_name(summary)
     owner = "frostyx"
-    project = "fedora-review-{0}-{1}".format(rhbz, name)
+    project = "fedora-review-{0}-{1}".format(rhbz, packagename)
     chroots = [
         "fedora-35-x86_64",
         "fedora-36-x86_64",
@@ -47,12 +46,12 @@ def submit_to_copr(rhbz, summary, srpm_url):
     return result["id"]
 
 
-def find_srpm_url(text):
+def find_srpm_url(packagename, text):
     srpm_url = None
     urls = re.findall("(?P<url>https?://[^\s]+)", text)
     for url in urls:
         filename = url.split("/")[-1]
-        if name not in filename:
+        if packagename not in filename:
             continue
         if url.endswith(".src.rpm"):
             srpm_url = url
