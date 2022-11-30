@@ -62,8 +62,8 @@ class Copr:
         env = jinja2.Environment(loader=loader)
 
         # For some reason, lstrip_blocks doesn't work
-        env.trim_blocks=True
-        env.lstrip_blocks=True
+        env.trim_blocks = True
+        env.lstrip_blocks = True
 
         template = env.get_template("bugzilla-comment.j2")
         values = {
