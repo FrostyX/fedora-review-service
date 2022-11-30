@@ -33,7 +33,7 @@ def handle_copr_message(message):
         return
 
     # Until we farm all the test files we need
-    save_message(message)
+    save_message("\n" + str(message.__dict__) + "\n")
 
     comment = copr.render_bugzilla_comment()
     submit_bugzilla_comment(comment)
