@@ -5,9 +5,9 @@ Copr build:
 Review template:
 {{ review_template_url }}
 
-{% if issues -%}
+{% if issues %}
 Found issues:
-{% for issue in issues -%}
+{% for issue in issues %}
 - {{ issue }}
 {% endfor %}
-{%- endif %}
+{% endif %}
