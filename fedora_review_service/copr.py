@@ -23,13 +23,17 @@ class Copr:
 
     @property
     def review_template_url(self):
-        return "{0}/{1}".format(self.review_dir_url, "review.txt")
+        return "{0}/{1}".format(self.destdir_url, "fedora-review/review.txt")
 
     @property
-    def review_dir_url(self):
+    def builder_live_log_url(self):
+        return "{0}/{1}".format(self.destdir_url, "builder-live.log.gz")
+
+    @property
+    def destdir_url(self):
         base = "https://download.copr.fedorainfracloud.org/results"
         destdir = f"{self.build_id:08d}-{self.packagename}"
-        return f"{base}/{self.fullname}/{self.chroot}/{destdir}/fedora-review"
+        return f"{base}/{self.fullname}/{self.chroot}/{destdir}"
 
     @property
     def status_text(self):
@@ -70,6 +74,7 @@ class Copr:
             "build_url": self.build_url,
             "build_status": self.status_text,
             "review_template_url": self.review_template_url,
+            "builder_live_log_url": self.builder_live_log_url,
             "issues": self.issues,
         }
         return template.render(**values)

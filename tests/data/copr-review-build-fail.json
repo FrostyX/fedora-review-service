@@ -1,0 +1,24 @@
+{
+  "body": {
+    "user": "frostyx",
+    "copr": "fedora-review-2009155-python-oslo-messaging",
+    "owner": "frostyx",
+    "pkg": "python-oslo-messaging",
+    "build": 5074449,
+    "chroot": "fedora-rawhide-x86_64",
+    "version": "14.0.0-5.fc38",
+    "status": 0,
+    "ip": "2620:52:3:1:dead:beef:cafe:c1cb",
+    "who": "backend.worker-rpm_build_worker:5074449-fedora-rawhide-x86_64",
+    "pid": 1923131,
+    "what": "build end: user:frostyx copr:fedora-review-2009155-python-oslo-messaging build:5074449 pkg:python-oslo-messaging version:14.0.0-5.fc38 ip:2620:52:3:1:dead:beef:cafe:c1cb pid:1923131 status:0"
+  },
+  "headers": {
+    "sent-at": "2022-11-30T02:35:26+00:00",
+    "fedora_messaging_schema": "copr.build.end",
+    "fedora_messaging_severity": 20
+  },
+  "id": "e35e2494-9f79-4bf8-93e2-561be4b8034c",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.copr.build.end"
+}

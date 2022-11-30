@@ -2,8 +2,15 @@ Copr build:
 {{ build_url }}
 ({{ build_status}})
 
+{% if build_status == "failed" %}
+Build log:
+{{ builder_live_log_url }}
+
+Please make sure the package builds successfully at least for Fedora Rawhide.
+{% else %}
 Review template:
 {{ review_template_url }}
+{% endif %}
 
 {% if issues %}
 Found issues:

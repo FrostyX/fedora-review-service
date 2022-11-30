@@ -61,6 +61,30 @@ class TestCopr(MessageTestCase):
         copr = Copr(message)
         assert copr.render_bugzilla_comment() == expected
 
+    def test_render_bugzilla_comment_build_fail(self):
+        message = self.get_message("copr-review-build-fail.json")
+        expected = (
+            "Copr build:\n"
+            "https://copr.fedorainfracloud.org/coprs/build/5074449\n"
+            "(failed)\n"
+            "\n"
+            "Build log:\n"
+            "https://download.copr.fedorainfracloud.org/results/frostyx/"
+            "fedora-review-2009155-python-oslo-messaging/fedora-rawhide-x86_64/"
+            "05074449-python-oslo-messaging/builder-live.log.gz\n"
+            "\n"
+            "Please make sure the package builds successfully at least for "
+            "Fedora Rawhide.\n"
+            "\n"
+            "\n"
+            "---\n"
+            "This comment was created by the fedora-review-service\n"
+            "https://github.com/FrostyX/fedora-review-service"
+        )
+
+        copr = Copr(message)
+        assert copr.render_bugzilla_comment() == expected
+
     def test_ignore(self):
         name = "copr-review-build-end.json"
 
