@@ -51,10 +51,12 @@ class TestCopr(MessageTestCase):
             "https://download.copr.fedorainfracloud.org/results/frostyx/"
             "fedora-review-2120131-libgbinder/fedora-rawhide-x86_64/"
             "05069760-libgbinder/fedora-review/review.txt\n"
+            "\n"
+            "\n"
+            "---\n"
+            "This comment was created by the fedora-review-service\n"
+            "https://github.com/FrostyX/fedora-review-service"
         )
-
-        # FIXME I don't want this \n there, I should fix the code
-        expected += "\n"
 
         copr = Copr(message)
         assert copr.render_bugzilla_comment() == expected
