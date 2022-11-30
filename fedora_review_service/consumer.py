@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+from copr.v3 import CoprRequestException
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
 from fedora_review_service.helpers import submit_to_copr
@@ -45,7 +46,11 @@ def handle_bugzilla_message(message):
 
     # Until we farm all the test files we need
     save_message(message)
-    submit_to_copr(bz.id, bz.packagename, bz.srpm_url)
+
+    try:
+        submit_to_copr(bz.id, bz.packagename, bz.srpm_url)
+    except CoprRequestException as ex:
+        print("Error: {0}".format(str(ex)))
 
 
 def submit_bugzilla_comment(text):
