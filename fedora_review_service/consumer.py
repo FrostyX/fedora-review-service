@@ -30,6 +30,10 @@ def handle_copr_message(message):
     copr = Copr(message)
     if copr.ignore:
         return
+
+    # Until we farm all the test files we need
+    save_message(message)
+
     comment = copr.render_bugzilla_comment()
     submit_bugzilla_comment(comment)
 
