@@ -21,7 +21,8 @@ def dispatch(message):
     if message.topic == "org.fedoraproject.prod.copr.build.end":
         return handle_copr_message(message)
 
-    if message.topic.startswith("org.fedoraproject.prod.bugzilla"):
+    # Even newly created bugs has org.fedoraproject.prod.bugzilla.bug.update
+    if message.topic == "org.fedoraproject.prod.bugzilla.bug.update":
         return handle_bugzilla_message(message)
 
 
