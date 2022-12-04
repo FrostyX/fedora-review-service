@@ -81,6 +81,8 @@ class Copr:
 
     @property
     def ignore(self):
+        # TODO We should also care about srpm-builds that failed
+        # so that we can link the SRPM builder-live.log.gz
         if self.chroot != "fedora-rawhide-x86_64":
             return True
 
