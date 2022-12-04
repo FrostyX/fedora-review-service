@@ -1,6 +1,3 @@
-import jinja2
-
-
 class Copr:
 
     def __init__(self, message):
@@ -40,13 +37,6 @@ class Copr:
         return "failed" if self.status == 0 else "succeeded"
 
     @property
-    def issues(self):
-        # Parse issues and [!] checkboxes from review.json once the JSON
-        # support for fedora-review is merged and released
-        # https://pagure.io/FedoraReview/pull-request/463
-        return []
-
-    @property
     def rhbz_number(self):
         """
         We should instead have a database mapping BUILD_ID to RHBZ_ID
@@ -60,24 +50,6 @@ class Copr:
         if not split[2].isnumeric():
             return None
         return split[2]
-
-    def render_bugzilla_comment(self):
-        loader = jinja2.FileSystemLoader(".")
-        env = jinja2.Environment(loader=loader)
-
-        # For some reason, lstrip_blocks doesn't work
-        env.trim_blocks = True
-        env.lstrip_blocks = True
-
-        template = env.get_template("bugzilla-comment.j2")
-        values = {
-            "build_url": self.build_url,
-            "build_status": self.status_text,
-            "review_template_url": self.review_template_url,
-            "builder_live_log_url": self.builder_live_log_url,
-            "issues": self.issues,
-        }
-        return template.render(**values)
 
     @property
     def ignore(self):

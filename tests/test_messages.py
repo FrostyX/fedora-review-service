@@ -3,6 +3,7 @@ import json
 import unittest
 from fedora_messaging.api import Message
 from fedora_review_service.helpers import find_srpm_url, review_package_name
+from fedora_review_service.bugzilla_comment import BugzillaComment
 from fedora_review_service.messages.copr import Copr
 from fedora_review_service.messages.bugzilla import Bugzilla
 
@@ -57,9 +58,9 @@ class TestCopr(MessageTestCase):
             "This comment was created by the fedora-review-service\n"
             "https://github.com/FrostyX/fedora-review-service"
         )
-
         copr = Copr(message)
-        assert copr.render_bugzilla_comment() == expected
+        comment = BugzillaComment(copr).render()
+        assert comment == expected
 
     def test_render_bugzilla_comment_build_fail(self):
         message = self.get_message("copr-review-build-fail.json")
@@ -81,9 +82,9 @@ class TestCopr(MessageTestCase):
             "This comment was created by the fedora-review-service\n"
             "https://github.com/FrostyX/fedora-review-service"
         )
-
         copr = Copr(message)
-        assert copr.render_bugzilla_comment() == expected
+        comment = BugzillaComment(copr).render()
+        assert comment == expected
 
     def test_ignore(self):
         name = "copr-review-build-end.json"
