@@ -3,8 +3,8 @@ import json
 import unittest
 from fedora_messaging.api import Message
 from fedora_review_service.helpers import find_srpm_url, review_package_name
-from fedora_review_service.copr import Copr
-from fedora_review_service.bugzilla import Bugzilla
+from fedora_review_service.messages.copr import Copr
+from fedora_review_service.messages.bugzilla import Bugzilla
 
 
 class MessageTestCase(unittest.TestCase):

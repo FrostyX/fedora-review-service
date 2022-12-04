@@ -4,8 +4,8 @@ from copr.v3 import CoprRequestException
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
 from fedora_review_service.helpers import submit_to_copr
-from fedora_review_service.copr import Copr
-from fedora_review_service.bugzilla import Bugzilla
+from fedora_review_service.messages.copr import Copr
+from fedora_review_service.messages.bugzilla import Bugzilla
 
 
 conf.setup_logging()
