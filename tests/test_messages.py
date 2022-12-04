@@ -1,25 +1,7 @@
-import os
-import json
-import unittest
-from fedora_messaging.api import Message
 from fedora_review_service.helpers import find_srpm_url, review_package_name
-from fedora_review_service.bugzilla_comment import BugzillaComment
 from fedora_review_service.messages.copr import Copr
 from fedora_review_service.messages.bugzilla import Bugzilla
-
-
-class MessageTestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.here = os.path.dirname(os.path.abspath(__file__))
-        self.data = os.path.join(self.here, "data")
-
-    def get_message(self, name):
-        path = os.path.join(self.data, name)
-        data = json.load(open(path, "r"))
-        del data["id"]
-        del data["queue"]
-        return Message(**data)
+from tests.base import MessageTestCase
 
 
 class TestMessages(MessageTestCase):
@@ -40,51 +22,6 @@ class TestMessages(MessageTestCase):
 
 
 class TestCopr(MessageTestCase):
-
-    def test_render_bugzilla_comment(self):
-        message = self.get_message("copr-review-build-end.json")
-        expected = (
-            "Copr build:\n"
-            "https://copr.fedorainfracloud.org/coprs/build/5069760\n"
-            "(succeeded)\n"
-            "\n"
-            "Review template:\n"
-            "https://download.copr.fedorainfracloud.org/results/frostyx/"
-            "fedora-review-2120131-libgbinder/fedora-rawhide-x86_64/"
-            "05069760-libgbinder/fedora-review/review.txt\n"
-            "\n"
-            "\n"
-            "---\n"
-            "This comment was created by the fedora-review-service\n"
-            "https://github.com/FrostyX/fedora-review-service"
-        )
-        copr = Copr(message)
-        comment = BugzillaComment(copr).render()
-        assert comment == expected
-
-    def test_render_bugzilla_comment_build_fail(self):
-        message = self.get_message("copr-review-build-fail.json")
-        expected = (
-            "Copr build:\n"
-            "https://copr.fedorainfracloud.org/coprs/build/5074449\n"
-            "(failed)\n"
-            "\n"
-            "Build log:\n"
-            "https://download.copr.fedorainfracloud.org/results/frostyx/"
-            "fedora-review-2009155-python-oslo-messaging/fedora-rawhide-x86_64/"
-            "05074449-python-oslo-messaging/builder-live.log.gz\n"
-            "\n"
-            "Please make sure the package builds successfully at least for "
-            "Fedora Rawhide.\n"
-            "\n"
-            "\n"
-            "---\n"
-            "This comment was created by the fedora-review-service\n"
-            "https://github.com/FrostyX/fedora-review-service"
-        )
-        copr = Copr(message)
-        comment = BugzillaComment(copr).render()
-        assert comment == expected
 
     def test_ignore(self):
         name = "copr-review-build-end.json"
