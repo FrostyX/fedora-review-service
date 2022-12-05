@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  fedora-review-service:
+    build:
+      context: .
+    hostname: fedora-review-service
+    environment:
+      - CONFIG=/etc/fedora-review-service/fedora-review-service-production.yaml
+      - PYTHONPATH=/opt/fedora-review-service
+    command: >
+      fedora-messaging --conf /etc/fedora-review-service/fedora.toml
+          consume --callback='fedora_review_service.consumer:consume'
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/opt/fedora-review-service:z
+      - private:/private
+      - database:/database
+
+volumes:
+  private:
+  database:

@@ -3,6 +3,7 @@ import yaml
 
 
 def parse_config(path=None):
+    path = path or os.environ.get("CONFIG")
     if not path:
         here = os.path.dirname(os.path.abspath(__file__))
         projectdir = os.path.dirname(here)
