@@ -57,12 +57,6 @@ def handle_bugzilla_message(message):
 def submit_bugzilla_comment(text):
     text += "\n-------------------------------\n"
     print(text)
-    save_comment(text)
-
-
-def save_comment(comment):
-    with open("/home/jkadlcik/comments.log", "a") as f:
-        f.write(str(comment))
 
 
 if __name__ == "__main__":
