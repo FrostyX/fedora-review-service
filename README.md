@@ -32,7 +32,7 @@ to spend on each package as much as possible.
 Run from git repository
 
 ```bash
-PYTHONPATH=. fedora-messaging --conf fedora.toml consume --callback="fedora_review_service.consumer:consume"
+PYTHONPATH=. fedora-messaging --conf conf/fedora.toml consume --callback="fedora_review_service.consumer:consume"
 ```
 
 
