@@ -1,0 +1,9 @@
+---
+database_uri: "sqlite:///fedora-review-service.sqlite"
+copr_config: "~/.config/copr"
+copr_owner: "frostyx"
+copr_chroots:
+  - "fedora-35-x86_64"
+  - "fedora-36-x86_64"
+  - "fedora-37-x86_64"
+  - "fedora-rawhide-x86_64"

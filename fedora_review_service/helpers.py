@@ -1,5 +1,6 @@
 import re
 from copr.v3 import Client, CoprRequestException
+from fedora_review_service.config import config
 
 
 def review_package_name(summary):
@@ -25,15 +26,10 @@ def create_copr_project_safe(client, owner, project, chroots,
 
 
 def submit_to_copr(rhbz, packagename, srpm_url):
-    client = Client.create_from_config_file()
-    owner = "frostyx"
+    client = Client.create_from_config_file(path=config["copr_config"])
+    owner = config["copr_owner"]
     project = "fedora-review-{0}-{1}".format(rhbz, packagename)
-    chroots = [
-        "fedora-35-x86_64",
-        "fedora-36-x86_64",
-        "fedora-37-x86_64",
-        "fedora-rawhide-x86_64",
-    ]
+    chroots = config["copr_chroots"]
     description=("This project contains builds from Fedora Review ticket "
                  "[RHBZ #{0}](https://bugzilla.redhat.com/show_bug.cgi?id={0})."
                  .format(rhbz))

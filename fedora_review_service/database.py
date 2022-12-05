@@ -2,10 +2,10 @@ from sqlalchemy import create_engine, Column, String, Boolean, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.orm import sessionmaker
+from fedora_review_service.config import config
 
 
-DATABASE_URI = "sqlite:///fedora-review-service.sqlite"
-engine = create_engine(DATABASE_URI, echo=True)
+engine = create_engine(config["database_uri"], echo=True)
 session = sessionmaker(bind=engine)()
 Base = declarative_base()
 
