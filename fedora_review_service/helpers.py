@@ -1,6 +1,33 @@
+import os
 import re
+import logging
 from copr.v3 import Client, CoprRequestException
 from fedora_review_service.config import config
+
+
+def get_log():
+    path = config["log"]
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+
+    log = logging.getLogger("fedora-review-service")
+
+    log.setLevel(logging.INFO)
+
+    # Drop the default handler, we will create it ourselves
+    log.handlers = []
+
+    # Print also to stderr
+    stream = logging.StreamHandler()
+    stream.setFormatter(logging.Formatter("%(message)s"))
+    log.addHandler(stream)
+
+    # Add file logging
+    file_log = logging.FileHandler(path)
+    file_log_format = "[%(asctime)s][%(levelname)6s]: %(message)s"
+    file_log.setFormatter(logging.Formatter(file_log_format))
+    log.addHandler(file_log)
+
+    return log
 
 
 def review_package_name(summary):

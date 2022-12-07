@@ -24,4 +24,5 @@ COPY conf /etc/fedora-review-service
 RUN cat /etc/fedora-review-service/fedora-review-service.yaml \
     |yq '.copr_config="/private/.config/copr"' \
     |yq '.database_uri="sqlite:////database/fedora-review-service.sqlite"' \
+    |yq '.log="/persistent/log/fedora-review-service.log"' \
     |yq -y '.' > /etc/fedora-review-service/fedora-review-service-production.yaml

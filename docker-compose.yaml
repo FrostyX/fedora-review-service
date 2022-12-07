@@ -18,7 +18,9 @@ services:
       - .:/opt/fedora-review-service:z
       - private:/private
       - database:/database
+      - persistent:/persistent
 
 volumes:
   private:
   database:
+  persistent:
