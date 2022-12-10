@@ -3,7 +3,12 @@
 from copr.v3 import CoprRequestException
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
-from fedora_review_service.helpers import get_log, submit_to_copr
+from fedora_review_service.helpers import get_log
+from fedora_review_service.logic.copr import (
+    submit_to_copr,
+    copr_review_spec_diff,
+    copr_last_two_builds,
+)
 from fedora_review_service.bugzilla_comment import BugzillaComment
 from fedora_review_service.database import create_db, save_message, mark_done
 from fedora_review_service.messages.copr import Copr
@@ -38,6 +43,7 @@ def handle_copr_message(message):
     log.info("Recognized Copr message: %s", message.id)
     save_message(message)
 
+    upload_bugzilla_patch(copr.ownername, copr.projectname)
     comment = BugzillaComment(copr).render()
     submit_bugzilla_comment(comment)
 
@@ -61,6 +67,21 @@ def handle_bugzilla_message(message):
 
     mark_done(message)
     log.info("Finished processing Bugzilla message: %s", message.id)
+
+
+def upload_bugzilla_patch(ownername, projectname):
+    builds = copr_last_two_builds(ownername, projectname)
+    if not builds:
+        return
+
+    diff = copr_review_spec_diff(builds)
+    if not diff:
+        return
+
+    name = "spec-from-{0}-to-{1}.diff".format(builds[0].id, builds[1].id)
+    log.info("New patch: %s", name)
+    log.info(diff)
+    log.info("\n-------------------------------\n")
 
 
 def submit_bugzilla_comment(text):
