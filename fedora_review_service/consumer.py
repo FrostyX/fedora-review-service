@@ -9,6 +9,10 @@ from fedora_review_service.logic.copr import (
     copr_review_spec_diff,
     copr_last_two_builds,
 )
+from fedora_review_service.logic.rhbz import (
+    bugzilla_attach_file,
+    bugzilla_submit_comment,
+)
 from fedora_review_service.bugzilla_comment import BugzillaComment
 from fedora_review_service.database import create_db, save_message, mark_done
 from fedora_review_service.messages.copr import Copr
@@ -43,9 +47,9 @@ def handle_copr_message(message):
     log.info("Recognized Copr message: %s", message.id)
     save_message(message)
 
-    upload_bugzilla_patch(copr.ownername, copr.projectname)
+    upload_bugzilla_patch(copr.rhbz_number, copr.ownername, copr.projectname)
     comment = BugzillaComment(copr).render()
-    submit_bugzilla_comment(comment)
+    submit_bugzilla_comment(copr.rhbz_number, comment)
 
     mark_done(message)
     log.info("Finished processing Copr message: %s", message.id)
@@ -69,7 +73,7 @@ def handle_bugzilla_message(message):
     log.info("Finished processing Bugzilla message: %s", message.id)
 
 
-def upload_bugzilla_patch(ownername, projectname):
+def upload_bugzilla_patch(bug_id, ownername, projectname):
     builds = copr_last_two_builds(ownername, projectname)
     if not builds:
         return
@@ -78,15 +82,23 @@ def upload_bugzilla_patch(ownername, projectname):
     if not diff:
         return
 
-    name = "spec-from-{0}-to-{1}.diff".format(builds[0].id, builds[1].id)
-    log.info("New patch: %s", name)
+    filename = "spec-from-{0}-to-{1}.diff".format(builds[0].id, builds[1].id)
+    description = ("The .spec file difference from Copr build {0} to {1}"
+                   .format(builds[0].id, builds[1].id))
+
+    log.info("RHBZ #%s", bug_id)
+    log.info("New patch: %s", filename)
+    log.info("Patch description: %s", description)
     log.info(diff)
     log.info("\n-------------------------------\n")
+    # bugzilla_attach_file(bug_id, filename, diff, description)
 
 
-def submit_bugzilla_comment(text):
-    text += "\n-------------------------------\n"
+def submit_bugzilla_comment(bug_id, text):
+    log.info("RHBZ #%s", bug_id)
     log.info(text)
+    log.info("\n-------------------------------\n")
+    # bugzilla_submit_comment(bug_id, text):
 
 
 if __name__ == "__main__":
