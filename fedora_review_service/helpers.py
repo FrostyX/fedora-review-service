@@ -63,5 +63,7 @@ def remote_diff(url1, url2, name1=None, name2=None):
 def diff(text1, text2, name1=None, name2=None):
     s1 = [x + "\n" for x in text1.split("\n")]
     s2 = [x + "\n" for x in text2.split("\n")]
+    name1 = name1 or ""
+    name2 = name2 or ""
     result = difflib.unified_diff(s1, s2, name1, name2)
     return "".join(result)
