@@ -68,3 +68,10 @@ https://github.com/fedora-infra/fedora-messaging/blob/stable/configs/fedora.toml
 
 You can see the `fedora-messaging` feed in your browser
 https://apps.fedoraproject.org/datagrepper/v2/search
+
+
+## Tests
+
+```
+python -m pytest -vv -s
+```
