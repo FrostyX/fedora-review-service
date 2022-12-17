@@ -3,6 +3,7 @@
 from copr.v3 import CoprRequestException
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
+from fedora_review_service.config import config
 from fedora_review_service.helpers import get_log
 from fedora_review_service.logic.copr import (
     submit_to_copr,
@@ -63,11 +64,12 @@ def handle_bugzilla_message(message):
     log.info("Recognized Bugzilla message: %s", message.id)
     save_message(message)
 
-    try:
-        build_id = submit_to_copr(bz.id, bz.packagename, bz.srpm_url)
-        log.info("Copr build: %s", build_id)
-    except CoprRequestException as ex:
-        log.error("Error: {0}".format(str(ex)))
+    if not config["copr_readonly"]:
+        try:
+            build_id = submit_to_copr(bz.id, bz.packagename, bz.srpm_url)
+            log.info("Copr build: %s", build_id)
+        except CoprRequestException as ex:
+            log.error("Error: {0}".format(str(ex)))
 
     mark_done(message)
     log.info("Finished processing Bugzilla message: %s", message.id)
@@ -91,14 +93,18 @@ def upload_bugzilla_patch(bug_id, ownername, projectname):
     log.info("Patch description: %s", description)
     log.info(diff)
     log.info("\n-------------------------------\n")
-    # bugzilla_attach_file(bug_id, filename, diff, description)
+    if not config["bugzilla_readonly"]:
+        # bugzilla_attach_file(bug_id, filename, diff, description)
+        pass
 
 
 def submit_bugzilla_comment(bug_id, text):
     log.info("RHBZ #%s", bug_id)
     log.info(text)
     log.info("\n-------------------------------\n")
-    # bugzilla_submit_comment(bug_id, text):
+    if not config["bugzilla_readonly"]:
+        # bugzilla_submit_comment(bug_id, text):
+        pass
 
 
 if __name__ == "__main__":
