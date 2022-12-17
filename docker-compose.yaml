@@ -4,6 +4,7 @@ services:
   fedora-review-service:
     build:
       context: .
+    image: quay.io/jkadlcik/fedora-review-service
     hostname: fedora-review-service
     environment:
       - CONFIG=/etc/fedora-review-service/fedora-review-service-production.yaml
