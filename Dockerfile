@@ -9,6 +9,7 @@ RUN dnf -y update && \
         sqlite \
         fedora-messaging \
         python3-copr \
+        python3-bugzilla \
         python3-yaml \
         python3-jinja2 \
         python3-sqlalchemy \
