@@ -7,9 +7,6 @@ from fedora_review_service.config import config
 
 
 def get_log():
-    path = config["log"]
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-
     log = logging.getLogger("fedora-review-service")
 
     log.setLevel(logging.INFO)
@@ -23,10 +20,13 @@ def get_log():
     log.addHandler(stream)
 
     # Add file logging
-    file_log = logging.FileHandler(path)
-    file_log_format = "[%(asctime)s][%(levelname)6s]: %(message)s"
-    file_log.setFormatter(logging.Formatter(file_log_format))
-    log.addHandler(file_log)
+    path = config["log"]
+    if path:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        file_log = logging.FileHandler(path)
+        file_log_format = "[%(asctime)s][%(levelname)6s]: %(message)s"
+        file_log.setFormatter(logging.Formatter(file_log_format))
+        log.addHandler(file_log)
 
     return log
 
