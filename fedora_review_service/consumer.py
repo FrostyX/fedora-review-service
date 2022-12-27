@@ -14,8 +14,17 @@ from fedora_review_service.logic.rhbz import (
     bugzilla_attach_file,
     bugzilla_submit_comment,
 )
+from fedora_review_service.database import (
+    create_db,
+    Ticket,
+    Build,
+    Message,
+    new_message,
+    new_ticket,
+    new_build,
+    session,
+)
 from fedora_review_service.bugzilla_comment import BugzillaComment
-from fedora_review_service.database import create_db, save_message, mark_done
 from fedora_review_service.messages.copr import Copr
 from fedora_review_service.messages.bugzilla import Bugzilla
 
@@ -46,13 +55,23 @@ def handle_copr_message(message):
         return
 
     log.info("Recognized Copr message: %s", message.id)
-    save_message(message)
+    msgobj = new_message(message)
+
+    build = session.query(Build).filter(Build.copr_build_id==copr.build_id).one()
+    build.copr_message_id = msgobj.id
+
+    # TODO We are waiting for JSON support in fedora-review to implement these
+    build.issues = None
+    build.status = None
+
+    session.commit()
 
     upload_bugzilla_patch(copr.rhbz_number, copr.ownername, copr.projectname)
     comment = BugzillaComment(copr).render()
     submit_bugzilla_comment(copr.rhbz_number, comment)
 
-    mark_done(message)
+    msgobj.done = True
+    session.commit()
     log.info("Finished processing Copr message: %s", message.id)
 
 
@@ -62,8 +81,11 @@ def handle_bugzilla_message(message):
         return
 
     log.info("Recognized Bugzilla message: %s", message.id)
-    save_message(message)
+    msgobj = new_message(message)
+    ticket = new_ticket(bz.id, bz.owner)
+    session.commit()
 
+    build_id = None
     if not config["copr_readonly"]:
         try:
             build_id = submit_to_copr(bz.id, bz.packagename, bz.srpm_url)
@@ -71,7 +93,10 @@ def handle_bugzilla_message(message):
         except CoprRequestException as ex:
             log.error("Error: {0}".format(str(ex)))
 
-    mark_done(message)
+    build = new_build(ticket, bz.spec_url, bz.srpm_url, build_id, msgobj.id)
+
+    msgobj.done = True
+    session.commit()
     log.info("Finished processing Bugzilla message: %s", message.id)
 
 

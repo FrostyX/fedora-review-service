@@ -1,0 +1,13 @@
+---
+database_uri: "sqlite://"
+log: null
+copr_config: "~/not/existing/config"
+copr_owner: "foo"
+copr_chroots:
+  - "fedora-35-x86_64"
+  - "fedora-36-x86_64"
+  - "fedora-37-x86_64"
+  - "fedora-rawhide-x86_64"
+
+copr_readonly: false
+bugzilla_readonly: true

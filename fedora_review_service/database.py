@@ -76,13 +76,25 @@ def create_db():
     Base.metadata.create_all(engine)
 
 
-def save_message(message):
-    session.add(Message(id=message.id, topic=message.topic))
-    session.commit()
+def new_message(message):
+    message = Message(message_id=message.id, topic=message.topic)
+    session.add(message)
+    return message
 
 
-def mark_done(message):
-    obj = session.query(Message).get(message.id)
-    obj.done = True
-    session.add(obj)
-    session.commit()
+def new_ticket(rhbz_id, owner):
+    ticket = Ticket(rhbz_id=rhbz_id, owner=owner)
+    session.add(ticket)
+    return ticket
+
+
+def new_build(ticket, spec_url, srpm_url, copr_build_id, bugzilla_message_id):
+    build = Build(
+        ticket_id=ticket.id,
+        spec_url=spec_url,
+        srpm_url=srpm_url,
+        copr_build_id=copr_build_id,
+        bugzilla_message_id=bugzilla_message_id,
+    )
+    session.add(build)
+    return build

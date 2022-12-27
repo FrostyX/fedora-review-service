@@ -36,16 +36,24 @@ def review_package_name(summary):
     return right.split(" - ")[0].strip()
 
 
+def find_spec_url(packagename, text):
+    return _find_file_url(packagename, ".spec", text)
+
+
 def find_srpm_url(packagename, text):
-    srpm_url = None
+    return _find_file_url(packagename, ".src.rpm", text)
+
+
+def _find_file_url(packagename, suffix, text):
+    file_url = None
     urls = re.findall("(?P<url>https?://[^\s]+)", text)
     for url in urls:
         filename = url.split("/")[-1]
         if packagename not in filename:
             continue
-        if url.endswith(".src.rpm"):
-            srpm_url = url
-    return srpm_url
+        if url.endswith(suffix):
+            file_url = url
+    return file_url
 
 
 def remote_diff(url1, url2, name1=None, name2=None):

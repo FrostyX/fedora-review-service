@@ -1,6 +1,7 @@
 from fedora_review_service.helpers import (
     review_package_name,
     find_srpm_url,
+    find_spec_url,
 )
 
 
@@ -16,8 +17,16 @@ class Bugzilla:
         return review_package_name(self.bug["summary"])
 
     @property
+    def owner(self):
+        return self.bug["reporter"]["login"]
+
+    @property
     def srpm_url(self):
         return find_srpm_url(self.packagename, self.comment["body"])
+
+    @property
+    def spec_url(self):
+        return find_spec_url(self.packagename, self.comment["body"])
 
     @property
     def ignore(self):
