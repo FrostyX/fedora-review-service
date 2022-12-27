@@ -73,5 +73,5 @@ https://apps.fedoraproject.org/datagrepper/v2/search
 ## Tests
 
 ```
-python -m pytest -vv -s
+CONFIG=conf/fedora-review-service-tests.yaml python -m pytest -vv -s
 ```
