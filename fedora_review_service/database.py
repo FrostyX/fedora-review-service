@@ -83,6 +83,10 @@ def new_message(message):
 
 
 def new_ticket(rhbz_id, owner):
+    ticket = session.query(Ticket).filter(Ticket.rhbz_id==rhbz_id).first()
+    if ticket:
+        return ticket
+
     ticket = Ticket(rhbz_id=rhbz_id, owner=owner)
     session.add(ticket)
     return ticket
