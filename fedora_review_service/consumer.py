@@ -40,12 +40,10 @@ def consume(message):
 
 
 def dispatch(message):
-    # FIXME It seems that this is called after every chroot ends
-    if message.topic == "org.fedoraproject.prod.copr.build.end":
+    if message.topic in config["copr_messages"]:
         return handle_copr_message(message)
 
-    # Even newly created bugs has org.fedoraproject.prod.bugzilla.bug.update
-    if message.topic == "org.fedoraproject.prod.bugzilla.bug.update":
+    if message.topic in config["bugzilla_messages"]:
         return handle_bugzilla_message(message)
 
 
