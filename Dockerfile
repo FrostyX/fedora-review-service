@@ -20,7 +20,7 @@ RUN dnf -y update && \
     dnf clean all
 
 # Copy source code
-COPY fedora_review_service /src/fedora_review_service/
+COPY . /src/
 
 # Copy config file
 COPY conf /etc/fedora-review-service
