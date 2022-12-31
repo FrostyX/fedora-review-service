@@ -24,12 +24,16 @@ def generate_bugzillarc(token):
     ])
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
     out, err = proc.communicate()
+    print(out)
     if err:
         print("Err: {0}".format(err))
         return False
 
     split = out.decode("utf-8").strip("\n").split("API key written to")
     path = split[1].strip() if len(split) == 2 else None
+    if not path:
+        print("Err: Cannot parse the path")
+        return False
 
     os.makedirs(os.path.dirname(config["bugzilla_config"]), exist_ok=True)
     shutil.move(path, config["bugzilla_config"])
