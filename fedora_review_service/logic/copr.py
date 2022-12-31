@@ -59,12 +59,12 @@ def copr_review_spec_diff(builds):
 
 
 def copr_build_url(build_id):
-    url = "https://copr.fedorainfracloud.org/coprs/build/{0}"
-    return url.format(build_id)
+    url = "{0}/coprs/build/{1}"
+    return url.format(config["copr_url"], build_id)
 
 
 def copr_destdir_url(owner, project, package, chroot, build_id):
-    base = "https://download.copr.fedorainfracloud.org/results"
+    base = "{0}/results".format(config["copr_be_url"])
     fullname = "{0}/{1}".format(owner, project)
     destdir = f"{build_id:08d}-{package}"
     return f"{base}/{fullname}/{chroot}/{destdir}"
