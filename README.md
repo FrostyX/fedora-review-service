@@ -29,14 +29,14 @@ to spend on each package as much as possible.
 
 ## Running
 
-Run from git repository
+### Run from git repository
 
 ```bash
 PYTHONPATH=. fedora-messaging --conf conf/fedora.toml consume --callback="fedora_review_service.consumer:consume"
 ```
 
 
-## Docker compose
+### Docker compose
 
 
 You can also run the service inside a Docker container
@@ -45,14 +45,19 @@ You can also run the service inside a Docker container
 docker-compose up -d
 ```
 
-A manual step is required. Please
-[configure your API tokens first](doc/tokens.md)
+### OpenShift
+
+See [more about OpenShift deployment](doc/openshift.md)
 
 
 ## Configuration
 
-We are using `fedora-messaging` configuration file from here
-https://github.com/fedora-infra/fedora-messaging/blob/stable/configs/fedora.toml
+Doesn't matter if you are running this service on your host system, in
+a `docker-compose` or in OpenShift, a manual step is required. Please
+[configure your API tokens first](doc/tokens.md)
+
+Just for the record, we are using `fedora-messaging` configuration file from
+here https://github.com/fedora-infra/fedora-messaging/blob/stable/configs/
 
 
 ## Misc
