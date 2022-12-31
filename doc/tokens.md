@@ -1,4 +1,4 @@
-## Tokens configuration
+# Tokens configuration
 
 Doesn't matter if you are running this service on your host system, in
 a `docker-compose` or in OpenShift. You need to manually setup some
