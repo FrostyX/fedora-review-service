@@ -1,7 +1,7 @@
 ---
-database_uri: "sqlite:///fedora-review-service.sqlite"
-log: "/tmp/fedora-review-service.log"
-copr_config: "~/.config/copr"
+database_uri: "sqlite:////persistent/fedora-review-service.sqlite"
+log: "/persistent/log/fedora-review-service.log"
+copr_config: "/persistent/private/.config/copr"
 copr_owner: "frostyx"
 copr_chroots:
   - "fedora-35-x86_64"
@@ -10,14 +10,12 @@ copr_chroots:
   - "fedora-rawhide-x86_64"
 
 bugzilla_url: "https://bugzilla.redhat.com"
-bugzilla_config: "~/.config/python-bugzilla/.bugzillarc"
+bugzilla_config: "/persistent/private/.bugzillarc"
 
 copr_readonly: false
 bugzilla_readonly: true
 
 copr_messages:
-  # FIXME It seems that this is called after every chroot ends
   - "org.fedoraproject.prod.copr.build.end"
 bugzilla_messages:
-  # Even newly created bugs has org.fedoraproject.prod.bugzilla.bug.update
   - "org.fedoraproject.prod.bugzilla.bug.update"

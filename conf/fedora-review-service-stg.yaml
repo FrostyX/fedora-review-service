@@ -1,0 +1,21 @@
+---
+database_uri: "sqlite:////persistent/fedora-review-service.sqlite"
+log: "/persistent/log/fedora-review-service.log"
+copr_config: "/persistent/private/.config/copr"
+copr_owner: "frostyx"
+copr_chroots:
+  - "fedora-35-x86_64"
+  - "fedora-36-x86_64"
+  - "fedora-37-x86_64"
+  - "fedora-rawhide-x86_64"
+
+bugzilla_url: "https://bugzilla.stage.redhat.com"
+bugzilla_config: "/persistent/private/.bugzillarc"
+
+copr_readonly: false
+bugzilla_readonly: false
+
+copr_messages:
+  - "org.fedoraproject.stg.copr.build.end"
+bugzilla_messages:
+  - "org.fedoraproject.stg.bugzilla.bug.update"
