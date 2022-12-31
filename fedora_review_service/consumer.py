@@ -119,8 +119,7 @@ def upload_bugzilla_patch(bug_id, ownername, projectname):
     log.info(diff)
     log.info("\n-------------------------------\n")
     if not config["bugzilla_readonly"]:
-        # bugzilla_attach_file(bug_id, filename, diff, description)
-        pass
+        bugzilla_attach_file(bug_id, filename, diff, description)
 
 
 def submit_bugzilla_comment(bug_id, text):
@@ -128,8 +127,7 @@ def submit_bugzilla_comment(bug_id, text):
     log.info(text)
     log.info("\n-------------------------------\n")
     if not config["bugzilla_readonly"]:
-        # bugzilla_submit_comment(bug_id, text):
-        pass
+        bugzilla_submit_comment(bug_id, text)
 
 
 if __name__ == "__main__":
