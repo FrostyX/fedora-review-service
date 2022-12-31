@@ -35,6 +35,7 @@ Run from git repository
 PYTHONPATH=. fedora-messaging --conf conf/fedora.toml consume --callback="fedora_review_service.consumer:consume"
 ```
 
+
 ## Docker compose
 
 
@@ -44,18 +45,8 @@ You can also run the service inside a Docker container
 docker-compose up -d
 ```
 
-A manual step is required
-
-```
-docker exec -it fedora-review-service_fedora-review-service_1 bash
-```
-
-Create your `copr-cli` config file
-
-```
-mkdir -p /private/.config/
-vim /private/.config/copr
-```
+A manual step is required. Please
+[configure your API tokens first](doc/tokens.md)
 
 
 ## Configuration
