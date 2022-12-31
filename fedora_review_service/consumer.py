@@ -55,7 +55,12 @@ def handle_copr_message(message):
     log.info("Recognized Copr message: %s", message.id)
     msgobj = new_message(message)
 
-    build = session.query(Build).filter(Build.copr_build_id==copr.build_id).one()
+    build = session.query(Build).filter(Build.copr_build_id==copr.build_id).first()
+    if not build:
+        log.info("The build #%s wasn't submitted by this "
+                 "fedora-review-service instance, skipping.", copr.build_id)
+        return
+
     build.copr_message_id = msgobj.id
 
     # TODO We are waiting for JSON support in fedora-review to implement these
