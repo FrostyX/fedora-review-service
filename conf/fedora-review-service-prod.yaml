@@ -1,6 +1,9 @@
 ---
 database_uri: "sqlite:////persistent/fedora-review-service.sqlite"
 log: "/persistent/log/fedora-review-service.log"
+
+copr_url: "https://copr.fedorainfracloud.org"
+copr_be_url: "https://download.copr.fedorainfracloud.org"
 copr_config: "/persistent/private/.config/copr"
 copr_owner: "frostyx"
 copr_chroots:

@@ -1,6 +1,9 @@
 ---
 database_uri: "sqlite://"
 log: null
+
+copr_url: "https://copr.fedorainfracloud.org"
+copr_be_url: "https://download.copr.fedorainfracloud.org"
 copr_config: "~/not/existing/config"
 copr_owner: "foo"
 copr_chroots:

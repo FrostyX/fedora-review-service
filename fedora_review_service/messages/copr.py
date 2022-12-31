@@ -1,3 +1,6 @@
+from fedora_review_service.config import config
+
+
 class Copr:
 
     def __init__(self, message):
@@ -15,8 +18,8 @@ class Copr:
 
     @property
     def build_url(self):
-        url = "https://copr.fedorainfracloud.org/coprs/build/{0}"
-        return url.format(self.build_id)
+        return ("{0}/{1}/{2}"
+                .format(config["copr_url"], "coprs/build", self.build_id))
 
     @property
     def review_template_url(self):
@@ -28,7 +31,7 @@ class Copr:
 
     @property
     def destdir_url(self):
-        base = "https://download.copr.fedorainfracloud.org/results"
+        base = "{0}/results".format(config["copr_be_url"])
         destdir = f"{self.build_id:08d}-{self.packagename}"
         return f"{base}/{self.fullname}/{self.chroot}/{destdir}"
 
