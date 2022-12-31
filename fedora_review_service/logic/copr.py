@@ -52,8 +52,8 @@ def copr_review_spec_diff(builds):
     name1 = copr_build_url(builds[0].id)
     name2 = copr_build_url(builds[1].id)
 
-    url1 = copr_destdir_url_for_build(builds[0])
-    url2 = copr_destdir_url_for_build(builds[1])
+    url1 = copr_spec_url_for_build(builds[0])
+    url2 = copr_spec_url_for_build(builds[1])
 
     return remote_diff(url1, url2, name1, name2)
 
@@ -70,7 +70,7 @@ def copr_destdir_url(owner, project, package, chroot, build_id):
     return f"{base}/{fullname}/{chroot}/{destdir}"
 
 
-def copr_destdir_url_for_build(build):
+def copr_spec_url_for_build(build):
     packagename = build.source_package["name"]
     url = copr_destdir_url(
         build["ownername"],
