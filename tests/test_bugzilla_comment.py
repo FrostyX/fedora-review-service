@@ -17,6 +17,8 @@ class TestBugzillaComment(MessageTestCase):
             "fedora-review-2120131-libgbinder/fedora-rawhide-x86_64/"
             "05069760-libgbinder/fedora-review/review.txt\n"
             "\n"
+            "Please take a look if any issues were found."
+            "\n"
             "\n"
             "---\n"
             "This comment was created by the fedora-review-service\n"
