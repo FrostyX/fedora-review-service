@@ -23,7 +23,9 @@ spec:
             - name: PYTHONPATH
               value: /src
             - name: CONFIG
-              value: /etc/fedora-review-service/fedora-review-service-production.yaml
+              value: /etc/fedora-review-service/fedora-review-service-prod.yaml
+            - name: FEDORA_MESSAGING_CONF
+              value: /etc/fedora-review-service/fedora.toml
           volumeMounts:
             - name: persistent
               mountPath: /persistent
