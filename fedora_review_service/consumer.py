@@ -106,10 +106,12 @@ def handle_bugzilla_message(message):
 def upload_bugzilla_patch(bug_id, ownername, projectname):
     builds = copr_last_two_builds(ownername, projectname)
     if not builds:
+        log.info("First build for this project, nothing to diff")
         return
 
     diff = copr_review_spec_diff(builds)
     if not diff:
+        log.info("This build's spec file and the previous spec are the same")
         return
 
     filename = "spec-from-{0}-to-{1}.diff".format(builds[0].id, builds[1].id)
