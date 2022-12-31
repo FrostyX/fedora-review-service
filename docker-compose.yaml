@@ -7,19 +7,36 @@ services:
     image: quay.io/jkadlcik/fedora-review-service
     hostname: fedora-review-service
     environment:
-      - CONFIG=/etc/fedora-review-service/fedora-review-service-production.yaml
+      - CONFIG=/etc/fedora-review-service/fedora-review-service-prod.yaml
       - PYTHONPATH=/opt/fedora-review-service
+      - FEDORA_MESSAGING_CONF=/etc/fedora-review-service/fedora.toml
     working_dir: /opt/fedora-review-service
-    # command: >
-    #   fedora-messaging --conf /etc/fedora-review-service/fedora.toml
-    #       consume --callback='fedora_review_service.consumer:consume'
     stdin_open: true
     tty: true
     volumes:
       - .:/opt/fedora-review-service:z
-      - private:/private
-      - persistent:/persistent
+      - private:/private:z
+      - persistent:/persistent:z
+
+  fedora-review-service-stg:
+    build:
+      context: .
+    hostname: fedora-review-service-stg
+    environment:
+      - CONFIG=/etc/fedora-review-service/fedora-review-service-stg.yaml
+      - PYTHONPATH=/opt/fedora-review-service
+      - FEDORA_MESSAGING_CONF=/etc/fedora-review-service/fedora.stg.toml
+    working_dir: /opt/fedora-review-service
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/opt/fedora-review-service:z
+      - private-stg:/private:z
+      - persistent-stg:/persistent:z
 
 volumes:
   private:
   persistent:
+
+  private-stg:
+  persistent-stg:
