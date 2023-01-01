@@ -31,10 +31,10 @@ spec:
               mountPath: /persistent
           resources:
             requests:
-              memory: "400Mi"
+              memory: "800Mi"
               cpu: "500m"
             limits:
-              memory: "400Mi"
+              memory: "800Mi"
               cpu: "500m"
   replicas: 1
   strategy:
