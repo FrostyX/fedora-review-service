@@ -4,6 +4,7 @@ RUN dnf -y update && \
     dnf -y install \
         jq \
         vim \
+        htop \
         pip \
         procps-ng \
         sqlite \
