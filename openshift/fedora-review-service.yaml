@@ -31,11 +31,11 @@ spec:
               mountPath: /persistent
           resources:
             requests:
-              memory: "800Mi"
-              cpu: "500m"
+              memory: "400Mi"
+              cpu: "50m"
             limits:
               memory: "800Mi"
-              cpu: "500m"
+              cpu: "1"
   replicas: 1
   strategy:
     type: Recreate
