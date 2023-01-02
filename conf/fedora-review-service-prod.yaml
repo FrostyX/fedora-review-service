@@ -16,7 +16,7 @@ bugzilla_url: "https://bugzilla.redhat.com"
 bugzilla_config: "/persistent/private/.bugzillarc"
 
 copr_readonly: false
-bugzilla_readonly: true
+bugzilla_readonly: false
 
 copr_messages:
   - "org.fedoraproject.prod.copr.build.end"
