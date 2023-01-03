@@ -7,7 +7,6 @@ copr_be_url: "https://download.copr-dev.fedorainfracloud.org"
 copr_config: "/persistent/private/.config/copr"
 copr_owner: "frostyx"
 copr_chroots:
-  - "fedora-35-x86_64"
   - "fedora-36-x86_64"
   - "fedora-37-x86_64"
   - "fedora-rawhide-x86_64"
