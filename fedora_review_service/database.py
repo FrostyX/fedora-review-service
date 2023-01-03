@@ -15,7 +15,7 @@ from sqlalchemy.orm import sessionmaker, relationship, backref
 from fedora_review_service.config import config
 
 
-engine = create_engine(config["database_uri"], echo=True)
+engine = create_engine(config["database_uri"], echo=False)
 session = sessionmaker(bind=engine)()
 Base = declarative_base()
 
