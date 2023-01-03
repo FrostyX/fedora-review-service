@@ -69,17 +69,17 @@ formatter = "simple"
 stream = "ext://sys.stdout"
 
 [log_config.loggers.fedora_messaging]
-level = "INFO"
+level = "ERROR"
 propagate = false
 handlers = ["console"]
 
 [log_config.loggers.twisted]
-level = "INFO"
+level = "ERROR"
 propagate = false
 handlers = ["console"]
 
 [log_config.loggers.pika]
-level = "WARNING"
+level = "ERROR"
 propagate = false
 handlers = ["console"]
 
