@@ -17,7 +17,7 @@ def create_copr_project_safe(client, owner, project, chroots,
     except CoprRequestException as ex:
         if "already" in str(ex):
             return
-        raise CoprRequestException from ex
+        raise CoprRequestException(str(ex)) from ex
 
 
 def submit_to_copr(rhbz, packagename, srpm_url):
