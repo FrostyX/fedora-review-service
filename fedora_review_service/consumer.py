@@ -91,6 +91,9 @@ def handle_bugzilla_message(message):
     build_id = None
     if not config["copr_readonly"]:
         try:
+            log.info("Going to submit a Copr build")
+            log.info("RHBZ: %s, Package: %s, SRPM: %s",
+                     bz.id, bz.packagename, bz.srpm_url)
             build_id = submit_to_copr(bz.id, bz.packagename, bz.srpm_url)
             log.info("Copr build: %s", build_id)
         except CoprRequestException as ex:
