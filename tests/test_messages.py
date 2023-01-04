@@ -24,6 +24,11 @@ class TestCopr(MessageTestCase):
         message.body["copr"] = "coprname-not-related-to-review"
         assert Copr(message).ignore is True
 
+    def test_failed_srpm(self):
+        message = self.get_message("copr-build-srpm-fail.json")
+        assert Copr(message).ignore is False
+
+
 
 class TestBugzilla(MessageTestCase):
 

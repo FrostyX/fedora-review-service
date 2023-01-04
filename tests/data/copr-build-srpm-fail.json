@@ -1,0 +1,24 @@
+{
+  "body": {
+    "user": "frostyx",
+    "copr": "fedora-review-2133080-python-nss",
+    "owner": "frostyx",
+    "pkg": null,
+    "build": 5198485,
+    "chroot": "srpm-builds",
+    "version": null,
+    "status": 0,
+    "ip": "2620:52:3:1:dead:beef:cafe:c1d2",
+    "who": "backend.worker-rpm_build_worker:5198485",
+    "pid": 4041220,
+    "what": "build end: user:frostyx copr:fedora-review-2133080-python-nss build:5198485 pkg:None version:None ip:2620:52:3:1:dead:beef:cafe:c1d2 pid:4041220 status:0"
+  },
+  "headers": {
+    "sent-at": "2023-01-03T22:46:19+00:00",
+    "fedora_messaging_schema": "copr.build.end",
+    "fedora_messaging_severity": 20
+  },
+  "id": "565c76bf-8497-464e-b8ac-03cc492114f3",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.copr.build.end"
+}

@@ -32,7 +32,9 @@ class Copr:
     @property
     def destdir_url(self):
         base = "{0}/results".format(config["copr_be_url"])
-        destdir = f"{self.build_id:08d}-{self.packagename}"
+        destdir = f"{self.build_id:08d}"
+        if self.chroot != "srpm-builds":
+            destdir += f"-{self.packagename}"
         return f"{base}/{self.fullname}/{self.chroot}/{destdir}"
 
     @property
@@ -56,8 +58,16 @@ class Copr:
 
     @property
     def ignore(self):
-        # TODO We should also care about srpm-builds that failed
-        # so that we can link the SRPM builder-live.log.gz
+        if self.ownername != "frostyx":
+            return True
+
+        if not self.rhbz_number:
+            return True
+
+        # SRPM build failed, we need to report that
+        if self.chroot == "srpm-builds" and self.status == 0:
+            return False
+
         if self.chroot != "fedora-rawhide-x86_64":
             return True
 
@@ -65,9 +75,4 @@ class Copr:
         if self.status not in [0, 1]:
             return True
 
-        if self.ownername != "frostyx":
-            return True
-
-        if not self.rhbz_number:
-            return True
         return False
