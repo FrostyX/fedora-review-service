@@ -58,7 +58,7 @@ class Copr:
 
     @property
     def ignore(self):
-        if self.ownername != "frostyx":
+        if self.ownername != config["copr_owner"]:
             return True
 
         if not self.rhbz_number:
