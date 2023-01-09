@@ -27,6 +27,16 @@ to spend on each package as much as possible.
   reviewers
 
 
+## Configuration
+
+Doesn't matter if you are running this service on your host system, in
+a `docker-compose` or in OpenShift, a manual step is required. Please
+[configure your API tokens first](doc/tokens.md)
+
+Just for the record, we are using `fedora-messaging` configuration files from
+here https://github.com/fedora-infra/fedora-messaging/blob/stable/configs/
+
+
 ## Running
 
 ### Run from git repository
@@ -48,16 +58,6 @@ docker-compose up -d
 ### OpenShift
 
 See [more about OpenShift deployment](doc/openshift.md)
-
-
-## Configuration
-
-Doesn't matter if you are running this service on your host system, in
-a `docker-compose` or in OpenShift, a manual step is required. Please
-[configure your API tokens first](doc/tokens.md)
-
-Just for the record, we are using `fedora-messaging` configuration file from
-here https://github.com/fedora-infra/fedora-messaging/blob/stable/configs/
 
 
 ## Misc

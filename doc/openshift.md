@@ -16,6 +16,13 @@ need to install it like this
 https://docs.okd.io/latest/cli_reference/openshift_cli/getting-started-cli.html
 
 
+## Permissions
+
+To be able to access the OpenShift project please ping fedora-infra to
+add you to [communishift][group1] group and @FrostyX, to add you to
+[communishift-fedora-review-service][group2] group.
+
+
 ## Login
 
 First, log in using the OpenShift dashboard URL, then click your name
@@ -39,7 +46,8 @@ git checkout main
 git pull --rebase
 ```
 
-To rebuild the container image to use the most recent code, do
+To rebuild the container image to use the most recent code, and
+publish it to [quay.io][quay-repo], do
 
 ```
 docker-compose build
@@ -61,5 +69,19 @@ oc rollout restart deploy/fedora-review-service-fedmsg
 ```
 
 
+## Tokens
+
+At this moment, the production auth tokens for Bugzilla and Copr, are
+stored only on a persistent volume in the OpenShift. It is mounted as
+`/persistent` to the running container. In case they expire, please
+open a remote shell to the container, and manually update themm.
+
+Also, at this moment, the service uses my (@FrostyX) personal tokens
+and therefore builds in Copr and comments in Bugzilla under my
+username.
+
+
 
 [quay-repo]: https://quay.io/repository/jkadlcik/fedora-review-service
+[group1]: https://accounts.fedoraproject.org/group/communishift/
+[group2]: https://accounts.fedoraproject.org/group/communishift-fedora-review-service/
