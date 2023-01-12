@@ -1,4 +1,5 @@
 from fedora_review_service.helpers import find_srpm_url, review_package_name
+from fedora_review_service.config import config
 from fedora_review_service.messages.copr import Copr
 from fedora_review_service.messages.bugzilla import Bugzilla
 from tests.base import MessageTestCase
@@ -25,6 +26,7 @@ class TestCopr(MessageTestCase):
         assert Copr(message).ignore is True
 
     def test_failed_srpm(self):
+        config["copr_owner"] = "frostyx"
         message = self.get_message("copr-build-srpm-fail.json")
         assert Copr(message).ignore is False
 

@@ -1,5 +1,6 @@
 from unittest.mock import patch
 from tests.base import MessageTestCase
+from fedora_review_service.config import config
 from fedora_review_service.consumer import (
     handle_copr_message,
     handle_bugzilla_message,
@@ -44,6 +45,7 @@ class TestConsumer(MessageTestCase):
     @patch("fedora_review_service.consumer.upload_bugzilla_patch")
     def test_handle_copr_message(self, upload_bugzilla_patch,
                                  submit_bugzilla_comment, submit_to_copr):
+        config["copr_owner"] = "frostyx"
         submit_to_copr.return_value = 5069760
         message = self.get_message("bugzilla-contributor-srpm-update.json")
         handle_bugzilla_message(message)
