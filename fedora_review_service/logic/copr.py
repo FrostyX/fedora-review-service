@@ -13,6 +13,7 @@ def create_copr_project_safe(client, owner, project, chroots,
             description=description,
             instructions=instructions,
             fedora_review=True,
+            unlisted_on_hp=True,
         )
     except CoprRequestException as ex:
         if "already" in str(ex):
