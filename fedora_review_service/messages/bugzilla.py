@@ -40,13 +40,6 @@ class Bugzilla:
         if self.bug["reporter"]["login"] != self.comment["author"]:
             return True
 
-        # TODO If not already closed
-        # {'id': 1, 'name': 'NEW'}
-        self.bug["status"]
-
-        # TODO If not already fedora-review+
-        self.bug["flags"]
-
         if not self.srpm_url:
             return True
         return False

@@ -12,6 +12,7 @@ from fedora_review_service.logic.copr import (
     copr_build_url,
 )
 from fedora_review_service.logic.rhbz import (
+    rhbz_client,
     bugzilla_attach_file,
     bugzilla_submit_comment,
 )
@@ -69,6 +70,14 @@ def handle_copr_message(message):
     build.status = None
 
     session.commit()
+
+    # Sometimes people are fast and give fedora-review+ before the Copr build
+    # even finishes. In such cases, we don't want to post any comments anymore
+    # they would only confuse the contributor
+    if not is_rhbz_ticket_open(copr.rhbz_number):
+        log.info("Not commenting on #%s, it is already closed "
+                 "or has fedora-review+", copr.rhbz_number)
+        return
 
     upload_bugzilla_patch(copr.rhbz_number, copr.ownername, copr.projectname)
     comment = BugzillaComment(copr).render()
@@ -137,6 +146,24 @@ def submit_bugzilla_comment(bug_id, text):
     log.info("\n-------------------------------\n")
     if not config["bugzilla_readonly"]:
         bugzilla_submit_comment(bug_id, text)
+
+
+def is_rhbz_ticket_open(bug_id):
+    # Just so we don't have to mock this all the time in tests
+    if config["bugzilla_readonly"]:
+        return True
+
+    bz = rhbz_client()
+    bug = bz.getbug(bug_id)
+    if bug.status == "CLOSED":
+        return False
+
+    for flag in bug.flags:
+        if flag["name"] != "fedora-review":
+            continue
+        if flag["status"] == "+":
+            return False
+    return True
 
 
 if __name__ == "__main__":
