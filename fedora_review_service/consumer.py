@@ -9,6 +9,7 @@ from fedora_review_service.logic.copr import (
     submit_to_copr,
     copr_review_spec_diff,
     copr_last_two_builds,
+    copr_build_url,
 )
 from fedora_review_service.logic.rhbz import (
     bugzilla_attach_file,
@@ -95,7 +96,7 @@ def handle_bugzilla_message(message):
             log.info("RHBZ: %s, Package: %s, SRPM: %s",
                      bz.id, bz.packagename, bz.srpm_url)
             build_id = submit_to_copr(bz.id, bz.packagename, bz.srpm_url)
-            log.info("Copr build: %s", build_id)
+            log.info("Copr build: %s", copr_build_url(build_id))
         except CoprRequestException as ex:
             log.error("Error: {0}".format(str(ex)))
 
