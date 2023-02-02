@@ -44,6 +44,15 @@ class TestBugzilla(MessageTestCase):
         message = self.get_message("bugzilla-reviewer-metadata-update.json")
         assert Bugzilla(message).ignore is True
 
+        # A request to manually trigger a new build
+        message = self.get_message("fedora-review-service-build.json")
+        assert Bugzilla(message).ignore is False
+
+        # A comment from the fedora-review-service itself, containg the
+        # [fedora-review-service-build] string
+        message = self.get_message("fedora-review-service-build-ignore.json")
+        assert Bugzilla(message).ignore is True
+
     def test_find_srpm_url(self):
         message = self.get_message("bugzilla-contributor-srpm-update.json")
         packagename = review_package_name(message.body["bug"]["summary"])

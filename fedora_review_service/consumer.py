@@ -4,7 +4,7 @@ from copr.v3 import CoprRequestException
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
 from fedora_review_service.config import config
-from fedora_review_service.helpers import get_log
+from fedora_review_service.helpers import get_log, find_srpm_url
 from fedora_review_service.logic.copr import (
     submit_to_copr,
     copr_review_spec_diff,
@@ -98,23 +98,44 @@ def handle_bugzilla_message(message):
     ticket = new_ticket(bz.id, bz.owner)
     session.commit()
 
+    srpm_url = None
+    if bz.is_new_srpm_build():
+        srpm_url = bz.srpm_url
+    elif bz.is_manual_build_trigger():
+        srpm_url = get_latest_srpm_url(bz.id, bz.packagename)
+
+    if not srpm_url:
+        log.info("I don't know what to do, any SRPM URL was found, skipping.")
+        return
+
     build_id = None
     if not config["copr_readonly"]:
         try:
             log.info("Going to submit a Copr build")
             log.info("RHBZ: %s, Package: %s, SRPM: %s",
-                     bz.id, bz.packagename, bz.srpm_url)
-            build_id = submit_to_copr(bz.id, bz.packagename, bz.srpm_url)
+                     bz.id, bz.packagename, srpm_url)
+            build_id = submit_to_copr(bz.id, bz.packagename, srpm_url)
             log.info("Copr build: %s", copr_build_url(build_id))
         except CoprRequestException as ex:
             log.error("Error: {0}".format(str(ex)))
 
-    build = new_build(ticket, bz.spec_url, bz.srpm_url, build_id, msgobj.id)
+    build = new_build(ticket, bz.spec_url, srpm_url, build_id, msgobj.id)
 
     msgobj.done = True
     session.commit()
     log.info("Finished processing Bugzilla message: %s", message.id)
 
+
+def get_latest_srpm_url(bug_id, packagename):
+    bz = rhbz_client()
+    bug = bz.getbug(bug_id)
+    comments = bug.getcomments()
+    for comment in reversed(comments):
+        if srpm_url := find_srpm_url(packagename, comment["text"]):
+            log.info("SRPM URL from Comment #%s: %s",
+                     comment["count"], srpm_url)
+            return srpm_url
+    return None
 
 def upload_bugzilla_patch(bug_id, ownername, projectname):
     builds = copr_last_two_builds(ownername, projectname)

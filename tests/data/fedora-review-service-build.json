@@ -1,0 +1,120 @@
+{
+  "body": {
+    "bug": {
+      "is_private": false,
+      "qa_contact": {
+        "real_name": "Fedora Extras Quality Assurance",
+        "login": "extras-qa@fedoraproject.org",
+        "id": 171387
+      },
+      "cf_ovirt_team": "",
+      "cf_doc_type": "If docs needed, set a value",
+      "target_milestone": null,
+      "classification": "Fedora",
+      "id": 2005486,
+      "platform": "Unspecified",
+      "cf_documentation_action": "",
+      "cf_last_closed": null,
+      "cf_type": "Bug",
+      "cf_atomic": "",
+      "last_change_time": 1675307481.0,
+      "version": {
+        "id": 495,
+        "name": "rawhide"
+      },
+      "priority": "unspecified",
+      "cf_category": "",
+      "cf_target_upstream_version": "",
+      "product": "Fedora",
+      "whiteboard": "",
+      "operating_system": "Unspecified",
+      "url": "",
+      "assigned_to": "nobody@fedoraproject.org",
+      "cf_fixed_in": "",
+      "reporter": {
+        "id": 363761,
+        "login": "jkadlcik@redhat.com",
+        "real_name": "Jakub Kadlčík"
+      },
+      "keywords": [],
+      "component": "Package Review",
+      "alias": [],
+      "cf_release_notes": "",
+      "summary": "Review Request: light - Control backlight controllers",
+      "cf_crm": "",
+      "resolution": "",
+      "cf_clone_of": "",
+      "status": {
+        "id": 1,
+        "name": "NEW"
+      },
+      "cf_environment": "",
+      "creation_time": 1672435794.0,
+      "cf_regression_status": "",
+      "severity": "unspecified",
+      "flags": [
+        {
+          "id": 5197068,
+          "value": "?",
+          "name": "fedora-review"
+        }
+      ],
+      "cf_mount_type": "",
+      "cf_story_points": "",
+      "cf_cloudforms_team": "",
+      "cc": [],
+      "creator": "jkadlcik@redhat.com",
+      "op_sys": "Unspecified",
+      "weburl": "https://bugzilla.redhat.com/show_bug.cgi?id=2005486"
+    },
+    "event": {
+      "time": 1675308260.0,
+      "user": {
+        "real_name": "Jakub Kadlčík",
+        "login": "jkadlcik@redhat.com",
+        "id": 363761
+      },
+      "target": "comment",
+      "bug_id": 2005486,
+      "action": "create",
+      "routing_key": "comment.create",
+      "change_set": "436824.1675308260.50438",
+      "who": "jkadlcik@redhat.com",
+      "changes": []
+    },
+    "headers": {
+      "timestamp": "1675308266487",
+      "message-id": "ID:umb-stage-4.umb-001.preprod.us-east-1.aws.redhat.com-33659-1675283648887-10:1901:-1:1:4",
+      "original-destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "esbMessageType": "bugzillaNotification",
+      "esbSourceSystem": "bugzilla",
+      "priority": "4",
+      "subscription": "0",
+      "amq6100_destination": "queue://Consumer.fedorainfra.DO-NOT-COPY.VirtualTopic.eng.bugzilla.>",
+      "ack": "ID:umb-stage-4.umb-001.preprod.us-east-1.aws.redhat.com-33659-1675283648887-19:219",
+      "JMSXUserID": "msg-client-bugzilla",
+      "destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "amq6100_originalDestination": "topic://VirtualTopic.eng.bugzilla.comment.create",
+      "correlation-id": "c0b3ef22-a32d-4b62-86ed-148354cdf0f1",
+      "expires": "1675311866487",
+      "content-length": "1746"
+    },
+    "comment": {
+      "number": 90,
+      "id": 2005486,
+      "is_private": false,
+      "creation_time": 1675308260.0,
+      "body": "Please, trigger a new build for me.\n[fedora-review-service-build]",
+      "author": "jkadlcik@redhat.com"
+    }
+  },
+  "headers": {
+    "sent-at": "2023-02-02T03:24:26+00:00",
+    "fedora_messaging_schema": "bugzilla2fedmsg.messageV1bz4",
+    "fedora_messaging_severity": 20,
+    "fedora_messaging_user_nobody": true
+  },
+  "id": "fc854830-f7be-4c78-9b88-03ef6f6a27bc",
+  "queue": null,
+  "topic": "org.fedoraproject.stg.bugzilla.bug.update"
+}

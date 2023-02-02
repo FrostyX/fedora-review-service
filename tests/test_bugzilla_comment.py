@@ -22,7 +22,11 @@ class TestBugzillaComment(MessageTestCase):
             "\n"
             "---\n"
             "This comment was created by the fedora-review-service\n"
-            "https://github.com/FrostyX/fedora-review-service"
+            "https://github.com/FrostyX/fedora-review-service\n"
+            "\n"
+            "If you want to trigger a new Copr build, add a comment "
+            "containing new\n"
+            "Spec and SRPM URLs or [fedora-review-service-build] string."
         )
         copr = Copr(message)
         comment = BugzillaComment(copr).render()
@@ -51,7 +55,11 @@ class TestBugzillaComment(MessageTestCase):
             "\n"
             "---\n"
             "This comment was created by the fedora-review-service\n"
-            "https://github.com/FrostyX/fedora-review-service"
+            "https://github.com/FrostyX/fedora-review-service\n"
+            "\n"
+            "If you want to trigger a new Copr build, add a comment "
+            "containing new\n"
+            "Spec and SRPM URLs or [fedora-review-service-build] string."
         )
         copr = Copr(message)
         comment = BugzillaComment(copr).render()

@@ -37,9 +37,25 @@ class Bugzilla:
         if not self.comment:
             return True
 
-        if self.bug["reporter"]["login"] != self.comment["author"]:
-            return True
+        # New SRPM URL submitted by the contributor, don't ignore
+        if self.is_new_srpm_build():
+            return False
 
-        if not self.srpm_url:
-            return True
-        return False
+        # A comment triggering a manual Copr rebuild, don't ignore
+        if self.is_manual_build_trigger():
+            return False
+
+        return True
+
+    def is_new_srpm_build(self):
+        if self.bug["reporter"]["login"] != self.comment["author"]:
+            return False
+        return bool(self.srpm_url)
+
+    def is_manual_build_trigger(self):
+        # We need to ignore comments from the fedora-review-service itself
+        # otherwise we will end up in an infinite loop
+        text = "---\nThis comment was created by the fedora-review-service"
+        if text in self.comment["body"]:
+            return False
+        return "[fedora-review-service-build]" in self.comment["body"]
