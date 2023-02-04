@@ -21,6 +21,8 @@ services:
   fedora-review-service-stg:
     build:
       context: .
+    # Uncomment for manual debugging
+    # command: /bin/bash
     hostname: fedora-review-service-stg
     environment:
       - CONFIG=/etc/fedora-review-service/fedora-review-service-stg.yaml
