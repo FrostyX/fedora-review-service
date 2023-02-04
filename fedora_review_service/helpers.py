@@ -98,3 +98,7 @@ def remote_spec(url):
     specfile = Specfile(fp.name)
     os.remove(fp.name)
     return specfile
+
+
+def is_raw_url(url):
+    return "text/plain" in response.headers["content-type"]
