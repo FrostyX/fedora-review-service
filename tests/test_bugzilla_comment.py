@@ -64,3 +64,21 @@ class TestBugzillaComment(MessageTestCase):
         copr = Copr(message)
         comment = BugzillaComment(copr).render()
         assert comment == expected
+
+    # def test_render_different_spec(self):
+    #     message = self.get_message("copr-review-build-end.json")
+    #     expected = (
+    #         "Copr build:\n"
+    #         "https://copr.fedorainfracloud.org/coprs/build/5069760\n"
+    #         "(succeeded)\n"
+    #         "\n"
+    #         "Error: Spec file as given by URL is not the same as in SRPM\n"
+    #         "\n"
+    #         "\n"
+    #         "---\n"
+    #         "This comment was created by the fedora-review-service\n"
+    #         "https://github.com/FrostyX/fedora-review-service"
+    #     )
+    #     copr = Copr(message)
+    #     comment = BugzillaComment(copr).render()
+    #     assert comment == expected
