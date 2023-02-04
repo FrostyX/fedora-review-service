@@ -68,6 +68,14 @@ container, run
 oc rollout restart deploy/fedora-review-service-fedmsg
 ```
 
+Make sure the service is up and running
+
+```
+oc logs -f deploy/fedora-review-service-fedmsg
+# or
+oc rsh deploy/fedora-review-service-fedmsg
+```
+
 
 ## Tokens
 
