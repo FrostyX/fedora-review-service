@@ -53,9 +53,12 @@ def get_bug(bug_id):
     return bz.getbug(bug_id)
 
 
-def bugzilla_submit_comment(bug_id, text):
+def bugzilla_submit_comment(bug_id, text, url):
     bz = rhbz_client()
-    update = bz.build_update(comment=text)
+    kwargs = {"comment": text}
+    if url:
+        kwargs["url"] = url
+    update = bz.build_update(**kwargs)
     return bz.update_bugs([bug_id], update)
 
 

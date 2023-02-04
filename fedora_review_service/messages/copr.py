@@ -30,6 +30,10 @@ class Copr:
         return "{0}/{1}".format(self.destdir_url, "builder-live.log.gz")
 
     @property
+    def spec_url(self):
+        return "{0}/{1}.spec".format(self.destdir_url, self.packagename)
+
+    @property
     def destdir_url(self):
         base = "{0}/results".format(config["copr_be_url"])
         destdir = f"{self.build_id:08d}"

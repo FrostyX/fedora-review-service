@@ -1,6 +1,8 @@
 from unittest.mock import patch
+from munch import Munch
 from tests.base import MessageTestCase
 from fedora_review_service.config import config
+from fedora_review_service.messages.copr import Copr
 from fedora_review_service.consumer import (
     handle_copr_message,
     handle_bugzilla_message,
@@ -43,7 +45,8 @@ class TestConsumer(MessageTestCase):
     @patch("fedora_review_service.consumer.submit_to_copr")
     @patch("fedora_review_service.consumer.submit_bugzilla_comment")
     @patch("fedora_review_service.consumer.upload_bugzilla_patch")
-    def test_handle_copr_message(self, upload_bugzilla_patch,
+    @patch("fedora_review_service.consumer.get_bug")
+    def test_handle_copr_message(self, get_bug, upload_bugzilla_patch,
                                  submit_bugzilla_comment, submit_to_copr):
         config["copr_owner"] = "frostyx"
         submit_to_copr.return_value = 5069760
@@ -52,6 +55,10 @@ class TestConsumer(MessageTestCase):
 
         # And now handle the corresponding Copr message
         message = self.get_message("copr-review-build-end.json")
+        get_bug.return_value = Munch(
+            id=Copr(message).rhbz_number,
+            url=None,
+        )
         handle_copr_message(message)
 
         msgobj = session.query(Message).order_by(Message.id.desc()).first()

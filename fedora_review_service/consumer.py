@@ -4,7 +4,7 @@ from copr.v3 import CoprRequestException
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
 from fedora_review_service.config import config
-from fedora_review_service.helpers import get_log, find_srpm_url
+from fedora_review_service.helpers import get_log, find_srpm_url, remote_spec
 from fedora_review_service.logic.copr import (
     submit_to_copr,
     copr_review_spec_diff,
@@ -12,7 +12,7 @@ from fedora_review_service.logic.copr import (
     copr_build_url,
 )
 from fedora_review_service.logic.rhbz import (
-    rhbz_client,
+    get_bug,
     bugzilla_attach_file,
     bugzilla_submit_comment,
 )
@@ -71,17 +71,20 @@ def handle_copr_message(message):
 
     session.commit()
 
+    bug = get_bug(copr.rhbz_number)
+
     # Sometimes people are fast and give fedora-review+ before the Copr build
     # even finishes. In such cases, we don't want to post any comments anymore
     # they would only confuse the contributor
-    if not is_rhbz_ticket_open(copr.rhbz_number):
+    if not is_rhbz_ticket_open(bug):
         log.info("Not commenting on #%s, it is already closed "
-                 "or has fedora-review+", copr.rhbz_number)
+                 "or has fedora-review+", bug.id)
         return
 
     upload_bugzilla_patch(copr.rhbz_number, copr.ownername, copr.projectname)
+    url = None if bug.url else remote_spec(copr.spec_url).url
     comment = BugzillaComment(copr).render()
-    submit_bugzilla_comment(copr.rhbz_number, comment)
+    submit_bugzilla_comment(copr.rhbz_number, comment, url)
 
     msgobj.done = True
     session.commit()
@@ -127,8 +130,7 @@ def handle_bugzilla_message(message):
 
 
 def get_latest_srpm_url(bug_id, packagename):
-    bz = rhbz_client()
-    bug = bz.getbug(bug_id)
+    bug = get_bug(bug_id)
     comments = bug.getcomments()
     for comment in reversed(comments):
         if srpm_url := find_srpm_url(packagename, comment["text"]):
@@ -161,21 +163,20 @@ def upload_bugzilla_patch(bug_id, ownername, projectname):
         bugzilla_attach_file(bug_id, filename, diff, description)
 
 
-def submit_bugzilla_comment(bug_id, text):
+def submit_bugzilla_comment(bug_id, text, url):
     log.info("RHBZ #%s", bug_id)
+    log.info("URL: %s", url or "unchanged")
     log.info(text)
     log.info("\n-------------------------------\n")
     if not config["bugzilla_readonly"]:
-        bugzilla_submit_comment(bug_id, text)
+        bugzilla_submit_comment(bug_id, text, url)
 
 
-def is_rhbz_ticket_open(bug_id):
+def is_rhbz_ticket_open(bug):
     # Just so we don't have to mock this all the time in tests
     if config["bugzilla_readonly"]:
         return True
 
-    bz = rhbz_client()
-    bug = bz.getbug(bug_id)
     if bug.status == "CLOSED":
         return False
 

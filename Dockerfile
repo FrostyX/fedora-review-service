@@ -16,6 +16,7 @@ RUN dnf -y update && \
         python3-jinja2 \
         python3-sqlalchemy \
         python3-alembic \
+        python3-specfile \
         python3-ipdb \
         && \
     dnf clean all

@@ -1,8 +1,10 @@
 import os
 import re
 import logging
+import tempfile
 import difflib
 import requests
+from specfile import Specfile
 from fedora_review_service.config import config
 
 
@@ -75,3 +77,24 @@ def diff(text1, text2, name1=None, name2=None):
     name2 = name2 or ""
     result = difflib.unified_diff(s1, s2, name1, name2)
     return "".join(result)
+
+
+def remote_spec(url):
+    """
+    Return an instance of
+    https://github.com/packit/specfile
+    """
+    response = requests.get(url)
+    if response.status_code != 200:
+        return None
+
+    # https://github.com/packit/specfile/issues/206
+    # from io import StringIO
+    # fp = StringIO()
+    # with tempfile.NamedTemporaryFile(suffix=".spec", mode="w") as fp:
+
+    with tempfile.NamedTemporaryFile(suffix=".spec", mode="w", delete=False) as fp:
+        fp.write(response.text)
+    specfile = Specfile(fp.name)
+    os.remove(fp.name)
+    return specfile
