@@ -9,6 +9,7 @@ copr_owner: "frostyx"
 copr_chroots:
   - "fedora-36-x86_64"
   - "fedora-37-x86_64"
+  - "fedora-38-x86_64"
   - "fedora-rawhide-x86_64"
 
 copr_readonly: false
