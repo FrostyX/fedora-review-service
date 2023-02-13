@@ -1,0 +1,30 @@
+#! /usr/bin/python3
+
+"""
+We don't have any monitoring for the fedora-review-service yet, so it might
+happen that something broke and it is not working properly. Checking logs
+require going to the OpenShift web UI for `oc login` token, which is super
+annoying. Therefore at least this little helper script.
+"""
+
+import sys
+from datetime import datetime
+from copr.v3 import Client
+
+
+client = Client.create_from_config_file()
+projects = client.project_proxy.get_list("@fedora-review")
+
+if not projects:
+    print("No projects found. Perhaps wrong Copr instance?")
+    sys.exit()
+
+for project in sorted(projects, key=lambda x: x.id):
+    print(project.full_name)
+
+builds = client.build_proxy.get_list("@fedora-review", project.name)
+build = sorted(builds, key=lambda x: x.id, reverse=True)[0]
+
+print("---")
+print("{0}   {1}   {2}".format(
+    build.id, datetime.fromtimestamp(build.submitted_on) , build.state))
