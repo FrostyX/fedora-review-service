@@ -35,7 +35,7 @@ def get_log():
 
 def review_package_name(summary):
     right = summary.split("Review Request:")[-1]
-    return right.split(" - ")[0].strip()
+    return right.split(" - ")[0].strip().lower()
 
 
 def find_spec_url(packagename, text):

@@ -1,0 +1,115 @@
+{
+  "body": {
+    "bug": {
+      "reporter": {
+        "real_name": "Ranjan Maitra",
+        "login": "itsme_410@yahoo.com",
+        "id": 173203
+      },
+      "url": "",
+      "severity": "unspecified",
+      "cf_release_notes": "",
+      "last_change_time": 1677280532.0,
+      "alias": [],
+      "cf_atomic": "",
+      "cf_category": "",
+      "whiteboard": "",
+      "platform": "Unspecified",
+      "resolution": "",
+      "cf_ovirt_team": "",
+      "cf_cloudforms_team": "",
+      "keywords": [],
+      "cf_last_closed": null,
+      "cf_regression_status": "",
+      "cf_doc_type": "",
+      "assigned_to": "extras-orphan@fedoraproject.org",
+      "id": 2173236,
+      "cf_documentation_action": "",
+      "cf_type": "Bug",
+      "is_private": false,
+      "priority": "unspecified",
+      "version": {
+        "name": "37",
+        "id": 7332
+      },
+      "creation_time": 1677280532.0,
+      "cf_story_points": "",
+      "operating_system": "Unspecified",
+      "target_milestone": null,
+      "cf_environment": "",
+      "classification": "Fedora",
+      "cf_mount_type": "",
+      "cf_clone_of": "",
+      "component": "Package Review",
+      "flags": [],
+      "status": {
+        "id": 1,
+        "name": "NEW"
+      },
+      "cf_fixed_in": "",
+      "cf_target_upstream_version": "",
+      "summary": "Review Request: SLiM - simple login manager",
+      "qa_contact": {
+        "real_name": "Fedora Extras Quality Assurance",
+        "login": "extras-qa@fedoraproject.org",
+        "id": 171387
+      },
+      "product": "Fedora",
+      "cf_crm": "",
+      "cc": [],
+      "creator": "itsme_410@yahoo.com",
+      "op_sys": "Unspecified",
+      "weburl": "https://bugzilla.redhat.com/show_bug.cgi?id=2173236"
+    },
+    "event": {
+      "bug_id": 2173236,
+      "action": "create",
+      "routing_key": "comment.create",
+      "time": 1677280532.0,
+      "change_set": "345694.1677280532.57059",
+      "target": "comment",
+      "user": {
+        "id": 173203,
+        "login": "itsme_410@yahoo.com",
+        "real_name": "Ranjan Maitra"
+      },
+      "who": "itsme_410@yahoo.com",
+      "changes": []
+    },
+    "headers": {
+      "timestamp": "1677280546244",
+      "message-id": "ID:umb-prod-5.umb-001.prod.us-east-1.aws.redhat.com-46163-1677081337200-10:39424:-1:1:30",
+      "original-destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "esbMessageType": "bugzillaNotification",
+      "esbSourceSystem": "bugzilla",
+      "priority": "4",
+      "subscription": "0",
+      "amq6100_destination": "queue://Consumer.fedorainfra.DO-NOT-COPY.VirtualTopic.eng.bugzilla.>",
+      "ack": "ID:umb-prod-4.umb-001.prod.us-east-1.aws.redhat.com-38885-1677081101276-9463:8005",
+      "JMSXUserID": "msg-client-bugzilla",
+      "destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "amq6100_originalDestination": "topic://VirtualTopic.eng.bugzilla.comment.create",
+      "correlation-id": "1d2a069b-b650-4fb3-90ea-301351179ae8",
+      "expires": "1677284146244",
+      "content-length": "1843"
+    },
+    "comment": {
+      "id": 2173236,
+      "number": 0,
+      "creation_time": 1677280532.0,
+      "is_private": false,
+      "body": "Spec URL: https://aarem.fedorapeople.org/slim.spec\nSRPM URL: https://aarem.fedorapeople.org/slim-1.3.6-22.fc37.src.rpm \nDescription: SLiM: simple login manager\nFedora Account System Username: aarem\n\nThis package was retired on F37, I would like to unretire and maintain it. The old spec file compiles fine.",
+      "author": "itsme_410@yahoo.com"
+    }
+  },
+  "headers": {
+    "sent-at": "2023-02-24T23:15:46+00:00",
+    "fedora_messaging_schema": "bugzilla2fedmsg.messageV1bz4",
+    "fedora_messaging_rpm_slim": true,
+    "fedora_messaging_severity": 20,
+    "fedora_messaging_user_extras-orphan": true
+  },
+  "id": "038399af-b8ef-4ffe-8e5d-7a496daab220",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.bugzilla.bug.update"
+}

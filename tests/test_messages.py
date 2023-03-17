@@ -53,6 +53,9 @@ class TestBugzilla(MessageTestCase):
         message = self.get_message("fedora-review-service-build-ignore.json")
         assert Bugzilla(message).ignore is True
 
+        message = self.get_message("case-sensitivity.json")
+        assert Bugzilla(message).ignore is False
+
     def test_find_srpm_url(self):
         message = self.get_message("bugzilla-contributor-srpm-update.json")
         packagename = review_package_name(message.body["bug"]["summary"])
