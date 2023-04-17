@@ -84,12 +84,12 @@ stored only on a persistent volume in the OpenShift. It is mounted as
 `/persistent` to the running container. In case they expire, please
 open a remote shell to the container, and manually update themm.
 
-Also, at this moment, the service uses my (@FrostyX) personal tokens
-and therefore builds in Copr and comments in Bugzilla under my
-username.
-
+Also, at this moment, the service uses my (@FrostyX) personal token
+for Copr and therefore builds are submitted under my username. For
+Bugzilla, we use the [fedora-review-bot][fedora-review-bot] account.
 
 
 [quay-repo]: https://quay.io/repository/jkadlcik/fedora-review-service
 [group1]: https://accounts.fedoraproject.org/group/communishift/
 [group2]: https://accounts.fedoraproject.org/group/communishift-fedora-review-service/
+[fedora-review-bot]: https://fedoraproject.org/wiki/User:Fedora-review-bot
