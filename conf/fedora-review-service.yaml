@@ -20,7 +20,9 @@ bugzilla_readonly: true
 
 copr_messages:
   # FIXME It seems that this is called after every chroot ends
+  - "org.fedoraproject.stg.copr.build.end"
   - "org.fedoraproject.prod.copr.build.end"
 bugzilla_messages:
   # Even newly created bugs has org.fedoraproject.prod.bugzilla.bug.update
+  - "org.fedoraproject.stg.bugzilla.bug.update"
   - "org.fedoraproject.prod.bugzilla.bug.update"

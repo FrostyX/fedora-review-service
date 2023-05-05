@@ -1,0 +1,49 @@
+#! /usr/bin/python3
+
+"""
+Process a single fedora-messaging message
+"""
+
+import sys
+import argparse
+import requests
+from fedora_messaging.api import Message
+from fedora_review_service.consumer import dispatch
+
+
+def get_arg_parser():
+    parser = argparse.ArgumentParser(description="Process a single message")
+    parser.add_argument("message_id", help="A fedora-messaging message ID")
+    parser.add_argument("--stg", action="store_true", default=False,
+                        help="A message from STG messaging hub")
+    return parser
+
+
+def fetch_message(hostname, message_id):
+    url = "https://{0}/datagrepper/v2/id".format(hostname)
+    params = {"id": message_id, "is_raw": True, "size": "extra-large"}
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    data = response.json()
+    return Message(topic=data["topic"], body=data["body"])
+
+
+def main():
+    parser = get_arg_parser()
+    args = parser.parse_args()
+
+    hostname = "apps.fedoraproject.org"
+    if args.stg:
+        hostname = "apps.stg.fedoraproject.org"
+
+    try:
+        message = fetch_message(hostname, args.message_id)
+        dispatch(message)
+        print("Success")
+    except requests.HTTPError as ex:
+        print(ex)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

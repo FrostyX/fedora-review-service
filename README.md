@@ -49,8 +49,17 @@ here https://github.com/fedora-infra/fedora-messaging/blob/stable/configs/
 
 ### Run from git repository
 
+Run the fedora-review-service consumer
+
 ```bash
 PYTHONPATH=. fedora-messaging --conf conf/fedora.toml consume --callback="fedora_review_service.consumer:consume"
+```
+
+Or process just a single message, e.g.
+
+
+```bash
+PYTHONPATH="." run/fedora-review-service-process-message 4bfcdd3c-591e-4287-8966-0c485aa1ccfc
 ```
 
 
