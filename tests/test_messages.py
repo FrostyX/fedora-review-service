@@ -1,7 +1,13 @@
 from fedora_review_service.helpers import find_srpm_url, review_package_name
 from fedora_review_service.config import config
 from fedora_review_service.messages.copr import Copr
-from fedora_review_service.messages.bugzilla import Bugzilla
+from fedora_review_service.messages.bugzilla import (
+    Bugzilla,
+    recognize,
+    CommentWithSRPM,
+    ManualTrigger,
+    FedoraReviewPlus,
+)
 from tests.base import MessageTestCase
 
 
@@ -31,15 +37,16 @@ class TestCopr(MessageTestCase):
         assert Copr(message).ignore is False
 
 
-
 class TestBugzilla(MessageTestCase):
 
     def test_ignore(self):
         message = self.get_message("bugzilla-contributor-srpm-update.json")
         assert Bugzilla(message).ignore is False
+        assert isinstance(recognize(message), CommentWithSRPM)
 
         message = self.get_message("bugzilla-reviewer-comment.json")
-        assert Bugzilla(message).ignore is True
+        assert Bugzilla(message).ignore is False
+        assert recognize(message) is None
 
         message = self.get_message("bugzilla-reviewer-metadata-update.json")
         assert Bugzilla(message).ignore is True
@@ -47,14 +54,17 @@ class TestBugzilla(MessageTestCase):
         # A request to manually trigger a new build
         message = self.get_message("fedora-review-service-build.json")
         assert Bugzilla(message).ignore is False
+        assert isinstance(recognize(message), ManualTrigger)
 
         # A comment from the fedora-review-service itself, containg the
         # [fedora-review-service-build] string
         message = self.get_message("fedora-review-service-build-ignore.json")
-        assert Bugzilla(message).ignore is True
+        assert Bugzilla(message).ignore is False
+        assert recognize(message) is None
 
         message = self.get_message("case-sensitivity.json")
         assert Bugzilla(message).ignore is False
+        assert isinstance(recognize(message), CommentWithSRPM)
 
     def test_find_srpm_url(self):
         message = self.get_message("bugzilla-contributor-srpm-update.json")

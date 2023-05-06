@@ -28,7 +28,13 @@ from fedora_review_service.database import (
 )
 from fedora_review_service.bugzilla_comment import BugzillaComment
 from fedora_review_service.messages.copr import Copr
-from fedora_review_service.messages.bugzilla import Bugzilla
+from fedora_review_service.messages.bugzilla import (
+    Bugzilla,
+    recognize,
+    CommentWithSRPM,
+    ManualTrigger,
+    FedoraReviewPlus,
+)
 
 
 log = get_log()
@@ -92,20 +98,30 @@ def handle_copr_message(message):
 
 
 def handle_bugzilla_message(message):
-    bz = Bugzilla(message)
-    if bz.ignore:
-        return
+    bz = recognize(message)
+    if not bz:
+        log.info("Unrecognized Bugzilla message: %s", message.id)
 
-    log.info("Recognized Bugzilla message: %s", message.id)
+    name = bz.__class__.__name__
+    log.info("Recognized %s message: %s", name, message.id)
+
+    if isinstance(bz, CommentWithSRPM):
+        handle_build(message, bz, bz.srpm_url)
+
+    elif isinstance(bz, ManualTrigger):
+        srpm_url = get_latest_srpm_url(bz.id, bz.packagename)
+        handle_build(message, bz, srpm_url)
+
+    elif isinstance(bz, FedoraReviewPlus):
+        handle_review_plus(bz)
+
+    log.info("Finished processing %s message: %s", name, message.id)
+
+
+def handle_build(message, bz, srpm_url):
     msgobj = new_message(message)
     ticket = new_ticket(bz.id, bz.owner)
     session.commit()
-
-    srpm_url = None
-    if bz.is_new_srpm_build():
-        srpm_url = bz.srpm_url
-    elif bz.is_manual_build_trigger():
-        srpm_url = get_latest_srpm_url(bz.id, bz.packagename)
 
     if not srpm_url:
         log.info("I don't know what to do, any SRPM URL was found, skipping.")
@@ -123,10 +139,12 @@ def handle_bugzilla_message(message):
             log.error("Error: {0}".format(str(ex)))
 
     build = new_build(ticket, bz.spec_url, srpm_url, build_id, msgobj.id)
-
     msgobj.done = True
     session.commit()
-    log.info("Finished processing Bugzilla message: %s", message.id)
+
+
+def handle_review_plus(bz):
+    raise NotImplementedError
 
 
 def get_latest_srpm_url(bug_id, packagename):
