@@ -22,3 +22,9 @@ copr_messages:
   - "org.fedoraproject.stg.copr.build.end"
 bugzilla_messages:
   - "org.fedoraproject.stg.bugzilla.bug.update"
+
+sponsors:
+  pagure_instance: "https://pagure.io"
+  pagure_apikey_file: "/persistent/private/.config/pagure/apikey"
+  repo: "frostyx/fake-packager-sponsors"
+  skip_packager_check: True

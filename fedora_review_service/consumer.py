@@ -4,7 +4,12 @@ from copr.v3 import CoprRequestException
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
 from fedora_review_service.config import config
-from fedora_review_service.helpers import get_log, find_srpm_url, remote_spec
+from fedora_review_service.helpers import (
+    get_log,
+    find_srpm_url,
+    find_fas_username,
+    remote_spec,
+)
 from fedora_review_service.logic.copr import (
     submit_to_copr,
     copr_review_spec_diff,
@@ -16,6 +21,13 @@ from fedora_review_service.logic.rhbz import (
     bugzilla_attach_file,
     bugzilla_submit_comment,
 )
+from fedora_review_service.logic.pagure import (
+    pagure_client,
+    query_distgit_user,
+    request_for_user_exists,
+    is_packager,
+    is_sponsor,
+)
 from fedora_review_service.database import (
     create_db,
     Ticket,
@@ -26,7 +38,12 @@ from fedora_review_service.database import (
     new_build,
     session,
 )
-from fedora_review_service.bugzilla_comment import BugzillaComment
+from fedora_review_service.templates import (
+    BugzillaComment,
+    SponsorRequestIssue,
+    SponsorRequestComment,
+    SponsorRequestBugzilla,
+)
 from fedora_review_service.messages.copr import Copr
 from fedora_review_service.messages.bugzilla import (
     Bugzilla,
@@ -101,6 +118,7 @@ def handle_bugzilla_message(message):
     bz = recognize(message)
     if not bz:
         log.info("Unrecognized Bugzilla message: %s", message.id)
+        return
 
     name = bz.__class__.__name__
     log.info("Recognized %s message: %s", name, message.id)
@@ -144,7 +162,57 @@ def handle_build(message, bz, srpm_url):
 
 
 def handle_review_plus(bz):
-    raise NotImplementedError
+    bug = get_bug(bz.id)
+
+    fas = find_fas_username(bug.comment)
+    if not fas:
+        log.error("Unable to parse FAS username for: %s", bug.weburl)
+        return
+
+    user = query_distgit_user(fas)
+    if not user:
+        log.error("Unable to query user from DistGit: %s", fas)
+        return
+
+    # It's hard to test in real life since I am already a packager. Making my
+    # life easier by allowing the packager check to be skipped.
+    if not config["sponsors"]["skip_packager_check"] and is_packager(fas):
+        log.info("Contributor %s is already a packager", fas)
+        return
+
+    # TODO We need to check if fedora-review+ was given by a sponsor.
+    # The problem is, we probably don't have any way to convert our Bugzilla
+    # reviewer account to their FAS username
+    if is_sponsor(None):
+        log.info("The package was reviewed by a sponsor. Ticket not needed.")
+        return
+
+    pagure = pagure_client(config)
+    sponsorship_request = request_for_user_exists(pagure, fas)
+    if sponsorship_request:
+        log.info("Sponsorship request for %s already exists: %s",
+                 fas, sponsorship_request["full_url"])
+        return
+
+    # Now it's probably a good idea to create the ticket
+    title = "Requesting sponsorship for {0}".format(fas)
+    log.info(title)
+
+    # Message for other sponsors
+    content = SponsorRequestIssue(bz, fas).render()
+    issue = pagure.create_issue(title, content)
+    url = issue["issue"]["full_url"]
+    log.info("Created issue: %s", url)
+
+    # Comment for the contributor
+    content = SponsorRequestComment(bz, fas).render()
+    comment = pagure.comment_issue(issue["issue"]["id"], content)
+    log.info("Commented on issue: %s", url)
+
+    # Bugzilla comment for the contributor
+    content = SponsorRequestBugzilla(bz, fas, url).render()
+    submit_bugzilla_comment(bug.id, content)
+    log.info("Commented in Bugzilla: %s", bug.weburl)
 
 
 def get_latest_srpm_url(bug_id, packagename):
@@ -181,7 +249,7 @@ def upload_bugzilla_patch(bug_id, ownername, projectname):
         bugzilla_attach_file(bug_id, filename, diff, description)
 
 
-def submit_bugzilla_comment(bug_id, text, url):
+def submit_bugzilla_comment(bug_id, text, url=None):
     log.info("RHBZ #%s", bug_id)
     log.info("URL: %s", url or "unchanged")
     log.info(text)

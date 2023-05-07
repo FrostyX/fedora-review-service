@@ -49,7 +49,8 @@ class TestBugzilla(MessageTestCase):
         assert recognize(message) is None
 
         message = self.get_message("bugzilla-reviewer-metadata-update.json")
-        assert Bugzilla(message).ignore is True
+        assert Bugzilla(message).ignore is False
+        assert recognize(message) is None
 
         # A request to manually trigger a new build
         message = self.get_message("fedora-review-service-build.json")
@@ -65,6 +66,14 @@ class TestBugzilla(MessageTestCase):
         message = self.get_message("case-sensitivity.json")
         assert Bugzilla(message).ignore is False
         assert isinstance(recognize(message), CommentWithSRPM)
+
+        message = self.get_message("bugzilla-fedora-review-plus.json")
+        assert Bugzilla(message).ignore is False
+        assert isinstance(recognize(message), FedoraReviewPlus)
+
+        message = self.get_message("bugzilla-fedora-review-questionmark.json")
+        assert Bugzilla(message).ignore is False
+        assert recognize(message) is None
 
     def test_find_srpm_url(self):
         message = self.get_message("bugzilla-contributor-srpm-update.json")

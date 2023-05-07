@@ -46,6 +46,15 @@ def find_srpm_url(packagename, text):
     return _find_file_url(packagename, ".src.rpm", text)
 
 
+def find_fas_username(text):
+    result = re.search("Fedora Account System Username:(\s*)(?P<fas>\w+)", text)
+    return result.group("fas") if result else None
+
+
+def fas_url(username):
+    return "https://src.fedoraproject.org/user/{0}".format(username)
+
+
 def _find_file_url(packagename, suffix, text):
     file_url = None
     urls = re.findall("(?P<url>https?://[^\s]+)", text)

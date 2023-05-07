@@ -25,6 +25,8 @@ to spend on each package as much as possible.
   parse the review.json file
 - Submit comments to RHBZ tickets helping both contributors and
   reviewers
+- Once RHBZ ticket gets `fedora-review+` approval, create a new
+  package sponsor request
 
 
 ## Recognized messages
@@ -33,6 +35,7 @@ to spend on each package as much as possible.
 - A comment from anyone containing `[fedora-review-service-build]` -
   it triggers a new Copr build from the latest SRPM URL in the
   comment history
+- A flag update to `fedora-review+`
 
 
 ## Configuration

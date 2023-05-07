@@ -22,3 +22,9 @@ copr_messages:
   - "org.fedoraproject.prod.copr.build.end"
 bugzilla_messages:
   - "org.fedoraproject.prod.bugzilla.bug.update"
+
+sponsors:
+  pagure_instance: "https://pagure.io"
+  pagure_apikey_file: "/persistent/private/.config/pagure/apikey"
+  repo: "packager-sponsors"
+  skip_packager_check: False

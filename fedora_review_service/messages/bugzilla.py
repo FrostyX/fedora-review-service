@@ -8,6 +8,8 @@ from fedora_review_service.helpers import (
 class Bugzilla:
 
     def __init__(self, message):
+        self.message = message
+        self.event = message.body["event"]
         self.bug = message.body["bug"]
         self.id = self.bug["id"]
         self.comment = message.body.get("comment")
@@ -30,14 +32,7 @@ class Bugzilla:
 
     @property
     def ignore(self):
-        if not self.bug["component"] == "Package Review":
-            return True
-
-        # Assignee update, CC update, flags update, etc
-        if not self.comment:
-            return True
-
-        return False
+        return self.bug["component"] != "Package Review"
 
 
 def recognize(message):
@@ -60,6 +55,9 @@ class CommentWithSRPM(Bugzilla):
     """
     @property
     def recognized(self):
+        if not self.comment:
+            return False
+
         if self.bug["reporter"]["login"] != self.comment["author"]:
             return False
         return bool(self.srpm_url)
@@ -71,6 +69,9 @@ class ManualTrigger(Bugzilla):
     """
     @property
     def recognized(self):
+        if not self.comment:
+            return False
+
         # We need to ignore comments from the fedora-review-service itself
         # otherwise we will end up in an infinite loop
         text = "---\nThis comment was created by the fedora-review-service"
@@ -85,4 +86,14 @@ class FedoraReviewPlus(Bugzilla):
     """
     @property
     def recognized(self):
+        if self.event.get("action") != "modify":
+            return False
+
+        for change in self.event.get("changes", []):
+            if change["field"] != "flag.fedora-review":
+                continue
+            if change["added"] != "+":
+                continue
+            return True
+
         return False

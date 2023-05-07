@@ -26,3 +26,9 @@ bugzilla_messages:
   # Even newly created bugs has org.fedoraproject.prod.bugzilla.bug.update
   - "org.fedoraproject.stg.bugzilla.bug.update"
   - "org.fedoraproject.prod.bugzilla.bug.update"
+
+sponsors:
+  pagure_instance: "https://pagure.io"
+  pagure_apikey_file: "~/.config/pagure/apikey"
+  repo: "frostyx/fake-packager-sponsors"
+  skip_packager_check: True
