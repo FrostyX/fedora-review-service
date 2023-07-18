@@ -240,22 +240,24 @@ def upload_bugzilla_patch(bug_id, ownername, projectname):
     description = ("The .spec file difference from Copr build {0} to {1}"
                    .format(builds[0].id, builds[1].id))
 
-    log.info("RHBZ #%s", bug_id)
+    log.info("Patch for RHBZ #%s", bug_id)
     log.info("New patch: %s", filename)
     log.info("Patch description: %s", description)
     log.info(diff)
     log.info("\n-------------------------------\n")
     if not config["bugzilla_readonly"]:
         bugzilla_attach_file(bug_id, filename, diff, description)
+    log.info("Patch uploaded successfully")
 
 
 def submit_bugzilla_comment(bug_id, text, url=None):
-    log.info("RHBZ #%s", bug_id)
+    log.info("Comment for RHBZ #%s", bug_id)
     log.info("URL: %s", url or "unchanged")
     log.info(text)
     log.info("\n-------------------------------\n")
     if not config["bugzilla_readonly"]:
         bugzilla_submit_comment(bug_id, text, url)
+    log.info("Comment submitted successfully")
 
 
 def is_rhbz_ticket_open(bug):
