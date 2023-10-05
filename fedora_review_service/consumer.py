@@ -104,10 +104,18 @@ def handle_copr_message(message):
                  "or has fedora-review+", bug.id)
         return
 
-    upload_bugzilla_patch(copr.rhbz_number, copr.ownername, copr.projectname)
-    url = None if bug.url else remote_spec(copr.spec_url).url
-    comment = BugzillaComment(copr).render()
-    submit_bugzilla_comment(copr.rhbz_number, comment, url)
+    try:
+        upload_bugzilla_patch(copr.rhbz_number, copr.ownername, copr.projectname)
+        log.info("RHBZ: #%s, patch uploaded", bug.id)
+        url = None if bug.url else remote_spec(copr.spec_url).url
+        log.info("RHBZ: #%s, URL: %s", bug.id, url)
+        comment = BugzillaComment(copr).render()
+        log.info("RHBZ: #%s, Comment: %s", bug.id, comment)
+        submit_bugzilla_comment(copr.rhbz_number, comment, url)
+        log.info("RHBZ: #%s, comment submitted", bug.id)
+    except Exception as ex:
+        log.error("FAILED TO COMMENT ON RHBZ: #%s", bug.id)
+        log.exception(ex)
 
     msgobj.done = True
     session.commit()
