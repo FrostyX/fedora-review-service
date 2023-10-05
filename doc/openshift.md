@@ -54,6 +54,12 @@ docker-compose build
 docker-compose push
 ```
 
+Make sure you are using the correct OpenShift project
+
+```
+oc project communishift-fedora-review-service
+```
+
 If a Kubernetes/OpenShift configuration change needs to be applied,
 run the following command. Otherwise you can skip it.
 
