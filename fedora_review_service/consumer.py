@@ -61,7 +61,10 @@ create_db()
 def consume(message):
     # If complicated, switch to class
     # https://fedora-messaging.readthedocs.io/en/latest/consuming.html#the-callback
-    dispatch(message)
+    try:
+        dispatch(message)
+    except Exception:
+        log.exception("Exception from message: %s", message.id)
 
 
 def dispatch(message):
