@@ -5,6 +5,7 @@ import tempfile
 import difflib
 import requests
 from specfile import Specfile
+from specfile.exceptions import RPMException
 from fedora_review_service.config import config
 
 
@@ -104,7 +105,12 @@ def remote_spec(url):
 
     with tempfile.NamedTemporaryFile(suffix=".spec", mode="w", delete=False) as fp:
         fp.write(response.text)
-    specfile = Specfile(fp.name)
+
+    try:
+        specfile = Specfile(fp.name)
+    except RPMException:
+        return None
+
     os.remove(fp.name)
     return specfile
 

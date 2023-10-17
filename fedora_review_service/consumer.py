@@ -107,7 +107,12 @@ def handle_copr_message(message):
     try:
         upload_bugzilla_patch(copr.rhbz_number, copr.ownername, copr.projectname)
         log.info("RHBZ: #%s, patch uploaded", bug.id)
-        url = None if bug.url else remote_spec(copr.spec_url).url
+
+        spec = remote_spec(copr.spec_url)
+        url = None
+        if not bug.url and spec and spec.url:
+            url = spec.url
+
         log.info("RHBZ: #%s, URL: %s", bug.id, url)
         comment = BugzillaComment(copr).render()
         log.info("RHBZ: #%s, Comment: %s", bug.id, comment)
