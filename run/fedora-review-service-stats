@@ -1,0 +1,58 @@
+#! /usr/bin/python3
+
+"""
+TODO
+"""
+
+from copr.v3 import Client
+
+
+client = Client.create_from_config_file()
+projects = client.project_proxy.get_list("@fedora-review")
+
+if not projects:
+    print("No projects found. Perhaps wrong Copr instance?")
+    sys.exit()
+
+build_count = 0
+fixed_count = 0
+unfixed_count = 0
+started_ok = 0
+max_builds_in_project = 0
+
+for i, project in enumerate(sorted(projects, key=lambda x: x.id)):
+    print("[{0}/{1}]".format(i, len(projects)))
+    builds = client.build_proxy.get_list("@fedora-review", project.name)
+    build_count += len(builds)
+
+    builds = sorted(builds, key=lambda x: x.id)
+    if not builds:
+        print("Weird, no builds for @fedora-review/{0}".format(project.name))
+        continue
+    assert builds[0].id <= builds[-1].id
+
+    if len(builds) > max_builds_in_project:
+        max_builds_in_project = len(builds)
+
+    if builds[0].state == "failed" and builds[-1].state == "succeeded":
+        fixed_count += 1
+
+    elif builds[0].state == "succeeded":
+        started_ok += 1
+
+    elif builds[-1].state == "failed":
+        unfixed_count += 1
+
+
+print("Projects: {0}".format(len(projects)))
+print("Builds: {0}".format(build_count))
+print("Max builds in a project: {0}".format(max_builds_in_project))
+
+# These are not that interesting. We kind of expect that the majority of
+# packages submitted for the review successfully builds. The much more
+# interesting statistic would be how many packages reduced the number of
+# `fedora-review` warnings based on the Fedora Review Service hints. We need
+# a new fedora-review release and then we can start counting those
+print("Succeeded from the start: {0}".format(started_ok))
+print("Started as failed but now succeed: {0}".format(fixed_count))
+print("Failed: {0}".format(unfixed_count))
