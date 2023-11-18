@@ -26,6 +26,10 @@ class Copr:
         return "{0}/{1}".format(self.destdir_url, "fedora-review/review.txt")
 
     @property
+    def review_json_url(self):
+        return "{0}/{1}".format(self.destdir_url, "fedora-review/review.json")
+
+    @property
     def builder_live_log_url(self):
         return "{0}/{1}".format(self.destdir_url, "builder-live.log.gz")
 

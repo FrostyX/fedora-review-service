@@ -34,10 +34,27 @@ class BugzillaComment(Template):
 
     @property
     def issues(self):
-        # Parse issues and [!] checkboxes from review.json once the JSON
-        # support for fedora-review is merged and released
-        # https://pagure.io/FedoraReview/pull-request/463
-        return []
+        """
+        Parse issues and [!] checkboxes from review.json
+        """
+        if not self.report or "issues" not in self.report:
+            return []
+
+        result = []
+        for issue in self.report["issues"]:
+            # There is also `issue["text"]` but that would be confusing to show
+            # users. It is written as an explanation of what the check is doing
+            # not as instructions what a user should do, e.g.
+            #   "text": "Package does not use a name that already exists.",
+            # When there is no note, rather print nothing.
+            if not issue["note"]:
+                continue
+
+            item = "- {0}".format(issue["note"])
+            if issue["url"]:
+                item += "\n  Read more: {0}".format(issue["url"])
+            result.append(item)
+        return result
 
 
 class SponsorRequestIssue(Template):

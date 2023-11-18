@@ -1,3 +1,5 @@
+import os
+import json
 from fedora_review_service.messages.copr import Copr
 from fedora_review_service.messages.bugzilla import Bugzilla
 from fedora_review_service.templates import (
@@ -70,6 +72,45 @@ class TestBugzillaComment(MessageTestCase):
         copr = Copr(message)
         comment = BugzillaComment(copr).render()
         assert comment == expected
+
+    def test_render_with_report(self):
+        message = self.get_message("copr-review-build-end.json")
+        expected = (
+            "Copr build:\n"
+            "https://copr.fedorainfracloud.org/coprs/build/5069760\n"
+            "(succeeded)\n"
+            "\n"
+            "Review template:\n"
+            "https://download.copr.fedorainfracloud.org/results/frostyx/"
+            "fedora-review-2120131-libgbinder/fedora-rawhide-x86_64/"
+            "05069760-libgbinder/fedora-review/review.txt\n"
+            "\n"
+            "Found issues:\n"
+            "\n"
+            "- License file license.png is not marked as %license\n"
+            "  Read more: https://docs.fedoraproject.org/en-US/packaging-guidelines/LicensingGuidelines/#_license_text\n"
+            "- A package with this name already exists. Please check "
+            "https://src.fedoraproject.org/rpms/python-oslo-middleware\n"
+            "  Read more: https://docs.fedoraproject.org/en-US/packaging-guidelines/Naming/#_conflicting_package_names\n"
+            "\n"
+            "Please know that there can be false-positives."
+            "\n"
+            "\n"
+            "---\n"
+            "This comment was created by the fedora-review-service\n"
+            "https://github.com/FrostyX/fedora-review-service\n"
+            "\n"
+            "If you want to trigger a new Copr build, add a comment "
+            "containing new\n"
+            "Spec and SRPM URLs or [fedora-review-service-build] string."
+        )
+        path = os.path.join(self.data, "review-1.json")
+        with open(path, "r") as fp:
+            report = json.load(fp)
+        copr = Copr(message)
+        comment = BugzillaComment(copr, report).render()
+        assert comment == expected
+
 
     # def test_render_different_spec(self):
     #     message = self.get_message("copr-review-build-end.json")

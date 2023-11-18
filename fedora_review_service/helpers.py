@@ -115,5 +115,12 @@ def remote_spec(url):
     return specfile
 
 
+def remote_report(url):
+    response = requests.get(url)
+    if response.status_code != 200:
+        return None
+    return response.json()
+
+
 def is_raw_url(url):
     return "text/plain" in response.headers["content-type"]

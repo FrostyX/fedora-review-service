@@ -16,15 +16,20 @@ Please make sure the package builds successfully at least for Fedora Rawhide.
 Review template:
 {{ review_template_url }}
 
+{% if not issues %}
 Please take a look if any issues were found.
+{% else %}
+Found issues:
+
+{% for issue in issues %}
+{{ issue }}
+{% endfor %}
+
+Please know that there can be false-positives.
+
+{%- endif %}
 {%- endif %}
 
-{% if issues %}
-Found issues:
-{% for issue in issues %}
-- {{ issue }}
-{% endfor %}
-{% endif %}
 
 ---
 This comment was created by the fedora-review-service

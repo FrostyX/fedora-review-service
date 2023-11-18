@@ -9,6 +9,7 @@ from fedora_review_service.helpers import (
     find_srpm_url,
     find_fas_username,
     remote_spec,
+    remote_report,
 )
 from fedora_review_service.logic.copr import (
     submit_to_copr,
@@ -115,9 +116,12 @@ def handle_copr_message(message):
         url = None
         if not bug.url and spec and spec.url:
             url = spec.url
-
         log.info("RHBZ: #%s, URL: %s", bug.id, url)
-        comment = BugzillaComment(copr).render()
+
+        report = remote_report(copr.review_json_url)
+        log.info("RHBZ: #%s, Report fetched %s", bug.id, bool(report))
+
+        comment = BugzillaComment(copr, report).render()
         log.info("RHBZ: #%s, Comment: %s", bug.id, comment)
         submit_bugzilla_comment(copr.rhbz_number, comment, url)
         log.info("RHBZ: #%s, comment submitted", bug.id)
