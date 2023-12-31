@@ -121,9 +121,13 @@ def handle_copr_message(message):
         report = remote_report(copr.review_json_url)
         log.info("RHBZ: #%s, Report fetched %s", bug.id, bool(report))
 
+        triaged = is_eligible_for_triaged(report)
+        log.info("RHBZ: #%s, %s be marked as triaged",
+                 bug.id, "will" if triaged else "will not")
+
         comment = BugzillaComment(copr, report).render()
         log.info("RHBZ: #%s, Comment: %s", bug.id, comment)
-        submit_bugzilla_comment(copr.rhbz_number, comment, url)
+        submit_bugzilla_comment(copr.rhbz_number, comment, url, triaged)
         log.info("RHBZ: #%s, comment submitted", bug.id)
     except Exception as ex:
         log.error("FAILED TO COMMENT ON RHBZ: #%s", bug.id)
@@ -270,13 +274,13 @@ def upload_bugzilla_patch(bug_id, ownername, projectname):
     log.info("Patch uploaded successfully")
 
 
-def submit_bugzilla_comment(bug_id, text, url=None):
+def submit_bugzilla_comment(bug_id, text, url=None, triaged=None):
     log.info("Comment for RHBZ #%s", bug_id)
     log.info("URL: %s", url or "unchanged")
     log.info(text)
     log.info("\n-------------------------------\n")
     if not config["bugzilla_readonly"]:
-        bugzilla_submit_comment(bug_id, text, url)
+        bugzilla_submit_comment(bug_id, text, url, triaged)
     log.info("Comment submitted successfully")
 
 
@@ -294,6 +298,19 @@ def is_rhbz_ticket_open(bug):
         if flag["status"] == "+":
             return False
     return True
+
+
+def is_eligible_for_triaged(report):
+    """
+    Should this RHBZ get marked with the `AutomationTriaged` keyword?
+    """
+    if not report:
+        return False
+    if "issues" not in report:
+        return True
+    if len(report["issues"]) == 0:
+        return True
+    return False
 
 
 if __name__ == "__main__":

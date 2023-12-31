@@ -53,11 +53,16 @@ def get_bug(bug_id):
     return bz.getbug(bug_id)
 
 
-def bugzilla_submit_comment(bug_id, text, url):
+def bugzilla_submit_comment(bug_id, text, url, triaged):
     bz = rhbz_client()
     kwargs = {"comment": text}
     if url:
         kwargs["url"] = url
+
+    if triaged is not None:
+        keywords_attr = "keywords_add" if triaged else "keywords_remove"
+        kwargs[keywords_attr] = ["AutomationTriaged"]
+
     update = bz.build_update(**kwargs)
     return bz.update_bugs([bug_id], update)
 
