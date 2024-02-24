@@ -9,6 +9,7 @@ copr_owner: "frostyx"
 copr_chroots:
   - "fedora-38-x86_64"
   - "fedora-39-x86_64"
+  - "fedora-40-x86_64"
   - "fedora-rawhide-x86_64"
 
 bugzilla_url: "https://bugzilla.redhat.com"
