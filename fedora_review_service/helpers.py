@@ -4,6 +4,7 @@ import logging
 import tempfile
 import difflib
 import requests
+from requests.adapters import HTTPAdapter
 from specfile import Specfile
 from specfile.exceptions import RPMException
 from fedora_review_service.config import config
@@ -124,3 +125,15 @@ def remote_report(url):
 
 def is_raw_url(url):
     return "text/plain" in response.headers["content-type"]
+
+
+def check_available(url):
+    """
+    Check if an URL (e.g. a remote SRPM file) is available without downloading
+    it. In case of failure, try multiple times to be fair. Return the response
+    instead of a boolean so that the caller can format a detailed explanation.
+    """
+    session = requests.Session()
+    session.mount(url, HTTPAdapter(max_retries=5))
+    response = session.head(url)
+    return response

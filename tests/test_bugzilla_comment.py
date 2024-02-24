@@ -1,5 +1,7 @@
 import os
 import json
+
+from unittest.mock import Mock
 from fedora_review_service.messages.copr import Copr
 from fedora_review_service.messages.bugzilla import Bugzilla
 from fedora_review_service.templates import (
@@ -7,6 +9,8 @@ from fedora_review_service.templates import (
     SponsorRequestIssue,
     SponsorRequestComment,
     SponsorRequestBugzilla,
+    MissingSRPM,
+    FileNotAvailable,
 )
 from tests.base import MessageTestCase
 
@@ -199,4 +203,58 @@ class TestSponsorRequestBugzilla(MessageTestCase):
         bz = Bugzilla(message)
         url = "http://pagure.example/foo/bar/3"
         comment = SponsorRequestBugzilla(bz, "user1", url).render()
+        assert comment == expected
+
+
+class TestMissingSRPM(MessageTestCase):
+    def test_render(self):
+        expected = (
+            "There seems to be some problem with the following file:\n"
+            "\n"
+            "SRPM URL: http://foo.bar/baz.src.rpm\n"
+            "\n"
+            "Fetching it results in 404 Not Found\n"
+            "Please make sure the URL is correct and publicly available.\n"
+            "\n"
+            "\n"
+            "---\n"
+            "This comment was created by the fedora-review-service\n"
+            "https://github.com/FrostyX/fedora-review-service\n"
+            "\n"
+            "If you want to trigger a new Copr build, add a comment "
+            "containing new\n"
+            "Spec and SRPM URLs or [fedora-review-service-build] string."
+        )
+        comment = MissingSRPM(None).render()
+        assert comment == expected
+
+
+class TestMissingSRPM(MessageTestCase):
+    def test_render(self):
+        assert MissingSRPM(None).render()
+
+
+class TestFileNotAvailable(MessageTestCase):
+    def test_render(self):
+        expected = (
+            "There seems to be some problem with the following file.\n"
+            "SRPM URL: http://foo.bar/baz.src.rpm\n"
+            "Fetching it results in a 404 Not Found error.\n"
+            "Please make sure the URL is correct and publicly available.\n"
+            "\n"
+            "\n"
+            "---\n"
+            "This comment was created by the fedora-review-service\n"
+            "https://github.com/FrostyX/fedora-review-service\n"
+            "\n"
+            "If you want to trigger a new Copr build, add a comment "
+            "containing new\n"
+            "Spec and SRPM URLs or [fedora-review-service-build] string."
+        )
+        available = Mock(
+            url="http://foo.bar/baz.src.rpm",
+            status_code=404,
+            reason="Not Found"
+        )
+        comment = FileNotAvailable(None, available, "SRPM URL").render()
         assert comment == expected

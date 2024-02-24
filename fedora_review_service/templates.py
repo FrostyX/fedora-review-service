@@ -99,3 +99,28 @@ class SponsorRequestBugzilla(Template):
             "sponsorship_request_url": self.sponsorship_request_url,
         }
         return self._render_template(path, values)
+
+
+class MissingSRPM(Template):
+    def __init__(self, message):
+        self.message = message
+
+    def render(self):
+        path = "missing-srpm.j2"
+        values = {}
+        return self._render_template(path, values)
+
+
+class FileNotAvailable(Template):
+    def __init__(self, message, response, url_name):
+        self.message = message
+        self.response = response
+        self.url_name = url_name
+
+    def render(self):
+        path = "file-not-available.j2"
+        values = {
+            "url_name": self.url_name,
+            "response": self.response,
+        }
+        return self._render_template(path, values)

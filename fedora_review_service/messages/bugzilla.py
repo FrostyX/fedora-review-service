@@ -42,11 +42,27 @@ def recognize(message):
     if Bugzilla(message).ignore:
         return None
 
-    for clazz in [CommentWithSRPM, ManualTrigger, FedoraReviewPlus]:
+    classes = [
+        ReviewTicketCreated,
+        CommentWithSRPM,
+        ManualTrigger,
+        FedoraReviewPlus,
+    ]
+    for clazz in classes:
         bz = clazz(message)
         if bz.recognized:
             return bz
     return None
+
+
+class ReviewTicketCreated(Bugzilla):
+    """
+    """
+    @property
+    def recognized(self):
+        if not self.comment:
+            return False
+        return self.comment["number"] == 0
 
 
 class CommentWithSRPM(Bugzilla):

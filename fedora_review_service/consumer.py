@@ -10,6 +10,7 @@ from fedora_review_service.helpers import (
     find_fas_username,
     remote_spec,
     remote_report,
+    check_available,
 )
 from fedora_review_service.logic.copr import (
     submit_to_copr,
@@ -44,11 +45,14 @@ from fedora_review_service.templates import (
     SponsorRequestIssue,
     SponsorRequestComment,
     SponsorRequestBugzilla,
+    MissingSRPM,
+    FileNotAvailable,
 )
 from fedora_review_service.messages.copr import Copr
 from fedora_review_service.messages.bugzilla import (
     Bugzilla,
     recognize,
+    ReviewTicketCreated,
     CommentWithSRPM,
     ManualTrigger,
     FedoraReviewPlus,
@@ -147,7 +151,7 @@ def handle_bugzilla_message(message):
     name = bz.__class__.__name__
     log.info("Recognized %s message: %s", name, message.id)
 
-    if isinstance(bz, CommentWithSRPM):
+    if isinstance(bz, ReviewTicketCreated | CommentWithSRPM):
         handle_build(message, bz, bz.srpm_url)
 
     elif isinstance(bz, ManualTrigger):
@@ -166,7 +170,16 @@ def handle_build(message, bz, srpm_url):
     session.commit()
 
     if not srpm_url:
-        log.info("I don't know what to do, any SRPM URL was found, skipping.")
+        log.info("No SRPM URL was found")
+        comment = MissingSRPM(bz).render()
+        submit_bugzilla_comment(bz.id, comment)
+        return
+
+    available = check_available(srpm_url)
+    if not available.ok:
+        log.info("SRPM URL not publicly available")
+        comment = FileNotAvailable(bz, available, "SRPM URL").render()
+        submit_bugzilla_comment(bz.id, comment)
         return
 
     build_id = None

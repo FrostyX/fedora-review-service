@@ -4,6 +4,7 @@ from fedora_review_service.messages.copr import Copr
 from fedora_review_service.messages.bugzilla import (
     Bugzilla,
     recognize,
+    ReviewTicketCreated,
     CommentWithSRPM,
     ManualTrigger,
     FedoraReviewPlus,
@@ -65,7 +66,7 @@ class TestBugzilla(MessageTestCase):
 
         message = self.get_message("case-sensitivity.json")
         assert Bugzilla(message).ignore is False
-        assert isinstance(recognize(message), CommentWithSRPM)
+        assert isinstance(recognize(message), ReviewTicketCreated)
 
         message = self.get_message("bugzilla-fedora-review-plus.json")
         assert Bugzilla(message).ignore is False
