@@ -1,0 +1,116 @@
+{
+  "body": {
+    "bug": {
+      "cf_release_notes": "",
+      "platform": "Unspecified",
+      "cf_regression_status": "",
+      "cf_story_points": "",
+      "cf_mount_type": "",
+      "version": {
+        "id": 495,
+        "name": "rawhide"
+      },
+      "creation_time": 1703017868.0,
+      "severity": "unspecified",
+      "cf_clone_of": "",
+      "cf_category": "",
+      "cf_target_upstream_version": "",
+      "cf_embargoed": "",
+      "cf_environment": "",
+      "cf_doc_type": "",
+      "whiteboard": "",
+      "cf_type": "Bug",
+      "flags": [],
+      "target_milestone": null,
+      "cf_atomic": "",
+      "last_change_time": 1703017868.0,
+      "product": "Fedora",
+      "cf_fixed_in": "",
+      "cf_documentation_action": "",
+      "cf_last_closed": null,
+      "alias": [],
+      "summary": "Review Request: python-flask-session: Flask-Session is an extension for Flask that adds support for server-side sessions to your application.",
+      "operating_system": "Unspecified",
+      "is_private": false,
+      "qa_contact": {
+        "login": "extras-qa@fedoraproject.org",
+        "id": 171387,
+        "real_name": "Fedora Extras Quality Assurance"
+      },
+      "priority": "unspecified",
+      "classification": "Fedora",
+      "cf_ovirt_team": "",
+      "resolution": "",
+      "reporter": {
+        "login": "fzatlouk@redhat.com",
+        "id": 343074,
+        "real_name": "František Zatloukal"
+      },
+      "id": 2255280,
+      "status": {
+        "id": 1,
+        "name": "NEW"
+      },
+      "url": "",
+      "component": "Package Review",
+      "assigned_to": "nobody@fedoraproject.org",
+      "keywords": [],
+      "cf_cloudforms_team": "",
+      "cf_crm": "",
+      "cc": [],
+      "creator": "fzatlouk@redhat.com",
+      "op_sys": "Unspecified",
+      "weburl": "https://bugzilla.redhat.com/show_bug.cgi?id=2255280"
+    },
+    "event": {
+      "time": 1703017868.0,
+      "user": {
+        "real_name": "František Zatloukal",
+        "id": 343074,
+        "login": "fzatlouk@redhat.com"
+      },
+      "target": "comment",
+      "bug_id": 2255280,
+      "action": "create",
+      "routing_key": "comment.create",
+      "change_set": "658443.1703017867.79169",
+      "who": "fzatlouk@redhat.com",
+      "changes": []
+    },
+    "headers": {
+      "timestamp": "1703017880792",
+      "message-id": "ID:umb-prod-6.umb-001.prod.us-east-1.aws.redhat.com-34483-1702909509408-10:16404:-1:1:63",
+      "original-destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "esbMessageType": "bugzillaNotification",
+      "esbSourceSystem": "bugzilla",
+      "priority": "4",
+      "subscription": "0",
+      "amq6100_destination": "queue://Consumer.fedorainfra.DO-NOT-COPY.VirtualTopic.eng.bugzilla.>",
+      "ack": "ID:umb-prod-2.umb-001.prod.us-east-1.aws.redhat.com-34821-1702566867639-88516:4412",
+      "JMSXUserID": "msg-client-bugzilla",
+      "destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "amq6100_originalDestination": "topic://VirtualTopic.eng.bugzilla.comment.create",
+      "correlation-id": "a64fd4e4-ba14-4984-afad-b1cb8add4829",
+      "expires": "1703104280792",
+      "content-length": "2041"
+    },
+    "comment": {
+      "number": 0,
+      "is_private": false,
+      "creation_time": 1703017868.0,
+      "body": "SPEC: https://download.copr.fedorainfracloud.org/results/frantisekz/flask-3.0/fedora-rawhide-x86_64/06766952-python-flask-session/python-flask-session.spec\n\nSRPM: https://download.copr.fedorainfracloud.org/results/frantisekz/flask-3.0/fedora-rawhide-x86_64/06766952-python-flask-session/python-flask-session-0.5.0-1.fc40.src.rpm",
+      "id": 2255280,
+      "author": "fzatlouk@redhat.com"
+    }
+  },
+  "headers": {
+    "sent-at": "2023-12-19T20:31:20+00:00",
+    "priority": 0,
+    "fedora_messaging_schema": "bugzilla2fedmsg.messageV1bz4",
+    "fedora_messaging_severity": 20,
+    "fedora_messaging_user_nobody": true
+  },
+  "id": "d993cd06-8db4-4388-b28a-0c51a82c2da2",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.bugzilla.bug.update"
+}

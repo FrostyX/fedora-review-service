@@ -101,6 +101,18 @@ class SponsorRequestBugzilla(Template):
         return self._render_template(path, values)
 
 
+class InvalidSummary(Template):
+    def __init__(self, message):
+        self.message = message
+
+    def render(self):
+        path = "invalid-summary.j2"
+        values = {
+            "summary": self.message.bug["summary"],
+        }
+        return self._render_template(path, values)
+
+
 class MissingSRPM(Template):
     def __init__(self, message):
         self.message = message

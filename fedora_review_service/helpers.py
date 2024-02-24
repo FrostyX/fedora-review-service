@@ -40,6 +40,18 @@ def review_package_name(summary):
     return right.split(" - ")[0].strip().lower()
 
 
+def is_valid_summary(summary):
+    # This duplicates some code from `review_package_name` and it would be
+    # better `review_package_name` raised exceptions if the summary isn't valid.
+    # But that would require some tweaking of our error handling which is a bit
+    # tricky and not covered by tests well-enough. Doing this instead to avoid
+    # breakage as much as possible.
+    if not "Review Request:" in summary:
+        return None
+    right = summary.split("Review Request:")[-1]
+    return " - " in right
+
+
 def find_spec_url(packagename, text):
     return _find_file_url(packagename, ".spec", text)
 

@@ -11,6 +11,7 @@ from fedora_review_service.helpers import (
     remote_spec,
     remote_report,
     check_available,
+    is_valid_summary,
 )
 from fedora_review_service.logic.copr import (
     submit_to_copr,
@@ -45,6 +46,7 @@ from fedora_review_service.templates import (
     SponsorRequestIssue,
     SponsorRequestComment,
     SponsorRequestBugzilla,
+    InvalidSummary,
     MissingSRPM,
     FileNotAvailable,
 )
@@ -168,6 +170,12 @@ def handle_build(message, bz, srpm_url):
     msgobj = new_message(message)
     ticket = new_ticket(bz.id, bz.owner)
     session.commit()
+
+    if not is_valid_summary(bz.bug["summary"]):
+        log.info("Summary in an invalid format")
+        comment = InvalidSummary(bz).render()
+        submit_bugzilla_comment(bz.id, comment)
+        return
 
     if not srpm_url:
         log.info("No SRPM URL was found")

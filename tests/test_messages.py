@@ -76,6 +76,10 @@ class TestBugzilla(MessageTestCase):
         assert Bugzilla(message).ignore is False
         assert recognize(message) is None
 
+        message = self.get_message("bugzilla-invalid-summary.json")
+        assert Bugzilla(message).ignore is False
+        assert isinstance(recognize(message), ReviewTicketCreated)
+
     def test_find_srpm_url(self):
         message = self.get_message("bugzilla-contributor-srpm-update.json")
         packagename = review_package_name(message.body["bug"]["summary"])

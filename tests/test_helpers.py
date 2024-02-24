@@ -2,6 +2,7 @@ from fedora_review_service.helpers import (
     review_package_name,
     diff,
     find_fas_username,
+    is_valid_summary,
 )
 from tests.base import MessageTestCase
 
@@ -54,3 +55,12 @@ class TestHelpers(MessageTestCase):
         # username. But feel free to fix this.
         comment = text.format("Fedora Account System Username:")
         assert find_fas_username(comment) == "And"
+
+    def test_is_valid_summary(self):
+        assert is_valid_summary(
+            "Review Request: light - Control backlight controllers ")
+
+        assert not is_valid_summary(
+            "Review Request: python-flask-session: Flask-Session is an "
+            "extension for Flask that adds support for server-side sessions "
+            "to your application.")

@@ -9,9 +9,11 @@ from fedora_review_service.templates import (
     SponsorRequestIssue,
     SponsorRequestComment,
     SponsorRequestBugzilla,
+    InvalidSummary,
     MissingSRPM,
     FileNotAvailable,
 )
+from fedora_review_service.helpers import is_valid_summary
 from tests.base import MessageTestCase
 
 
@@ -227,6 +229,41 @@ class TestMissingSRPM(MessageTestCase):
         )
         comment = MissingSRPM(None).render()
         assert comment == expected
+        assert is_valid_summary(bz.bug["summary"])
+
+
+class TestInvalidSummary(MessageTestCase):
+    def test_render(self):
+        message = self.get_message("bugzilla-invalid-summary.json")
+        expected = (
+            "The ticket summary is not in the correct format.\n"
+            "Expected:\n"
+            "\n"
+            "    Review Request: <main package name here> - <short summary here>\n"
+            "\n"
+            "Found:\n"
+            "\n"
+            "    Review Request: python-flask-session: Flask-Session is an "
+            "extension for Flask that adds support for server-side "
+            "sessions to your application.\n"
+            "\n"
+            "As a consequence, the package name cannot be parsed and submitted to\n"
+            "be automatically build. Please modify the ticket summary and trigger a\n"
+            "build by typing [fedora-review-service-build].\n"
+            "\n"
+            "\n"
+            "---\n"
+            "This comment was created by the fedora-review-service\n"
+            "https://github.com/FrostyX/fedora-review-service\n"
+            "\n"
+            "If you want to trigger a new Copr build, add a comment "
+            "containing new\n"
+            "Spec and SRPM URLs or [fedora-review-service-build] string."
+        )
+        bz = Bugzilla(message)
+        comment = InvalidSummary(bz).render()
+        assert comment == expected
+        assert not is_valid_summary(bz.bug["summary"])
 
 
 class TestMissingSRPM(MessageTestCase):
