@@ -1,0 +1,120 @@
+{
+  "body": {
+    "bug": {
+      "status": {
+        "name": "ASSIGNED",
+        "id": 3
+      },
+      "cf_fixed_in": "",
+      "cf_ovirt_team": "",
+      "operating_system": "Linux",
+      "cf_atomic": "",
+      "alias": [],
+      "cf_story_points": "",
+      "platform": "All",
+      "summary": "Review Request: skupper-router - A lightweight message router, that provides backend for skupper.io",
+      "id": 2250690,
+      "resolution": "",
+      "flags": [
+        {
+          "name": "fedora-review",
+          "value": "+",
+          "id": 6070532
+        }
+      ],
+      "cf_clone_of": "",
+      "whiteboard": "",
+      "cf_embargoed": "",
+      "url": "",
+      "cf_documentation_action": "",
+      "version": {
+        "id": 495,
+        "name": "rawhide"
+      },
+      "reporter": {
+        "login": "gmurthy@redhat.com",
+        "real_name": "Ganesh Murthy",
+        "id": 392446
+      },
+      "cf_cloudforms_team": "",
+      "cf_crm": "",
+      "cf_environment": "",
+      "cf_mount_type": "",
+      "classification": "Fedora",
+      "cf_regression_status": "",
+      "component": "Package Review",
+      "is_private": false,
+      "product": "Fedora",
+      "cf_doc_type": "If docs needed, set a value",
+      "cf_target_upstream_version": "",
+      "cf_category": "",
+      "keywords": [],
+      "target_milestone": null,
+      "cf_last_closed": null,
+      "cf_type": "",
+      "priority": "unspecified",
+      "assigned_to": "iboverma@redhat.com",
+      "severity": "medium",
+      "qa_contact": {
+        "real_name": "Fedora Extras Quality Assurance",
+        "id": 171387,
+        "login": "extras-qa@fedoraproject.org"
+      },
+      "cf_release_notes": "",
+      "creation_time": 1700493079.0,
+      "last_change_time": 1703004735.0,
+      "cc": [],
+      "creator": "gmurthy@redhat.com",
+      "op_sys": "Linux",
+      "weburl": "https://bugzilla.redhat.com/show_bug.cgi?id=2250690"
+    },
+    "event": {
+      "target": "bug",
+      "change_set": "1103224.1703033150.99813",
+      "action": "modify",
+      "time": 1703033151.0,
+      "routing_key": "bug.modify",
+      "changes": [
+        {
+          "added": "+",
+          "field": "flag.fedora-review",
+          "removed": "?",
+          "field_name": "flag.fedora-review"
+        }
+      ],
+      "user": {
+        "login": "iboverma@redhat.com",
+        "real_name": "Irina Boverman",
+        "id": 195543
+      },
+      "bug_id": 2250690,
+      "who": "iboverma@redhat.com"
+    },
+    "headers": {
+      "timestamp": "1703033180987",
+      "message-id": "ID:umb-prod-6.umb-001.prod.us-east-1.aws.redhat.com-34483-1702909509408-10:18612:-1:1:3",
+      "original-destination": "/topic/VirtualTopic.eng.bugzilla.bug.modify",
+      "esbMessageType": "bugzillaNotification",
+      "esbSourceSystem": "bugzilla",
+      "priority": "4",
+      "subscription": "0",
+      "amq6100_destination": "queue://Consumer.fedorainfra.DO-NOT-COPY.VirtualTopic.eng.bugzilla.>",
+      "ack": "ID:umb-prod-2.umb-001.prod.us-east-1.aws.redhat.com-34821-1702566867639-88516:4847",
+      "JMSXUserID": "msg-client-bugzilla",
+      "destination": "/topic/VirtualTopic.eng.bugzilla.bug.modify",
+      "amq6100_originalDestination": "topic://VirtualTopic.eng.bugzilla.bug.modify",
+      "correlation-id": "fe16a7cd-7a94-4bcf-b4fc-b6d6b23b4535",
+      "expires": "1703119580987",
+      "content-length": "1628"
+    }
+  },
+  "headers": {
+    "sent-at": "2023-12-20T00:46:21+00:00",
+    "priority": 0,
+    "fedora_messaging_schema": "bugzilla2fedmsg.messageV1bz4",
+    "fedora_messaging_severity": 20
+  },
+  "id": "98ee817b-8105-46d4-ad45-9717249854f9",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.bugzilla.bug.update"
+}

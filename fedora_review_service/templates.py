@@ -62,12 +62,17 @@ class SponsorRequestIssue(Template):
         self.message = message
         self.fas = fas
 
+    @property
+    def summary(self):
+        right = self.message.bug["summary"].split("Review Request:")[-1]
+        return right.strip()
+
     def render(self):
         path = "sponsor-request-issue.j2"
         values = {
             "rhbz": self.message.id,
             "url": self.message.bug["weburl"],
-            "summary": self.message.bug["summary"].lstrip("Review Request:"),
+            "summary": self.summary,
             "contributor": self.message.bug["reporter"]["real_name"],
             "reviewer": self.message.event["user"]["real_name"],
             "fas": self.fas,

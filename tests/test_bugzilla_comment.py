@@ -157,6 +157,29 @@ class TestSponsorRequestIssue(MessageTestCase):
         comment = SponsorRequestIssue(bz, "user1").render()
         assert comment == expected
 
+    def test_package_name_not_truncated(self):
+        """
+        See https://github.com/FrostyX/fedora-review-service/issues/38
+        """
+        message = self.get_message("bugzilla-fedora-review-plus-2250690.json")
+        expected = (
+            "A Fedora Review ticket was approved and requires a sponsor.\n"
+            "\n"
+            "RHBZ: [2250690](https://bugzilla.redhat.com/show_bug.cgi?id=2250690)"
+            "\n"
+            "Package: skupper-router - A lightweight message router, "
+            "that provides backend for skupper.io\n"
+            "Contributor: Ganesh Murthy (FAS @gmurthy)\n"
+            "Reviewer: Irina Boverman\n"
+            "\n"
+            "---\n"
+            "This ticket was created by the fedora-review-service\n"
+            "https://github.com/FrostyX/fedora-review-service"
+        )
+        bz = Bugzilla(message)
+        comment = SponsorRequestIssue(bz, "gmurthy").render()
+        assert comment == expected
+
 
 class TestSponsorRequestComment(MessageTestCase):
     def test_render(self):
