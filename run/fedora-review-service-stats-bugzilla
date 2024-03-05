@@ -1,0 +1,92 @@
+#! /usr/bin/python3
+
+"""
+Print some statistics based on Bugzilla tickets
+"""
+
+import sys
+import bugzilla
+from requests import RequestException
+from copr.v3 import Client
+from fedora_review_service.helpers import find_srpm_url
+
+
+def rhbz_client():
+    return bugzilla.Bugzilla(url="https://bugzilla.redhat.com")
+
+
+def get_bug(bug_id):
+    bz = rhbz_client()
+    return bz.getbug(bug_id)
+
+
+def somebody_else_commented(comments):
+    # Some of the earlier Bugzilla comments were done under my account because
+    # we didn't have a bot account yet
+    mails = ["fedora-review-bot@fedoraproject.org", "jkadlcik@redhat.com"]
+    for comment in comments:
+        if comment["creator"] not in mails:
+            return True
+    return False
+
+
+def tickets_from_copr_projects(projects):
+    ticket_ids = []
+    for project in projects:
+        ticket_id = project.name.split("-")[2]
+        if not ticket_id.isnumeric():
+            continue
+        ticket_ids.append(ticket_id)
+    return ticket_ids
+
+
+client = Client.create_from_config_file()
+pagination = {"limit": None, "order_type": "DESC"}
+projects = client.project_proxy.get_list("@fedora-review", pagination=pagination)
+
+if not projects:
+    print("No projects found. Perhaps wrong Copr instance?")
+    sys.exit()
+
+
+ticket_ids = tickets_from_copr_projects(projects)
+helped = 0
+test_only_tickets = [2158000]
+# bugs = [get_bug(x) for x in ticket_ids if x not in test_only_tickets]
+
+for i, ticket_id in enumerate(ticket_ids):
+    print("[Bug {0}/{1}]".format(i, len(ticket_ids)))
+    if ticket_id in test_only_tickets:
+        continue
+    bug = get_bug(ticket_id)
+
+    # Find the index of the first comment with a SRPM URL
+    # Find the index of the second comment with a SRPM URL
+    # Does somebody besides Fedora Review Service commented in between?
+    # If nobody, Fedora Review Service saved human time
+    # start=end and find a new end
+    start = None
+    end = None
+    for j, comment in enumerate(bug.comments):
+        if find_srpm_url("", comment["text"]):
+            if start is None:
+                start = j
+            elif end is None:
+                end = j
+
+        if start is not None and end is not None:
+            if not somebody_else_commented(bug.comments[start:end]):
+                helped += 1
+            start = end
+            end = None
+
+
+print("How many times contributor fixed the package after a CI comment: {0}"
+      .format(helped))
+
+saved_minutes = helped * 10
+print("Saved human time: {0} minutes".format(saved_minutes))
+
+# According to google, average software engineer hourly salary is $35
+saved_dolars = saved_minutes / 60 * 35
+print("Saved dolars: {0}".format(saved_dolars))

@@ -1,9 +1,10 @@
 #! /usr/bin/python3
 
 """
-TODO
+Print some statistics based on the projects and builds in Copr
 """
 
+import sys
 from copr.v3 import Client
 
 

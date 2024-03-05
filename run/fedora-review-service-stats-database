@@ -1,0 +1,71 @@
+#! /usr/bin/python3
+
+"""
+Print some statistics based on the data we have in our production database
+"""
+
+import sys
+import statistics
+import sqlalchemy
+from sqlalchemy import text
+from datetime import datetime, timedelta
+
+
+if len(sys.argv) < 2:
+    sys.exit("You must specify the database path")
+
+database_path = sys.argv[1]
+connection_string = "sqlite:///{0}".format(database_path)
+engine = sqlalchemy.create_engine(connection_string)
+
+
+def select_everything():
+    sql = text("""
+    SELECT
+        builds.id AS build_id,
+        builds.bugzilla_message_id,
+        builds.copr_message_id,
+        builds.ticket_id,
+        builds.created_on AS build_created_on,
+        tickets.rhbz_id,
+        tickets.owner,
+        t1.done AS bugzilla_message_done,
+        t1.created_on AS bugzilla_created_on,
+        t2.done AS copr_message_done,
+        t2.created_on AS copr_created_on
+    FROM builds
+    JOIN messages t1 ON builds.bugzilla_message_id=t1.id
+    JOIN messages t2 ON builds.copr_message_id=t2.id
+    JOIN tickets ON builds.ticket_id=tickets.id
+    """)
+    with engine.connect() as connection:
+        return connection.execute(sql).all()
+
+
+result = select_everything()
+messages = len(result)
+owners = len(set ([x.owner for x in result]))
+tickets = len(set ([x.rhbz_id for x in result]))
+
+deltas = []
+for row in result:
+    fmt =  "%Y-%m-%d %H:%M:%S"
+    t1 = datetime.strptime(row.bugzilla_created_on, fmt)
+    t2 = datetime.strptime(row.copr_created_on, fmt)
+    deltas.append(t2-t1)
+
+min_response_time = min([x.total_seconds() for x in deltas])
+max_response_time = max([x.total_seconds() for x in deltas])
+avg_response_time = statistics.fmean([x.total_seconds() for x in deltas])
+reasonable_response = len([x for x in deltas
+                           if x <= timedelta(minutes=10)])
+
+
+print("Unique owners: {0}".format(owners))
+print("Number of tickets: {0}".format(tickets))
+print("Number of messages: {0}".format(messages))
+print("Messages with reasonable response time: {0}".format(reasonable_response))
+
+print("Min response time: {0}".format(min_response_time))
+print("Max response time: {0}".format(max_response_time))
+print("Avg response time: {0}".format(avg_response_time))
