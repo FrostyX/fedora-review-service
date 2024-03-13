@@ -36,11 +36,26 @@ def is_packager(username):
     return username in data["members"]
 
 
-def is_sponsor(username):
-    # TODO This could be easily implemented using `fasjson` but it would require
-    # us to do `fkinit` on the server.
-    # See https://github.com/FrostyX/fedora-sponsors/blob/main/sponsors.py
-    return False
+def is_sponsor(bugzilla_user_id):
+    # This could be implemented using `fasjson` but but it would require us to
+    # do `fkinit` on the server. Instead, use Packager Sponsors public API
+    url = "https://docs.pagure.org/fedora-sponsors/api/sponsors.json"
+    try:
+        response = requests.get(url, timeout=10)
+    except requests.exceptions.Timeout:
+        return False
+
+    # It would probably be better to use `response.raise_for_status()` but
+    # I don't want to complicate the caller
+    if not response.ok:
+        return False
+
+    try:
+        data = response.json()
+    except requests.exceptions.JSONDecodeError:
+        return False
+
+    return bugzilla_user_id in [x["bugzilla_user_id"] for x in data]
 
 
 def request_for_user_exists(client, username):

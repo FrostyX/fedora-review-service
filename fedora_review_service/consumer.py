@@ -228,7 +228,9 @@ def handle_review_plus(bz):
     # TODO We need to check if fedora-review+ was given by a sponsor.
     # The problem is, we probably don't have any way to convert our Bugzilla
     # reviewer account to their FAS username
-    if is_sponsor(None):
+    bugzilla_user_id = bz.event["user"]["id"]
+    log.info("Checking if bugzilla user %s is a sponsor", bugzilla_user_id)
+    if is_sponsor(bugzilla_user_id):
         log.info("The package was reviewed by a sponsor. Ticket not needed.")
         return
 
