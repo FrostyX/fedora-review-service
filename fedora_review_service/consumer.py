@@ -26,7 +26,6 @@ from fedora_review_service.logic.rhbz import (
 )
 from fedora_review_service.logic.pagure import (
     pagure_client,
-    query_distgit_user,
     request_for_user_exists,
     is_packager,
     is_sponsor,
@@ -212,11 +211,6 @@ def handle_review_plus(bz):
     fas = find_fas_username(bug.comment)
     if not fas:
         log.error("Unable to parse FAS username for: %s", bug.weburl)
-        return
-
-    user = query_distgit_user(fas)
-    if not user:
-        log.error("Unable to query user from DistGit: %s", fas)
         return
 
     # It's hard to test in real life since I am already a packager. Making my

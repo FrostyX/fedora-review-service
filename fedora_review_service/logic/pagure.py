@@ -17,16 +17,6 @@ def read_pagure_apikey(path):
         return fp.read().strip()
 
 
-def query_distgit_user(username):
-    try:
-        pagure = Pagure(instance_url="https://src.fedoraproject.org")
-        return pagure.user_info(username)
-
-    # Meh, libpagure really uses Exception here
-    except Exception as ex:
-        return None
-
-
 def is_packager(username):
     groupname = "packager"
     instance = "https://src.fedoraproject.org"
