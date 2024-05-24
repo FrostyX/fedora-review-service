@@ -74,7 +74,7 @@ def _find_file_url(packagename, suffix, text):
     urls = re.findall("(?P<url>https?://[^\s]+)", text)
     for url in urls:
         filename = url.split("/")[-1]
-        if packagename not in filename:
+        if packagename.lower() not in filename.lower():
             continue
         if url.endswith(suffix):
             file_url = url

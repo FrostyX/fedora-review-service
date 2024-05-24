@@ -89,3 +89,13 @@ class TestBugzilla(MessageTestCase):
             "/results/aleasto/waydroid/fedora-rawhide-x86_64/05068987-libgbinder"
             "/libgbinder-1.1.29-1.fc38.src.rpm"
         )
+
+    def test_find_srpm_url_rhbz_2276411(self):
+        message = self.get_message("bugzilla-case-sensitive-srpm-url.json")
+        packagename = review_package_name(message.body["bug"]["summary"])
+        srpm_url = find_srpm_url(packagename, message.body["comment"]["body"])
+        assert srpm_url == (
+            "https://download.copr.fedorainfracloud.org"
+            "/results/mavit/perlimports/fedora-rawhide-x86_64/"
+            "07334170-perl-File-XDG/perl-File-XDG-1.02-1.fc41.src.rpm"
+        )

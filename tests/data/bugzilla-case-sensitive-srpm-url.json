@@ -1,0 +1,116 @@
+{
+  "body": {
+    "bug": {
+      "url": "",
+      "summary": "Review Request: perl-File-XDG - Basic implementation of the XDG base directory specification",
+      "severity": "medium",
+      "classification": "Fedora",
+      "creation_time": 1713792237.0,
+      "version": {
+        "id": 495,
+        "name": "rawhide"
+      },
+      "cf_fixed_in": "",
+      "cf_atomic": "",
+      "resolution": "",
+      "qa_contact": {
+        "login": "extras-qa@fedoraproject.org",
+        "id": 171387,
+        "real_name": "Fedora Extras Quality Assurance"
+      },
+      "keywords": [],
+      "assigned_to": "nobody@fedoraproject.org",
+      "status": {
+        "id": 1,
+        "name": "NEW"
+      },
+      "operating_system": "Linux",
+      "cf_clone_of": "",
+      "alias": [],
+      "whiteboard": "",
+      "id": 2276411,
+      "cf_story_points": "",
+      "cf_doc_type": "",
+      "last_change_time": 1713792237.0,
+      "reporter": {
+        "real_name": "Peter Oliver",
+        "id": 154370,
+        "login": "mavit@mavit.org.uk"
+      },
+      "cf_target_upstream_version": "",
+      "component": "Package Review",
+      "cf_ovirt_team": "",
+      "cf_regression_status": "",
+      "product": "Fedora",
+      "cf_embargoed": "",
+      "target_milestone": null,
+      "flags": [],
+      "platform": "All",
+      "cf_type": "",
+      "cf_cloudforms_team": "",
+      "cf_category": "",
+      "priority": "medium",
+      "cf_release_notes": "",
+      "is_private": false,
+      "cf_mount_type": "",
+      "cf_crm": "",
+      "cf_documentation_action": "",
+      "cf_environment": "",
+      "cf_last_closed": null,
+      "cc": [],
+      "creator": "mavit@mavit.org.uk",
+      "op_sys": "Linux",
+      "weburl": "https://bugzilla.redhat.com/show_bug.cgi?id=2276411"
+    },
+    "event": {
+      "user": {
+        "real_name": "Peter Oliver",
+        "id": 154370,
+        "login": "mavit@mavit.org.uk"
+      },
+      "action": "create",
+      "time": 1713792237.0,
+      "change_set": "799920.1713792237.60428",
+      "routing_key": "comment.create",
+      "bug_id": 2276411,
+      "target": "comment",
+      "who": "mavit@mavit.org.uk",
+      "changes": []
+    },
+    "headers": {
+      "timestamp": "1713792245918",
+      "message-id": "ID:umb-prod-5.umb-001.prod.us-east-1.aws.redhat.com-43583-1713296052474-10:64026:-1:1:101",
+      "original-destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "esbMessageType": "bugzillaNotification",
+      "esbSourceSystem": "bugzilla",
+      "priority": "4",
+      "subscription": "0",
+      "amq6100_destination": "queue://Consumer.fedorainfra.DO-NOT-COPY.VirtualTopic.eng.bugzilla.>",
+      "ack": "ID:umb-prod-1.umb-001.prod.us-east-1.aws.redhat.com-35041-1713293494851-117305:1706",
+      "JMSXUserID": "msg-client-bugzilla",
+      "destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "amq6100_originalDestination": "topic://VirtualTopic.eng.bugzilla.comment.create",
+      "correlation-id": "5dd3c785-0d45-4e27-8f26-559447c6c782",
+      "expires": "1713878645918",
+      "content-length": "1953"
+    },
+    "comment": {
+      "body": "Spec URL: https://pagure.io/perl-File-XDG/raw/main/f/perl-File-XDG.spec\nSRPM URL: https://download.copr.fedorainfracloud.org/results/mavit/perlimports/fedora-rawhide-x86_64/07334170-perl-File-XDG/perl-File-XDG-1.02-1.fc41.src.rpm\nDescription: Basic implementation of the XDG base directory specification\nFedora Account System Username: mavit",
+      "creation_time": 1713792237.0,
+      "id": 2276411,
+      "number": 0,
+      "is_private": false,
+      "author": "mavit@mavit.org.uk"
+    }
+  },
+  "headers": {
+    "sent-at": "2024-04-23T00:48:48+00:00",
+    "priority": 0,
+    "fedora_messaging_schema": "bugzilla2fedmsg.messageV1bz4",
+    "fedora_messaging_severity": 20,
+    "fedora_messaging_user_nobody": true
+  },
+  "id": "4b8f80b0-d8d2-444c-8104-6ab8e15224c7",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.bugzilla.bug.update"
+}
