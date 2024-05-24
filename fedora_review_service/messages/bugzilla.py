@@ -33,12 +33,10 @@ class Bugzilla:
 
     @property
     def ignore(self):
-        if (
+        return (
             self.bug["component"] != "Package Review"
             or should_ignore(message=self.message)
-        ):
-            return True
-        return False
+        )
 
 
 def should_ignore(message: review_message.Message) -> bool:
@@ -48,16 +46,14 @@ def should_ignore(message: review_message.Message) -> bool:
     True if keywords found, False otherwise.
     """
     ignore_keyword: str = "[fedora-review-service-ignore]"
-    if (
+    return (
         (
             message.body.get("comment") is not None
             and ignore_keyword in message.body.get("comment")["body"]
         )
         or ignore_keyword in message.body["bug"]["keywords"]
         or ignore_keyword in message.body["bug"]["whiteboard"]
-    ):
-        return True
-    return False
+    )
 
 
 def recognize(message):
