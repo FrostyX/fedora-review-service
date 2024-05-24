@@ -42,7 +42,7 @@ class TestBugzillaComment(MessageTestCase):
             "containing new\n"
             "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
             "\n"
-            "Comments containing [fedora-review-service-skip] will not trigger builds."
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         copr = Copr(message)
         comment = BugzillaComment(copr).render()
@@ -77,7 +77,7 @@ class TestBugzillaComment(MessageTestCase):
             "containing new\n"
             "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
             "\n"
-            "Comments containing [fedora-review-service-skip] will not trigger builds."
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         copr = Copr(message)
         comment = BugzillaComment(copr).render()
@@ -114,7 +114,7 @@ class TestBugzillaComment(MessageTestCase):
             "containing new\n"
             "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
             "\n"
-            "Comments containing [fedora-review-service-skip] will not trigger builds."
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         path = os.path.join(self.data, "review-1.json")
         with open(path, "r") as fp:
@@ -256,7 +256,7 @@ class TestMissingSRPM(MessageTestCase):
             "containing new\n"
             "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
             "\n"
-            "Comments containing [fedora-review-service-skip] will not trigger builds."
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         comment = MissingSRPM(None).render()
         assert comment == expected
@@ -291,7 +291,7 @@ class TestInvalidSummary(MessageTestCase):
             "containing new\n"
             "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
             "\n"
-            "Comments containing [fedora-review-service-skip] will not trigger builds."
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         bz = Bugzilla(message)
         comment = InvalidSummary(bz).render()
@@ -321,7 +321,7 @@ class TestFileNotAvailable(MessageTestCase):
             "containing new\n"
             "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
             "\n"
-            "Comments containing [fedora-review-service-skip] will not trigger builds."
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         available = Mock(
             url="http://foo.bar/baz.src.rpm",

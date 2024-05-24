@@ -32,7 +32,7 @@ to spend on each package as much as possible.
 ## Recognized messages
 
 - A comment from contributor providing new Spec and SRPM URLs
-- A comment from anyone containing `[fedora-review-service-skip]` -
+- A comment from anyone containing `[fedora-review-service-ignore]` -
   will __not__ trigger builds with detected Spec and SRPM URLs
 - A comment from anyone containing `[fedora-review-service-build]` -
   it triggers a new Copr build from the latest SRPM URL in the
