@@ -94,5 +94,5 @@ CONFIG=conf/fedora-review-service-tests.yaml python -m pytest -vv -s
 
 I have also these RHBZ tickets for manual testing
 
-- https://bugzilla.stage.redhat.com/show_bug.cgi?id=2005486
+- https://bugzilla.stage.redhat.com/show_bug.cgi?id=2158000
 - https://bugzilla.redhat.com/show_bug.cgi?id=2158000
