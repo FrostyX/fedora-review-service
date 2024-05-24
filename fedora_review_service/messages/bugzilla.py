@@ -73,7 +73,8 @@ class CommentWithSRPM(Bugzilla):
     def recognized(self):
         if not self.comment:
             return False
-
+        if "[fedora-review-service-skip]" in self.comment:
+            return False
         if self.bug["reporter"]["login"] != self.comment["author"]:
             return False
         return bool(self.srpm_url)
@@ -92,6 +93,9 @@ class ManualTrigger(Bugzilla):
         # otherwise we will end up in an infinite loop
         text = "---\nThis comment was created by the fedora-review-service"
         if text in self.comment["body"]:
+            return False
+        # If both keys are present, skip build (skip has higher weight)
+        if "[fedora-review-service-skip]" in self.comment:
             return False
         return "[fedora-review-service-build]" in self.comment["body"]
 
