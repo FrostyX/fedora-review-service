@@ -1,3 +1,5 @@
+from fedora_messaging import message as review_message
+from fedora_review_service.config import Keywords
 from fedora_review_service.helpers import (
     review_package_name,
     find_srpm_url,
@@ -32,7 +34,30 @@ class Bugzilla:
 
     @property
     def ignore(self):
-        return self.bug["component"] != "Package Review"
+        if (
+            self.bug["component"] != "Package Review"
+            or should_ignore(message=self.message)
+        ):
+            return True
+        return False
+
+
+def should_ignore(message: review_message.Message) -> bool:
+    """
+    Check for keywords to ignore review service builds
+
+    True if keywords found, False otherwise.
+    """
+    if (
+        (
+            message.body.get("comment") is not None
+            and Keywords.IGNORE.value in message.body.get("comment")["body"]
+        )
+        or Keywords.IGNORE.value in message.body["bug"]["keywords"]
+        or Keywords.IGNORE.value in message.body["bug"]["whiteboard"]
+    ):
+        return True
+    return False
 
 
 def recognize(message):
@@ -73,8 +98,6 @@ class CommentWithSRPM(Bugzilla):
     def recognized(self):
         if not self.comment:
             return False
-        if "[fedora-review-service-ignore]" in self.comment:
-            return False
         if self.bug["reporter"]["login"] != self.comment["author"]:
             return False
         return bool(self.srpm_url)
@@ -94,10 +117,7 @@ class ManualTrigger(Bugzilla):
         text = "---\nThis comment was created by the fedora-review-service"
         if text in self.comment["body"]:
             return False
-        # If both keys are present, skip build (skip has higher weight)
-        if "[fedora-review-service-ignore]" in self.comment:
-            return False
-        return "[fedora-review-service-build]" in self.comment["body"]
+        return Keywords.BUILD.value in self.comment["body"]
 
 
 class FedoraReviewPlus(Bugzilla):

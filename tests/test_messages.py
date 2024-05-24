@@ -80,6 +80,23 @@ class TestBugzilla(MessageTestCase):
         assert Bugzilla(message).ignore is False
         assert isinstance(recognize(message), ReviewTicketCreated)
 
+    def test_ignore_keyword(self):
+        message = self.get_message("bugzilla-reviewer-comment-ignore-keyword-comment.json")
+        assert Bugzilla(message).ignore is True
+        assert recognize(message) is None
+
+        message = self.get_message("bugzilla-reviewer-comment-ignore-keyword-whiteboard.json")
+        assert Bugzilla(message).ignore is True
+        assert recognize(message) is None
+
+        message = self.get_message("bugzilla-reviewer-comment-ignore-keyword-keywords.json")
+        assert Bugzilla(message).ignore is True
+        assert recognize(message) is None
+
+        message = self.get_message("bugzilla-reviewer-comment-ignore-keyword-precedence.json")
+        assert Bugzilla(message).ignore is True
+        assert recognize(message) is None
+
     def test_find_srpm_url(self):
         message = self.get_message("bugzilla-contributor-srpm-update.json")
         packagename = review_package_name(message.body["bug"]["summary"])

@@ -1,5 +1,14 @@
+from enum import Enum
 import os
 import yaml
+
+
+class Keywords(Enum):
+    """
+    User-facing keyword enumeration
+    """
+    IGNORE  = '[fedora-review-service-ignore]'
+    BUILD   = '[fedora-review-service-build]'
 
 
 def parse_config(path=None):
