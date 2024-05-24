@@ -81,19 +81,19 @@ class TestBugzilla(MessageTestCase):
         assert isinstance(recognize(message), ReviewTicketCreated)
 
     def test_ignore_keyword(self):
-        message = self.get_message("bugzilla-reviewer-comment-ignore-keyword-comment.json")
+        message = self.get_message("bugzilla-contributor-srpm-update-ignored-comment.json")
         assert Bugzilla(message).ignore is True
         assert recognize(message) is None
 
-        message = self.get_message("bugzilla-reviewer-comment-ignore-keyword-whiteboard.json")
+        message = self.get_message("bugzilla-contributor-srpm-update-ignored-whiteboard.json")
         assert Bugzilla(message).ignore is True
         assert recognize(message) is None
 
-        message = self.get_message("bugzilla-reviewer-comment-ignore-keyword-keywords.json")
+        message = self.get_message("bugzilla-contributor-srpm-update-ignored-keywords.json")
         assert Bugzilla(message).ignore is True
         assert recognize(message) is None
 
-        message = self.get_message("bugzilla-reviewer-comment-ignore-keyword-precedence.json")
+        message = self.get_message("bugzilla-contributor-srpm-update-ignored-precedence.json")
         assert Bugzilla(message).ignore is True
         assert recognize(message) is None
 
