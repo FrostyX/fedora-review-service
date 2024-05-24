@@ -1,5 +1,4 @@
 from fedora_messaging import message as review_message
-from fedora_review_service.config import Keywords
 from fedora_review_service.helpers import (
     review_package_name,
     find_srpm_url,
@@ -48,13 +47,14 @@ def should_ignore(message: review_message.Message) -> bool:
 
     True if keywords found, False otherwise.
     """
+    ignore_keyword: str = "[fedora-review-service-ignore]"
     if (
         (
             message.body.get("comment") is not None
-            and Keywords.IGNORE.value in message.body.get("comment")["body"]
+            and ignore_keyword in message.body.get("comment")["body"]
         )
-        or Keywords.IGNORE.value in message.body["bug"]["keywords"]
-        or Keywords.IGNORE.value in message.body["bug"]["whiteboard"]
+        or ignore_keyword in message.body["bug"]["keywords"]
+        or ignore_keyword in message.body["bug"]["whiteboard"]
     ):
         return True
     return False
@@ -117,7 +117,7 @@ class ManualTrigger(Bugzilla):
         text = "---\nThis comment was created by the fedora-review-service"
         if text in self.comment["body"]:
             return False
-        return Keywords.BUILD.value in self.comment["body"]
+        return "[fedora-review-service-build]" in self.comment["body"]
 
 
 class FedoraReviewPlus(Bugzilla):
