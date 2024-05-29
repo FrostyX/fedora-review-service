@@ -50,7 +50,7 @@ To rebuild the container image to use the most recent code, and
 publish it to [quay.io][quay-repo], do
 
 ```
-docker-compose build
+docker-compose build --no-cache
 docker-compose push
 ```
 
