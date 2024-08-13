@@ -44,8 +44,10 @@ def print_bugzilla_message(message):
 
 
 def print_message(message, col3, col4):
-    print("{0}  |  {1}  |  {2}  |  {3}"
-          .format(message["topic"], message["id"], col3, col4))
+    print("{0}  |  {1}  |  {2}  |  {3} | {4}"
+          .format(message["topic"], message["id"],
+                  message["headers"]["sent-at"], col3, col4))
+
 
 
 page = 1
