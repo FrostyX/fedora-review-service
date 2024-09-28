@@ -1,0 +1,18 @@
+<span hx-get="/htmx/tickets?max_id={{ max_id }}"
+     hx-trigger="every 30s"
+     hx-swap="outerHTML">
+</span>
+
+{% for ticket in tickets %}
+  <a href="/ticket/{{ ticket.rhbz_id }}">
+    {{ ticket.rhbz_id -}}
+  </a>
+  {%- if not loop.last %},{% endif %}
+{% endfor %}
+
+{% if tickets %}
+  <span hx-get="/htmx/tickets?min_id={{ min_id }}"
+        hx-trigger="revealed"
+        hx-swap="outerHTML">
+  </span>
+{% endif %}

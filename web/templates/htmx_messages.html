@@ -1,0 +1,28 @@
+<div hx-get="/htmx/messages?max_id={{ max_id }}"
+     hx-trigger="every 30s"
+     hx-swap="outerHTML">
+</div>
+
+{% for message in messages %}
+  <li class="list-group-item font-monospace">
+    <span class="list-icon">
+      {% if message.done %}
+        <i class="fa-solid fa-check text-success" title="Finished"></i>
+      {% else %}
+        {# <i class="fa-solid fa-xmark text-danger"></i> #}
+        <i class="fa-solid fa-spinner text-info" title="Still running"></i>
+      {% endif %}
+    </span>
+    <a href="{{ datagrepper_message_url(message.message_id) }}">
+      {{ message.message_id }}
+    </a>
+    <span class="mx-2">-</span>
+    <a href="{{ datagrepper_topic_url(message.topic) }}">{{ message.topic }}</a>
+    <span class="float-end text-muted">{{ message.created_on |timeago }}</span>
+  </li>
+{% endfor %}
+
+<div hx-get="/htmx/messages?min_id={{ min_id }}"
+     hx-trigger="revealed"
+     hx-swap="outerHTML">
+</div>

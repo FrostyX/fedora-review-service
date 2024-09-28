@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>Bugzilla Tickets</h2>
+
+  <p class="lead">
+    All Fedora package review tickets in Bugzilla. Find your ticket
+    here and see all the relevant Copr builds and Fedora Messaging
+    messages for it.
+  </p>
+
+  <p class="font-monospace">
+    {% include 'htmx_tickets.html' %}
+  </p>
+{% endblock %}

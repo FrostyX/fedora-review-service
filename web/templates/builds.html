@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>Copr Builds</h2>
+
+  <p class="lead">
+    All Copr builds for all Bugzilla package review tickets.
+  </p>
+
+  <p class="font-monospace">
+    {% include 'htmx_builds.html' %}
+  </p>
+{% endblock %}
