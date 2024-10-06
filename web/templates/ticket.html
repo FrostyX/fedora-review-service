@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>RHBZ #{{ ticket.rhbz_id }}</h2>
+
+  <p class="lead">
+    All Fedora Messaging messages and Copr builds triggered by this ticket.
+  </p>
+
+  <table class="table table-bordered font-monospace">
+    <thead>
+      <tr>
+        <th scope="col">Bugzilla Message</th>
+        <th scope="col">Copr Build</th>
+        <th scope="col">Copr Message</th>
+        <th scope="col">Build Status</th>
+        <th scope="col">Found issues</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% with builds=ticket.builds, rhbz_id=ticket.rhbz_id %}
+        {% include 'htmx_ticket.html' %}
+      {% endwith %}
+    </tbody>
+  </table>
+{% endblock %}

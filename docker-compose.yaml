@@ -36,6 +36,25 @@ services:
       - private-stg:/private:z
       - persistent-stg:/persistent:z
 
+  fedora-review-service-web:
+    build:
+      context: .
+    command: flask --app web.main run --host 0.0.0.0
+    image: quay.io/jkadlcik/fedora-review-service
+    hostname: fedora-review-service-web
+    environment:
+      - CONFIG=/etc/fedora-review-service/fedora-review-service-prod.yaml
+      - PYTHONPATH=/opt/fedora-review-service
+    working_dir: /opt/fedora-review-service
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/opt/fedora-review-service:z
+      - private:/private:z
+      - persistent:/persistent:z
+    ports:
+      - "5000:5000"
+
 volumes:
   private:
   persistent:

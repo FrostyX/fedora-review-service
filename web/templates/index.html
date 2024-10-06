@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mt-5">Fedora Review Service</h1>
+<p class="lead">
+  For years, there has been a queue of hundreds of packages waiting to be
+  reviewed and added to Fedora. Clearly, we don't have enough manpower to
+  process the queue.
+
+  This project aims to provide a CI for automatically building and reviewing
+  the packages, and helping contributors with fixing the most obvious issues.
+  Therefore reducing the time that a reviewer needs to spend on each package
+  as much as possible.
+
+  <a href="https://github.com/FrostyX/fedora-review-service/blob/main/README.md">Read more ...</a>
+</p>
+
+<p>Interesting links:</p>
+
+<ul>
+  <li>
+    <a class="" href="https://fedoraproject.org/PackageReviewStatus/">
+      Cached Package Review Tracker
+    </a>
+  </li>
+  <li>
+    <a class="" href="https://docs.fedoraproject.org/en-US/package-maintainers/Package_Review_Process/">
+      Package Review Process
+    </a>
+  </li>
+  <li>
+    <a class="" href="https://bugzilla.redhat.com/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&columnlist=product%2Ccomponent%2Cassigned_to%2Cstatus%2Csummary%2Clast_change_time%2Cseverity%2Cpriority&component=Package%20Review&order=priority%2C%20severity%2C%20&product=Fedora&query_format=advanced">
+     Package Review tickets in Bugzilla
+    </a>
+  </li>
+</ul>
+
+<p>On this page:</p>
+
+<ul>
+  <li><a href="/messages">Messages</a></li>
+  <li><a href="/tickets">Tickets</a></li>
+  <li><a href="/builds">Builds</a></li>
+<ul>
+{% endblock %}

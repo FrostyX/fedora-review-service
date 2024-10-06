@@ -1,0 +1,38 @@
+<tr hx-get="/htmx/ticket/{{ rhbz_id }}?max_id={{ max_id }}"
+    hx-trigger="every 30s"
+    hx-swap="outerHTML">
+</tr>
+
+{% for build in builds %}
+  <tr>
+    <td>
+      <a href="{{ datagrepper_message_url(build.bugzilla_message.message_id) }}">
+        {{ build.bugzilla_message.message_id }}
+      </a>
+    </td>
+    <td>
+      <a href="{{ copr_build_url(build.copr_build_id) }}">
+        {{ build.copr_build_id }}
+      </a>
+    </td>
+    <td>
+      <a href="{{ datagrepper_message_url(build.copr_message.message_id) }}">
+        {{ build.copr_message.message_id }}
+      </a>
+    </td>
+
+    {# These two are broken, we dont correctly store the value to the database #}
+    {# <td>{{ build.status }}</td> #}
+    {# <td>{{ build.issues }}</td> #}
+    {# Until it is fixed, ... #}
+    <td>-</td>
+    <td>-</td>
+  </tr>
+{% endfor %}
+
+{% if builds %}
+  <tr hx-get="/htmx/ticket/{{ rhbz_id }}?min_id={{ min_id }}"
+      hx-trigger="revealed"
+      hx-swap="afterend">
+  </tr>
+{% endif %}

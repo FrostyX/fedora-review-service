@@ -19,6 +19,7 @@ RUN dnf -y update && \
         python3-specfile \
         python3-libpagure \
         python3-ipdb \
+        python3-flask \
         && \
     dnf clean all
 
@@ -27,6 +28,9 @@ COPY . /src/
 
 # Copy config file
 COPY conf /etc/fedora-review-service
+
+# Install dependencies for the Web UI that are not packaged as RPM
+RUN pip install -r /src/web/requirements.txt
 
 CMD [ "fedora-messaging", "consume", \
       "--callback=fedora_review_service.consumer:consume" ]

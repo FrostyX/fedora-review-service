@@ -41,6 +41,52 @@ spec:
   strategy:
     type: Recreate
 ---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: fedora-review-service-web
+spec:
+  selector:
+    matchLabels:
+      component: fedora-review-service-web
+  template:
+    metadata:
+      labels:
+        component: fedora-review-service-web
+    spec:
+      # volumes:
+      #   - name: persistent
+      #     persistentVolumeClaim:
+      #       claimName: persistent
+      containers:
+        - name: fedora-review-service-web
+          image: quay.io/jkadlcik/fedora-review-service:latest
+          env:
+            - name: PYTHONPATH
+              value: /src
+            - name: CONFIG
+              value: /etc/fedora-review-service/fedora-review-service-prod.yaml
+            # - name: FEDORA_MESSAGING_CONF
+            #   value: /etc/fedora-review-service/fedora.toml
+          workingDir: /src
+          # volumeMounts:
+          #   - name: persistent
+          #     mountPath: /persistent
+          resources:
+            requests:
+              memory: "400Mi"
+              cpu: "50m"
+            limits:
+              memory: "800Mi"
+              cpu: "1"
+      ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 5000
+  replicas: 1
+  strategy:
+    type: Recreate
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
