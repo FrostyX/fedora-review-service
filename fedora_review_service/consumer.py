@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import sentry_sdk
 from copr.v3 import CoprRequestException
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
@@ -58,6 +59,10 @@ from fedora_review_service.messages.bugzilla import (
     ManualTrigger,
     FedoraReviewPlus,
 )
+
+
+if "sentry_dsn" in config:
+    sentry_sdk.init(dsn=config["sentry_dsn"], traces_sample_rate=1.0)
 
 
 log = get_log()

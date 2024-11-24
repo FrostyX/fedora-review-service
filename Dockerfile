@@ -18,6 +18,7 @@ RUN dnf -y update && \
         python3-alembic \
         python3-specfile \
         python3-libpagure \
+        python3-sentry-sdk \
         python3-ipdb \
         && \
     dnf clean all

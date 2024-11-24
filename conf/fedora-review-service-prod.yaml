@@ -27,3 +27,5 @@ sponsors:
   pagure_apikey_file: "/persistent/private/.config/pagure/apikey"
   repo: "packager-sponsors"
   skip_packager_check: False
+
+sentry_dsn: https://26663a1d9189f0f1a3fa77efdc840aee@o4508353113292800.ingest.de.sentry.io/4508353116962896
