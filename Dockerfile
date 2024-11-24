@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora:39
+FROM registry.fedoraproject.org/fedora:41
 
 RUN dnf -y update && \
     dnf -y install \
@@ -19,7 +19,6 @@ RUN dnf -y update && \
         python3-specfile \
         python3-libpagure \
         python3-sentry-sdk \
-        python3-ipdb \
         && \
     dnf clean all
 
