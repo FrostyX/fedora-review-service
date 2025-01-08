@@ -47,7 +47,7 @@ arguments = {}
 [[bindings]]
 # queue = "00000000-0000-0000-0000-000000000000"
 exchange = "amq.topic"
-routing_keys = ["#"]  # Set this to the specific topics you are interested in.
+routing_keys = ["org.fedoraproject.#"]
 
 [consumer_config]
 example_key = "for my consumer"
