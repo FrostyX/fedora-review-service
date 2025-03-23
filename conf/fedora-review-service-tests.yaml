@@ -7,8 +7,8 @@ copr_be_url: "https://download.copr.fedorainfracloud.org"
 copr_config: "~/not/existing/config"
 copr_owner: "frostyx"
 copr_chroots:
-  - "fedora-40-x86_64"
   - "fedora-41-x86_64"
+  - "fedora-42-x86_64"
   - "fedora-rawhide-x86_64"
 
 copr_readonly: false
