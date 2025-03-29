@@ -27,7 +27,7 @@ def submit_to_copr(rhbz, packagename, srpm_url):
     client = Client.create_from_config_file(path=config["copr_config"])
     owner = config["copr_owner"]
 
-    # Sanitize packagename: Replace invalid characters (+, spaces, etc.) with underscores
+    #Replace invalid characters (+, spaces, etc.) with underscores
     safe_packagename = re.sub(r'[^a-zA-Z0-9_.-]', '_', packagename)
 
     project = "fedora-review-{0}-{1}".format(rhbz, safe_packagename)
