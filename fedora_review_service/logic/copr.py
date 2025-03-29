@@ -21,21 +21,34 @@ def create_copr_project_safe(client, owner, project, chroots,
         raise CoprRequestException(str(ex)) from ex
 
 
+import re
+
 def submit_to_copr(rhbz, packagename, srpm_url):
     client = Client.create_from_config_file(path=config["copr_config"])
     owner = config["copr_owner"]
-    project = "fedora-review-{0}-{1}".format(rhbz, packagename)
+
+    # Sanitize packagename: Replace invalid characters (+, spaces, etc.) with underscores
+    safe_packagename = re.sub(r'[^a-zA-Z0-9_.-]', '_', packagename)
+
+    project = "fedora-review-{0}-{1}".format(rhbz, safe_packagename)
     chroots = config["copr_chroots"]
-    description=("This project contains builds from Fedora Review ticket "
-                 "[RHBZ #{0}](https://bugzilla.redhat.com/show_bug.cgi?id={0})."
-                 .format(rhbz))
-    instructions=("Please avoid using this repository unless you are reviewing "
-                  "the package.")
+    
+    description = (
+        "This project contains builds from Fedora Review ticket "
+        "[RHBZ #{0}](https://bugzilla.redhat.com/show_bug.cgi?id={0})."
+        .format(rhbz)
+    )
+    instructions = (
+        "Please avoid using this repository unless you are reviewing "
+        "the package."
+    )
+
     create_copr_project_safe(client, owner, project, chroots,
                              description=description, instructions=instructions)
 
     result = client.build_proxy.create_from_url(owner, project, srpm_url)
     return result["id"]
+
 
 
 def copr_last_two_builds(ownername, projectname):
@@ -81,3 +94,4 @@ def copr_spec_url_for_build(build):
         build["id"]
     )
     return "{0}/{1}.spec".format(url, packagename)
+
