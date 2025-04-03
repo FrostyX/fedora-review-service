@@ -1,0 +1,119 @@
+{
+  "body": {
+    "bug": {
+      "id": 2120131,
+      "cf_mount_type": "",
+      "reporter": {
+        "id": 458821,
+        "login": "ales.astone@gmail.com",
+        "real_name": "Alessandro Astone"
+      },
+      "cf_environment": "",
+      "cf_type": "",
+      "cf_ovirt_team": "",
+      "severity": "medium",
+      "is_private": false,
+      "url": "",
+      "cf_regression_status": "",
+      "resolution": "",
+      "operating_system": "Linux",
+      "summary": "Review Request: libgbinder - C interfaces for Android binder",
+      "alias": [],
+      "target_milestone": null,
+      "product": "Fedora",
+      "whiteboard": "lorem ipsum [fedora-review-service-ignore] more text",
+      "cf_story_points": "",
+      "cf_clone_of": "",
+      "cf_atomic": "",
+      "flags": [
+        {
+          "name": "fedora-review",
+          "id": 5708734,
+          "value": "?"
+        }
+      ],
+      "cf_doc_type": "If docs needed, set a value",
+      "qa_contact": {
+        "real_name": "Fedora Extras Quality Assurance",
+        "login": "extras-qa@fedoraproject.org",
+        "id": 171387
+      },
+      "cf_fixed_in": "",
+      "status": {
+        "id": 3,
+        "name": "ASSIGNED"
+      },
+      "priority": "unspecified",
+      "cf_documentation_action": "",
+      "assigned_to": "jkadlcik@redhat.com",
+      "platform": "All",
+      "cf_category": "",
+      "last_change_time": 1669468373.0,
+      "cf_target_upstream_version": "",
+      "creation_time": 1661119189.0,
+      "keywords": [],
+      "cf_crm": "",
+      "version": {
+        "id": 495,
+        "name": "rawhide"
+      },
+      "cf_release_notes": "",
+      "classification": "Fedora",
+      "cf_cloudforms_team": "",
+      "cf_last_closed": null,
+      "component": "Package Review",
+      "cc": [],
+      "creator": "ales.astone@gmail.com",
+      "op_sys": "Linux",
+      "weburl": "https://bugzilla.redhat.com/show_bug.cgi?id=2120131"
+    },
+    "event": {
+      "target": "comment",
+      "user": {
+        "login": "ales.astone@gmail.com",
+        "id": 458821,
+        "real_name": "Alessandro Astone"
+      },
+      "routing_key": "comment.create",
+      "bug_id": 2120131,
+      "action": "create",
+      "change_set": "557050.1669505083.1482",
+      "time": 1669505083.0,
+      "who": "ales.astone@gmail.com",
+      "changes": []
+    },
+    "headers": {
+      "timestamp": "1669505092547",
+      "message-id": "ID:umb-prod-3.umb-001.prod.us-east-1.aws.redhat.com-38289-1669032665303-10:86327:-1:1:52",
+      "original-destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "esbMessageType": "bugzillaNotification",
+      "esbSourceSystem": "bugzilla",
+      "priority": "4",
+      "subscription": "0",
+      "amq6100_destination": "queue://Consumer.fedorainfra.DO-NOT-COPY.VirtualTopic.eng.bugzilla.>",
+      "ack": "ID:umb-prod-2.umb-001.prod.us-east-1.aws.redhat.com-36807-1669248409155-71569:2707",
+      "JMSXUserID": "msg-client-bugzilla",
+      "destination": "/topic/VirtualTopic.eng.bugzilla.comment.create",
+      "amq6100_originalDestination": "topic://VirtualTopic.eng.bugzilla.comment.create",
+      "correlation-id": "88acc18b-de50-4306-b25e-0744e4d3bbec",
+      "expires": "1669508692547",
+      "content-length": "2055"
+    },
+    "comment": {
+      "body": "Done.\n\nThe README is mostly implementation details but I've gone and added the first two paragraphs to the specfile description.\n\nSpec URL: https://download.copr.fedorainfracloud.org/results/aleasto/waydroid/fedora-rawhide-x86_64/05068987-libgbinder/libgbinder.spec\nSRPM URL: https://download.copr.fedorainfracloud.org/results/aleasto/waydroid/fedora-rawhide-x86_64/05068987-libgbinder/libgbinder-1.1.29-1.fc38.src.rpm",
+      "number": 7,
+      "creation_time": 1669505083.0,
+      "is_private": false,
+      "id": 2120131,
+      "author": "ales.astone@gmail.com"
+    }
+  },
+  "headers": {
+    "sent-at": "2022-11-26T23:24:52+00:00",
+    "fedora_messaging_schema": "bugzilla2fedmsg.messageV1bz4",
+    "fedora_messaging_severity": 20
+  },
+  "id": "4bfcdd3c-591e-4287-8966-0c485aa1ccfc",
+  "queue": null,
+  "topic": "org.fedoraproject.prod.bugzilla.bug.update"
+}
