@@ -141,3 +141,10 @@ class FileNotAvailable(Template):
             "response": self.response,
         }
         return self._render_template(path, values)
+
+
+class BugzillaUnknownTicket(Template):
+    def render(self):
+        path = "bugzilla-unknown-ticket.j2"
+        values = {}
+        return self._render_template(path, values)

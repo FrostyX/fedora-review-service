@@ -1,0 +1,93 @@
+#! /usr/bin/python3
+
+"""
+Comment on old Fedora Review tickets
+"""
+
+import time
+import bugzilla
+from fedora_review_service.templates import BugzillaUnknownTicket
+from fedora_review_service.logic.rhbz import bugzilla_submit_comment
+
+
+URL = "bugzilla.redhat.com"
+
+
+def query_review_bugs(bz):
+    # See https://github.com/python-bugzilla/python-bugzilla/blob/main/examples/redhat_query_all.py
+    query = bz.build_query(
+        product="Fedora",
+        component="Package Review",
+        status=["NEW", "ASSIGNED", "MODIFIED", "POST", "RELEASE_PENDING"],
+    )
+    query["ids_only"] = True
+    queried_bugs = bz.query(query)
+    ids = [bug.id for bug in queried_bugs]
+
+    result = []
+    count = 0
+    pagesize = 1000
+    include_fields = ["keywords", "flags", "comments"]
+    extra_fields = ["comments"]
+    while count < len(ids):
+        idslice = ids[count:(count + pagesize)]
+        bugs = bz.getbugs(
+            idslice,
+            include_fields=include_fields,
+            extra_fields=extra_fields,
+        )
+        result.extend(bugs)
+        count += pagesize
+    return result
+
+
+def is_ignored(bug):
+    # For testing purposes
+    # if bug.id != 2158000:
+    #     return True
+
+    # We already commented on these but for some reason, Fedora Review Service
+    # didn't comment back. See:
+    # https://github.com/FrostyX/fedora-review-service/issues/68
+    # https://github.com/FrostyX/fedora-review-service/issues/69
+    # https://github.com/FrostyX/fedora-review-service/issues/70
+    if bug.id in [2129390, 2367756, 2383885, 2391155]:
+        return True
+
+    # Tickets like https://bugzilla.redhat.com/show_bug.cgi?id=177841
+    if "Tracking" in bug.keywords:
+        return True
+
+    # If there is already fedora-review+, the Fedora Review Service won't
+    # submit any comments to such tickets. Also there is no need to do anything
+    # since the review is done
+    for flag in bug.flags:
+        if flag["name"] == "fedora-review" and flag["status"] in ["+", "-"]:
+            return True
+
+    # Ignore tickets that Fedora Review Service already commented in the past
+    for comment in bug.comments:
+        text = "---\nThis comment was created by the fedora-review-service"
+        if text in comment["text"]:
+            return True
+
+    return False
+
+
+def main():
+    bz = bugzilla.Bugzilla(URL)
+    bugs = query_review_bugs(bz)
+    print("Found {0} open tickets".format(len(bugs)))
+
+    not_ignored = [bug for bug in bugs if not is_ignored(bug)]
+    print("Ignoring {0} tickets".format(len(bugs) - len(not_ignored)))
+
+    for bug in not_ignored:
+        comment = BugzillaUnknownTicket().render()
+        bugzilla_submit_comment(bug.id, comment, None, None)
+        print("Commenting on RHBZ {0}".format(bug.weburl))
+        time.sleep(60)
+
+
+if __name__ == "__main__":
+    main()
