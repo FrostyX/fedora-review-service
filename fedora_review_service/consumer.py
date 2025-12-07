@@ -2,6 +2,7 @@
 
 import sentry_sdk
 from copr.v3 import CoprRequestException
+from specfile.exceptions import SpecfileException
 from fedora_messaging.api import consume
 from fedora_messaging.config import conf
 from fedora_review_service.config import config
@@ -124,8 +125,11 @@ def handle_copr_message(message):
 
         spec = remote_spec(copr.spec_url)
         url = None
-        if not bug.url and spec and spec.url:
-            url = spec.url
+        try:
+            if not bug.url and spec and spec.url:
+                url = spec.url
+        except SpecfileException:
+            pass
         log.info("RHBZ: #%s, URL: %s", bug.id, url)
 
         report = remote_report(copr.review_json_url)
