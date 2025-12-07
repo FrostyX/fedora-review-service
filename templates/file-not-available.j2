@@ -1,6 +1,10 @@
 There seems to be some problem with the following file.
 {{ url_name }}: {{ response.url }}
+{% if response.status_code %}
 Fetching it results in a {{ response.status_code }} {{ response.reason}} error.
+{% else %}
+Fetching it results in {{ response.reason}}.
+{% endif %}
 Please make sure the URL is correct and publicly available.
 
 

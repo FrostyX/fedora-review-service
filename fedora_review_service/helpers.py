@@ -7,6 +7,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from specfile import Specfile
 from specfile.exceptions import RPMException
+from munch import Munch
 from fedora_review_service.config import config
 
 
@@ -147,5 +148,10 @@ def check_available(url):
     """
     session = requests.Session()
     session.mount(url, HTTPAdapter(max_retries=5))
-    response = session.head(url)
+    try:
+        response = session.head(url, timeout=30)
+    except (requests.ConnectTimeout, requests.ConnectionError) as ex:
+        # The timeout happens during the TCP handshake, before the response
+        # object is even created. In such HTTP status code doesn't exist.
+        response = Munch(ok=False, status_code=None, url=url, reason=str(ex))
     return response
