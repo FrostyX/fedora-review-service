@@ -9,9 +9,13 @@ from sqlalchemy import (
     Enum,
     ForeignKey,
 )
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
-from sqlalchemy.orm import sessionmaker, relationship, backref
+from sqlalchemy.orm import (
+    sessionmaker,
+    relationship,
+    backref,
+    declarative_base,
+)
 from fedora_review_service.config import config
 
 
