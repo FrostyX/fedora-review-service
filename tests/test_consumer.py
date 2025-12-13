@@ -18,7 +18,7 @@ class TestConsumer(MessageTestCase):
     def tearDown(self):
         session.rollback()
         for tbl in reversed(Base.metadata.sorted_tables):
-            engine.execute(tbl.delete())
+            session.execute(tbl.delete())
 
     @patch("fedora_review_service.consumer.submit_to_copr")
     def test_handle_bugzilla_message(self, submit_to_copr):
