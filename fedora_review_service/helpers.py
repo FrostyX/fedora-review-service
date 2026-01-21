@@ -62,7 +62,7 @@ def find_srpm_url(packagename, text):
 
 
 def find_fas_username(text):
-    result = re.search("Fedora Account System Username:(\s*)(?P<fas>\w+)", text)
+    result = re.search(r"Fedora Account System Username:(\s*)(?P<fas>\w+)", text)
     return result.group("fas") if result else None
 
 
@@ -72,7 +72,7 @@ def fas_url(username):
 
 def _find_file_url(packagename, suffix, text):
     file_url = None
-    urls = re.findall("(?P<url>https?://[^\s]+)", text)
+    urls = re.findall(r"(?P<url>https?://[^\s]+)", text)
     for url in urls:
         filename = url.split("/")[-1]
         if packagename.lower() not in filename.lower():
