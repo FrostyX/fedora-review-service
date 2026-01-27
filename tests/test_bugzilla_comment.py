@@ -40,7 +40,9 @@ class TestBugzillaComment(MessageTestCase):
             "\n"
             "If you want to trigger a new Copr build, add a comment "
             "containing new\n"
-            "Spec and SRPM URLs or [fedora-review-service-build] string."
+            "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
+            "\n"
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         copr = Copr(message)
         comment = BugzillaComment(copr).render()
@@ -73,7 +75,9 @@ class TestBugzillaComment(MessageTestCase):
             "\n"
             "If you want to trigger a new Copr build, add a comment "
             "containing new\n"
-            "Spec and SRPM URLs or [fedora-review-service-build] string."
+            "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
+            "\n"
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         copr = Copr(message)
         comment = BugzillaComment(copr).render()
@@ -108,7 +112,9 @@ class TestBugzillaComment(MessageTestCase):
             "\n"
             "If you want to trigger a new Copr build, add a comment "
             "containing new\n"
-            "Spec and SRPM URLs or [fedora-review-service-build] string."
+            "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
+            "\n"
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         path = os.path.join(self.data, "review-1.json")
         with open(path, "r") as fp:
@@ -248,7 +254,9 @@ class TestMissingSRPM(MessageTestCase):
             "\n"
             "If you want to trigger a new Copr build, add a comment "
             "containing new\n"
-            "Spec and SRPM URLs or [fedora-review-service-build] string."
+            "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
+            "\n"
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         comment = MissingSRPM(None).render()
         assert comment == expected
@@ -281,7 +289,9 @@ class TestInvalidSummary(MessageTestCase):
             "\n"
             "If you want to trigger a new Copr build, add a comment "
             "containing new\n"
-            "Spec and SRPM URLs or [fedora-review-service-build] string."
+            "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
+            "\n"
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         bz = Bugzilla(message)
         comment = InvalidSummary(bz).render()
@@ -309,7 +319,9 @@ class TestFileNotAvailable(MessageTestCase):
             "\n"
             "If you want to trigger a new Copr build, add a comment "
             "containing new\n"
-            "Spec and SRPM URLs or [fedora-review-service-build] string."
+            "Spec and SRPM URLs or [fedora-review-service-build] string.\n"
+            "\n"
+            "Comments containing [fedora-review-service-ignore] will not trigger builds."
         )
         available = Mock(
             url="http://foo.bar/baz.src.rpm",
