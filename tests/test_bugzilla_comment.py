@@ -213,7 +213,7 @@ class TestSponsorRequestBugzilla(MessageTestCase):
             "packaging.\n"
             "\n"
             "You can find all active sponsors here:\n"
-            "https://docs.pagure.org/fedora-sponsors/\n"
+            "https://packager-sponsors.fedoraproject.org/\n"
             "\n"
             "I created a sponsorship request for you:\n"
             "http://pagure.example/foo/bar/3\n"

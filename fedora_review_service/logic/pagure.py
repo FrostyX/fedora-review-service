@@ -29,7 +29,7 @@ def is_packager(username):
 def is_sponsor(bugzilla_user_id):
     # This could be implemented using `fasjson` but but it would require us to
     # do `fkinit` on the server. Instead, use Packager Sponsors public API
-    url = "https://docs.pagure.org/fedora-sponsors/api/sponsors.json"
+    url = "https://packager-sponsors.fedoraproject.org/api/sponsors.json"
     try:
         response = requests.get(url, timeout=10)
     except requests.exceptions.Timeout:
