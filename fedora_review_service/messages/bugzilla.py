@@ -1,3 +1,4 @@
+from fedora_messaging import message as review_message
 from fedora_review_service.helpers import (
     review_package_name,
     find_srpm_url,
@@ -32,7 +33,27 @@ class Bugzilla:
 
     @property
     def ignore(self):
-        return self.bug["component"] != "Package Review"
+        return (
+            self.bug["component"] != "Package Review"
+            or should_ignore(message=self.message)
+        )
+
+
+def should_ignore(message: review_message.Message) -> bool:
+    """
+    Check for keywords to ignore review service builds
+
+    True if keywords found, False otherwise.
+    """
+    ignore_keyword: str = "[fedora-review-service-ignore]"
+    return (
+        (
+            message.body.get("comment") is not None
+            and ignore_keyword in message.body.get("comment")["body"]
+        )
+        or ignore_keyword in message.body["bug"]["keywords"]
+        or ignore_keyword in message.body["bug"]["whiteboard"]
+    )
 
 
 def recognize(message):
@@ -73,7 +94,6 @@ class CommentWithSRPM(Bugzilla):
     def recognized(self):
         if not self.comment:
             return False
-
         if self.bug["reporter"]["login"] != self.comment["author"]:
             return False
         return bool(self.srpm_url)
