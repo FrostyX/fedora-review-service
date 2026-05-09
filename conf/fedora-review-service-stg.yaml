@@ -23,7 +23,7 @@ bugzilla_messages:
   - "org.fedoraproject.stg.bugzilla.bug.update"
 
 sponsors:
-  pagure_instance: "https://pagure.io"
-  pagure_apikey_file: "/persistent/private/.config/pagure/apikey"
+  forgejo_instance: "https://codeberg.org"
+  forgejo_apikey_file: "/persistent/private/.config/forgejo/apikey"
   repo: "frostyx/fake-packager-sponsors"
   skip_packager_check: True

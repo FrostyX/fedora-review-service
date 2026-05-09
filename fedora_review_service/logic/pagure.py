@@ -1,20 +1,4 @@
-import os
 import requests
-from libpagure import Pagure
-
-
-def pagure_client(config):
-    token = read_pagure_apikey(config["sponsors"]["pagure_apikey_file"])
-    return Pagure(
-        instance_url=config["sponsors"]["pagure_instance"],
-        repo_to=config["sponsors"]["repo"],
-        pagure_token=token,
-    )
-
-
-def read_pagure_apikey(path):
-    with open(os.path.expanduser(path), "r") as fp:
-        return fp.read().strip()
 
 
 def is_packager(username):
@@ -46,17 +30,3 @@ def is_sponsor(bugzilla_user_id):
         return False
 
     return bugzilla_user_id in [x["bugzilla_user_id"] for x in data]
-
-
-def request_for_user_exists(client, username):
-    expected_title = "Requesting sponsorship for {0}".format(username)
-    expected_content = "(FAS @{0})".format(username)
-
-    issues = client.list_issues()
-    for issue in issues:
-        if issue["title"] != expected_title:
-            continue
-        if expected_content not in issue["content"]:
-            continue
-        return issue
-    return False
