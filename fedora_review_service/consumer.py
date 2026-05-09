@@ -27,10 +27,13 @@ from fedora_review_service.logic.rhbz import (
     bugzilla_submit_comment,
 )
 from fedora_review_service.logic.pagure import (
-    pagure_client,
-    request_for_user_exists,
     is_packager,
     is_sponsor,
+)
+from fedora_review_service.logic.forgejo import (
+    forgejo_packager_sponsors_project,
+    forgejo_issue_web_url,
+    request_for_user_exists,
 )
 from fedora_review_service.database import (
     create_db,
@@ -237,11 +240,11 @@ def handle_review_plus(bz):
         log.info("The package was reviewed by a sponsor. Ticket not needed.")
         return
 
-    pagure = pagure_client(config)
-    sponsorship_request = request_for_user_exists(pagure, fas)
+    packager_sponsors = forgejo_packager_sponsors_project(config)
+    sponsorship_request = request_for_user_exists(packager_sponsors, fas)
     if sponsorship_request:
-        log.info("Sponsorship request for %s already exists: %s",
-                 fas, sponsorship_request["full_url"])
+        url = forgejo_issue_web_url(sponsorship_request)
+        log.info("Sponsorship request for %s already exists: %s", fas, url)
         return
 
     # Now it's probably a good idea to create the ticket
@@ -250,13 +253,13 @@ def handle_review_plus(bz):
 
     # Message for other sponsors
     content = SponsorRequestIssue(bz, fas).render()
-    issue = pagure.create_issue(title, content)
-    url = issue["issue"]["full_url"]
+    issue = packager_sponsors.create_issue(title, content)
+    url = forgejo_issue_web_url(issue)
     log.info("Created issue: %s", url)
 
     # Comment for the contributor
     content = SponsorRequestComment(bz, fas).render()
-    comment = pagure.comment_issue(issue["issue"]["id"], content)
+    comment = issue.comment(content)
     log.info("Commented on issue: %s", url)
 
     # Bugzilla comment for the contributor

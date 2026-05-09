@@ -17,7 +17,7 @@ RUN dnf -y update && \
         python3-sqlalchemy \
         python3-alembic \
         python3-specfile \
-        python3-libpagure \
+        python3-ogr \
         python3-sentry-sdk \
         && \
     dnf clean all
