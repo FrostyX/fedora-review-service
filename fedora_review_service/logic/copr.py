@@ -1,7 +1,10 @@
 import re
+import traceback
+
 from copr.v3 import Client, CoprRequestException
 from fedora_review_service.config import config
 from fedora_review_service.helpers import remote_diff
+from fedfind.helpers import get_current_stables
 
 
 def create_copr_project_safe(client, owner, project, chroots,
@@ -30,7 +33,7 @@ def submit_to_copr(rhbz, packagename, srpm_url):
     safe_packagename = re.sub(r'[^a-zA-Z0-9_.-]', '_', packagename)
 
     project = "fedora-review-{0}-{1}".format(rhbz, safe_packagename)
-    chroots = config["copr_chroots"]
+    chroots = copr_chroots()
 
     description = (
         "This project contains builds from Fedora Review ticket "
@@ -93,3 +96,20 @@ def copr_spec_url_for_build(build):
         build["id"]
     )
     return "{0}/{1}.spec".format(url, packagename)
+
+def copr_chroots() -> list[str]:
+    copr_chroots = config.get("copr_chroots")
+
+    if not copr_chroots:
+        try:
+            current_stables = get_current_stables()
+        except Exception:
+            # Ideally we'd catch a more specific exception, but the priority here is not falling over if the release.json is irretrievable
+            print("Caught exception whilst trying to load stable Fedora releases. Defaulting to just rawhide.")
+            traceback.print_exc()
+            current_stables = []
+        releases = current_stables + ["rawhide"]
+        copr_chroots = [f"fedora-{r}-x86_64" for r in releases]
+
+    return copr_chroots
+

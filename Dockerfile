@@ -19,6 +19,7 @@ RUN dnf -y update && \
         python3-specfile \
         python3-libpagure \
         python3-sentry-sdk \
+        python3-fedfind \
         && \
     dnf clean all
 
