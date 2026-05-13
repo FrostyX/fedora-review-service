@@ -6,10 +6,6 @@ copr_url: "https://copr.fedorainfracloud.org"
 copr_be_url: "https://download.copr.fedorainfracloud.org"
 copr_config: "/persistent/private/.config/copr"
 copr_owner: "@fedora-review"
-copr_chroots:
-  - "fedora-42-x86_64"
-  - "fedora-43-x86_64"
-  - "fedora-rawhide-x86_64"
 
 bugzilla_url: "https://bugzilla.redhat.com"
 bugzilla_config: "/persistent/private/.bugzillarc"
